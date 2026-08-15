@@ -1,0 +1,11 @@
+requirement:
+  id: SREQ-00001-1
+  title: The tool shall serve PlantUML language intelligence over the Language Server Protocol
+  description: >
+    The tool shall serve PlantUML language intelligence over the Language Server Protocol.
+  rationale: >
+    Umbrella: the third product of the deriva/plantuml family. A standard LSP server any editor can consume, built on the tree-sitter grammar and the formatter as versioned dependencies; argos-vscode is the first intended client.
+  owner: dcoello-dev
+  status: APPROVED
+  asil: QM
+  parent_ids: []
