@@ -1,0 +1,12 @@
+requirement:
+  id: SREQ-00002-1
+  title: The server shall publish parse diagnostics with exact positions
+  description: >
+    The server shall publish parse diagnostics with exact positions.
+  rationale: >
+    The grammar's error-tolerant CST yields ERROR/missing nodes with byte-accurate ranges; surfacing them as LSP diagnostics gives editors live syntax feedback that PlantUML tooling has never had.
+  owner: dcoello-dev
+  status: APPROVED
+  asil: QM
+  parent_ids:
+    - SREQ-00001-1
