@@ -1,0 +1,13 @@
+requirement:
+  id: REQ-00001-1
+  title: The server shall report ERROR and missing nodes as diagnostics
+  description: >
+    The server shall report ERROR and missing nodes as diagnostics
+  rationale: >
+    collect_diagnostics walks the CST and emits position-exact tuples, capped at 50 per document; the pygls handler maps them to LSP Diagnostic objects.
+  status: APPROVED
+  asil: QM
+  parent_ids:
+    - SREQ-00002-1
+  tags:
+    - diagnostics
