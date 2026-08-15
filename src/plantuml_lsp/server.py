@@ -2,7 +2,7 @@
 
 from lsprotocol import types
 from plantuml_fmt.formatter import format_text
-from pygls.server import LanguageServer
+from pygls.lsp.server import LanguageServer
 
 from plantuml_lsp.diagnostics import collect_diagnostics
 from plantuml_lsp.definitions import resolve_definition
@@ -34,7 +34,9 @@ def _publish(ls: LanguageServer, uri: str) -> None:
         )
         for sr, sc, er, ec, msg in collect_diagnostics(doc.source.encode())
     ]
-    ls.publish_diagnostics(uri, diags)
+    ls.text_document_publish_diagnostics(
+        types.PublishDiagnosticsParams(uri=uri, diagnostics=diags)
+    )
 
 
 @server.feature(types.TEXT_DOCUMENT_DID_OPEN)

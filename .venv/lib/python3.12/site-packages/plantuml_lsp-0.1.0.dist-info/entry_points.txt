@@ -1,2 +1,0 @@
-[console_scripts]
-plantuml-lsp = plantuml_lsp.server:main

@@ -5,3 +5,7 @@
 # Per-operator workspace overrides (REQ-00625-1): the GDD analogue of
 # an editable install. Always local, never committed.
 argos.local.toml
+
+.venv/
+__pycache__/
+*.egg-info/
