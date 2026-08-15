@@ -1,0 +1,27 @@
+@startuml CL_PlantumlLsp
+' requirement REQ-00001-1
+' requirement REQ-00002-1
+' requirement REQ-00003-1
+' requirement REQ-00004-1
+
+!startsub Parsing
+!includesub ./CL_Parsing.puml!Parsing
+!endsub
+
+!startsub Diagnostics
+!includesub ./CL_Diagnostics.puml!Diagnostics
+!endsub
+
+!startsub Symbols
+!includesub ./CL_Symbols.puml!Symbols
+!endsub
+
+!startsub Definitions
+!includesub ./CL_Definitions.puml!Definitions
+!endsub
+
+!startsub Server
+!includesub ./CL_Server.puml!Server
+!endsub
+
+@enduml

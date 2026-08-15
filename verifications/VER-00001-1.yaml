@@ -1,0 +1,10 @@
+verification:
+  id: VER-00001-1
+  req_id: REQ-00001-1
+  title: Diagnostics tests cover clean and broken sources
+  description: >
+    Diagnostics tests cover clean and broken sources
+  method: test
+  test_ids:
+    - tests/test_diagnostics.py::test_clean_source_has_no_diagnostics
+    - tests/test_diagnostics.py::test_broken_source_reports_positions

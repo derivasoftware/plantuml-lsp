@@ -1,0 +1,18 @@
+@startuml CL_Symbols
+' requirement REQ-00002-1
+
+!startsub Symbols
+
+namespace plantuml_lsp.symbols {
+  class "<<module>>" as SymbolsModule {
+    + collect_symbols(src: bytes): list[SymbolTuple]
+    - _walk(node: Node, src: bytes, ns: list[str], found: list[SymbolTuple]): None
+    - _name_of(node: Node, src: bytes): str
+    - _entry(name: str, kind: str, node: Node): SymbolTuple
+  }
+  SymbolsModule ..> plantuml_lsp.parsing.ParsingModule
+}
+
+!endsub
+
+@enduml

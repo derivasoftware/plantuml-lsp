@@ -1,0 +1,16 @@
+@startuml CL_Parsing
+' requirement REQ-00001-1
+
+!startsub Parsing
+
+namespace plantuml_lsp.parsing {
+  class "<<module>>" as ParsingModule {
+    + get_parser(): Parser
+    + parse(src: bytes): Tree
+    + node_text(src: bytes, node: Node): str
+  }
+}
+
+!endsub
+
+@enduml

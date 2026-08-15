@@ -1,0 +1,22 @@
+# CI — plantuml-lsp. Both family dependencies are private git packages,
+# cloned with the job token via the insteadOf rewrite (job-local gitconfig).
+
+include:
+  - project: deriva/infra/ci-templates
+    ref: main
+    file:
+      - /templates/base.yml
+
+test:
+  stage: test
+  extends: [.on-mr-and-main]
+  script:
+    - |
+      set -euo pipefail
+      export GIT_CONFIG_GLOBAL="$CI_PROJECT_DIR/.gitconfig-ci"
+      git config --file "$GIT_CONFIG_GLOBAL" \
+        url."https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/".insteadOf \
+        "https://${CI_SERVER_HOST}/"
+      python3 -m venv .venv-ci
+      ./.venv-ci/bin/pip install -q -e ".[dev]"
+      ./.venv-ci/bin/pytest -q

@@ -1,0 +1,26 @@
+@startuml CL_Server
+' requirement REQ-00001-1
+' requirement REQ-00002-1
+' requirement REQ-00003-1
+' requirement REQ-00004-1
+
+!startsub Server
+
+namespace plantuml_lsp.server {
+  class "<<module>>" as ServerModule {
+    + did_open(ls: LanguageServer, params: DidOpenTextDocumentParams): None
+    + did_change(ls: LanguageServer, params: DidChangeTextDocumentParams): None
+    + document_symbol(ls: LanguageServer, params: DocumentSymbolParams)
+    + definition(ls: LanguageServer, params: DefinitionParams)
+    + formatting(ls: LanguageServer, params: DocumentFormattingParams)
+    + main(): None
+    - _publish(ls: LanguageServer, uri: str): None
+  }
+  ServerModule ..> plantuml_lsp.diagnostics.DiagnosticsModule
+  ServerModule ..> plantuml_lsp.symbols.SymbolsModule
+  ServerModule ..> plantuml_lsp.definitions.DefinitionsModule
+}
+
+!endsub
+
+@enduml

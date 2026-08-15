@@ -1,0 +1,9 @@
+verification:
+  id: VER-00004-1
+  req_id: REQ-00004-1
+  title: Formatting test pins the plantuml-fmt delegation
+  description: >
+    Formatting test pins the plantuml-fmt delegation
+  method: test
+  test_ids:
+    - tests/test_formatting.py::test_formatter_dependency_normalizes_indentation
