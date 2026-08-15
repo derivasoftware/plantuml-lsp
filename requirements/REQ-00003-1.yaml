@@ -1,0 +1,13 @@
+requirement:
+  id: REQ-00003-1
+  title: The server shall resolve include directives relative to the requesting document
+  description: >
+    The server shall resolve include directives relative to the requesting document
+  rationale: >
+    resolve_definition matches !includesub path!NAME and !include path on the cursor line, resolves the path against the document's directory (PlantUML preprocessor semantics) and locates the startsub line in the target.
+  status: APPROVED
+  asil: QM
+  parent_ids:
+    - SREQ-00004-1
+  tags:
+    - definitions
