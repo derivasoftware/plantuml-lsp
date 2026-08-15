@@ -1,0 +1,13 @@
+requirement:
+  id: REQ-00002-1
+  title: The server shall list namespace-qualified entities and participants as symbols
+  description: >
+    The server shall list namespace-qualified entities and participants as symbols
+  rationale: >
+    collect_symbols walks declarations and grouping blocks, qualifying names by the namespace stack; participants surface by alias, which is how sequence corpora reference them.
+  status: APPROVED
+  asil: QM
+  parent_ids:
+    - SREQ-00003-1
+  tags:
+    - symbols
