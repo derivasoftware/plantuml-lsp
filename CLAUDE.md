@@ -31,6 +31,11 @@ python -m pytest && pre-commit run --all-files
 
 ## Baseline diagnostics (not regressions)
 
-- `W-SREQ-NOT-DECOMPOSED` on SREQ-00001-1 (the umbrella decomposes into
-  the other SREQs, not into local REQs) and SREQ-00006-1 (argos
-  integration — phase-2 roadmap, decomposed when its milestone starts).
+- `W-SREQ-NOT-DECOMPOSED` on SREQ-00001-1: the umbrella decomposes into
+  the other SREQs, not into local REQs.
+
+## Design principle
+
+This server is argos-agnostic by decision (2026-08-15): it never gains
+knowledge of argos. Integration goes the other way — argos tooling
+consumes this server (SREQ-00006-1 proposing the reverse was retired).

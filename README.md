@@ -16,10 +16,6 @@ Third product of the `deriva/plantuml` toolchain family.
   to the file.
 - **Formatting** — `textDocument/formatting` delegates to `plantuml-fmt`.
 
-Planned: optional argos integration (hover shows the traced requirement of
-an entity, jump to the artefact) — detection-based, the server stays a
-standalone product.
-
 ## Usage
 
 ```bash
