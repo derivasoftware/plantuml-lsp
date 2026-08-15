@@ -1,0 +1,12 @@
+requirement:
+  id: SREQ-00004-1
+  title: The server shall resolve includesub references to their startsub definitions
+  description: >
+    The server shall resolve includesub references to their startsub definitions.
+  rationale: >
+    The named-fragment mechanism (!startsub / !includesub) is the backbone of the LLD composition pattern; go-to-definition across it is the navigation feature that motivated the whole toolchain.
+  owner: dcoello-dev
+  status: APPROVED
+  asil: QM
+  parent_ids:
+    - SREQ-00001-1
