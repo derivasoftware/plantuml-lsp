@@ -1,0 +1,13 @@
+requirement:
+  id: REQ-00004-1
+  title: The formatting handler shall return the plantuml-fmt output as a full-document edit
+  description: >
+    The formatting handler shall return the plantuml-fmt output as a full-document edit
+  rationale: >
+    Delegation keeps editor formatting byte-identical to the pre-commit hook; an empty edit list is returned when the document is already canonical.
+  status: APPROVED
+  asil: QM
+  parent_ids:
+    - SREQ-00005-1
+  tags:
+    - formatting
