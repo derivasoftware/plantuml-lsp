@@ -1,0 +1,12 @@
+requirement:
+  id: SREQ-00003-1
+  title: The server shall expose document symbols for the supported subset
+  description: >
+    The server shall expose document symbols for the supported subset.
+  rationale: >
+    Classes, interfaces and enums qualified by namespace, grouping blocks, and sequence participants (by alias) power outlines, breadcrumbs and fuzzy symbol search.
+  owner: dcoello-dev
+  status: APPROVED
+  asil: QM
+  parent_ids:
+    - SREQ-00001-1
