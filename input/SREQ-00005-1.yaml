@@ -1,0 +1,12 @@
+requirement:
+  id: SREQ-00005-1
+  title: The server shall format documents through plantuml-fmt
+  description: >
+    The server shall format documents through plantuml-fmt.
+  rationale: >
+    One canonical formatter for the family: the server delegates textDocument/formatting to plantuml-fmt rather than reimplementing style, so editor formatting and pre-commit stay byte-identical.
+  owner: dcoello-dev
+  status: APPROVED
+  asil: QM
+  parent_ids:
+    - SREQ-00001-1
