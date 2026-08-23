@@ -1,0 +1,15 @@
+@startuml CL_Rename
+' requirement REQ-00006-1
+
+!startsub RenameModule
+
+namespace plantuml_lsp.rename {
+  class "<<module>>" as RenameModule {
+    + rename_edits(entity_id: str, new_name: str, index: Index): list[EditTuple]
+  }
+  RenameModule ..> plantuml_lsp.index.Index
+}
+
+!endsub
+
+@enduml

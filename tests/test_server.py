@@ -18,6 +18,11 @@ def test_server_wires_all_features():
         "textDocument/documentSymbol",
         "textDocument/definition",
         "textDocument/formatting",
+        "textDocument/completion",
+        "textDocument/hover",
+        "textDocument/references",
+        "textDocument/rename",
+        "textDocument/documentLink",
     }
 
 

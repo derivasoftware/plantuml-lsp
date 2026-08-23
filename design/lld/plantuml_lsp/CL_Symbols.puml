@@ -1,7 +1,7 @@
 @startuml CL_Symbols
 ' requirement REQ-00002-1
 
-!startsub Symbols
+!startsub SymbolsModule
 
 namespace plantuml_lsp.symbols {
   class "<<module>>" as SymbolsModule {

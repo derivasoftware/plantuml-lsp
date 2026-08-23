@@ -1,0 +1,15 @@
+@startuml CL_Hover
+' requirement REQ-00006-1
+
+!startsub HoverModule
+
+namespace plantuml_lsp.hover {
+  class "<<module>>" as HoverModule {
+    + hover_for(entity_id: str, index: Index): str | None
+  }
+  HoverModule ..> plantuml_lsp.index.Index
+}
+
+!endsub
+
+@enduml

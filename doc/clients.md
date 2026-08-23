@@ -43,14 +43,23 @@ file-types = ["puml", "plantuml", "iuml", "wsd"]
 language-servers = ["plantuml-lsp"]
 ```
 
-## Capabilities (v0)
+## Capabilities (v1)
 
 | Capability | Behaviour |
 |---|---|
-| diagnostics | parse errors with exact ranges, from the grammar's error-tolerant CST |
+| diagnostics | parse errors + semantic lints (unknown endpoints in class mode, duplicates, broken includes) |
+| completion | entities/participants across the include closure + statement keywords |
+| hover | kind, display name, members, relation lines, declaration site |
+| references | CST-backed occurrences across the closure |
+| rename | closure-wide, never touches labels/comments/note bodies; quoted names keep quotes |
+| documentLink | clickable `!include`/`!includesub` paths |
 | documentSymbol | classes/interfaces/enums (namespace-qualified), packages/namespaces, sequence participants |
 | definition | `!includesub file!NAME` → the `!startsub NAME` line; `!include file` → the file |
 | formatting | delegates to plantuml-fmt (one style, everywhere) |
+
+Semantic tokens are deliberately absent: VS Code highlights via the
+pack's TextMate grammar and native tree-sitter editors highlight from
+the grammar itself.
 
 ## Development notes
 

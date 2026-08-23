@@ -1,0 +1,12 @@
+verification:
+  id: VER-00007-1
+  req_id: REQ-00007-1
+  title: Lint tests cover unknown endpoints, sequence quiet mode, duplicates and broken includes
+  description: >
+    Lint tests cover unknown endpoints, sequence quiet mode, duplicates and broken includes
+  method: test
+  test_ids:
+    - tests/test_features_v1.py::test_lints_flag_unknown_endpoints_in_class_mode
+    - tests/test_features_v1.py::test_lints_stay_quiet_for_sequence_implicit_participants
+    - tests/test_features_v1.py::test_lints_flag_broken_includes
+    - tests/test_features_v1.py::test_lints_flag_duplicate_declarations

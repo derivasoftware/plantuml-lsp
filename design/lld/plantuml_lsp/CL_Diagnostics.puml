@@ -1,7 +1,7 @@
 @startuml CL_Diagnostics
 ' requirement REQ-00001-1
 
-!startsub Diagnostics
+!startsub DiagnosticsModule
 
 namespace plantuml_lsp.diagnostics {
   class "<<module>>" as DiagnosticsModule {
