@@ -1,0 +1,18 @@
+requirement:
+  id: REQ-00007-1
+  title: The server shall publish semantic lints for unknown endpoints, duplicates and broken includes
+  description: >
+    The server shall publish semantic lints for unknown endpoints, duplicates and broken includes
+  rationale: >
+    Class-mode relations referencing an id no declaration in the
+    closure explains warn (sequence mode stays quiet — implicit
+    participants are idiomatic there); duplicate declarations warn with
+    the first site; include directives whose target file or startsub
+    fragment does not exist error. Published alongside the parse
+    diagnostics on every change.
+  status: APPROVED
+  asil: QM
+  parent_ids:
+    - SREQ-00006-1
+  tags:
+    - lints

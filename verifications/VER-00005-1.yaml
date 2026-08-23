@@ -1,0 +1,9 @@
+verification:
+  id: VER-00005-1
+  req_id: REQ-00005-1
+  title: Index tests cover closure entities, alias ids, occurrences and cursor tokens
+  description: >
+    Index tests cover closure entities, alias ids, occurrences and cursor tokens
+  method: test
+  test_ids:
+    - tests/test_index.py

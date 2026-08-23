@@ -5,10 +5,23 @@ PlantUML language server, built on
 and [plantuml-fmt](https://gitlab.semantiqa.dev/deriva/plantuml/plantuml-fmt).
 Third product of the `deriva/plantuml` toolchain family.
 
-## Features (v0)
+## Features (v1)
 
-- **Diagnostics** — parse errors with exact positions, straight from the
-  grammar's error-tolerant CST.
+Workspace-aware: a symbol index over the document **plus its transitive
+`!include`/`!includesub` closure** feeds everything below.
+
+- **Diagnostics** — parse errors with exact positions, plus semantic
+  lints: relation endpoints nothing declares (class mode; sequence
+  stays quiet — implicit participants are idiomatic), duplicate
+  declarations, and include targets or fragments that don't exist.
+- **Completion** — every entity/participant in the closure plus
+  statement keywords.
+- **Hover** — kind, display name, members, relation lines, declaration
+  site.
+- **References / Rename** — CST-backed occurrences across the closure;
+  renames never touch labels, comments or note bodies, and quoted
+  names keep their quotes.
+- **Document links** — `!include` paths are clickable.
 - **Document symbols** — classes, interfaces, enums (namespace-qualified),
   packages/namespaces and sequence participants.
 - **Go to definition across includes** — `!includesub file!NAME` jumps to

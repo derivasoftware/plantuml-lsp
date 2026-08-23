@@ -1,0 +1,17 @@
+requirement:
+  id: REQ-00005-1
+  title: The server shall index entities across the document and its transitive include closure
+  description: >
+    The server shall index entities across the document and its transitive include closure
+  rationale: >
+    Declarations (class/interface/enum, extended entity kinds,
+    participants with alias-as-id), member lists and relation lines,
+    collected per file with cycle-safe include recursion. The index is
+    the shared substrate: occurrences(id) scans identifier and
+    quoted-string CST nodes only.
+  status: APPROVED
+  asil: QM
+  parent_ids:
+    - SREQ-00006-1
+  tags:
+    - index

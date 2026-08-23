@@ -1,0 +1,17 @@
+requirement:
+  id: REQ-00006-1
+  title: The server shall answer completion, hover, references, rename and document links from the index
+  description: >
+    The server shall answer completion, hover, references, rename and document links from the index
+  rationale: >
+    Completion offers every indexed id plus statement keywords (the
+    editor filters); hover renders kind, display name, members,
+    relation lines and declaration site as markdown; references and
+    rename map occurrences across the closure (quoted occurrences keep
+    their quotes); include directives become clickable document links.
+  status: APPROVED
+  asil: QM
+  parent_ids:
+    - SREQ-00006-1
+  tags:
+    - features

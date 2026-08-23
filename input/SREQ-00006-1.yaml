@@ -1,0 +1,19 @@
+requirement:
+  id: SREQ-00006-1
+  title: The server shall provide workspace-aware language intelligence over the include closure
+  description: >
+    The server shall provide workspace-aware language intelligence over the include closure.
+  rationale: >
+    v1 of the IDE surface: a symbol index built from the document plus
+    its transitive include closure feeds completion, hover, references,
+    rename and semantic lints — the intelligence neither the parser nor
+    the official renderer offers. Occurrences come from the CST, never
+    regex over text, so edits cannot touch labels or note bodies.
+    Semantic tokens are deliberately out: VS Code highlights via the
+    TextMate grammar and native tree-sitter editors highlight from the
+    grammar itself.
+  owner: dcoello-dev
+  status: APPROVED
+  asil: QM
+  parent_ids:
+    - SREQ-00001-1
