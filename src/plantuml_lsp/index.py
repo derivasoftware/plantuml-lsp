@@ -92,26 +92,34 @@ def _index_file(path: str, src: bytes, index: Index, seen: set[str]) -> None:
 
 
 def _walk(node: Node, src: bytes, path: str, index: Index) -> None:
-    kind = _DECLARATIONS.get(node.type)
-    if node.type == "entity_declaration":
-        kind_node = node.child_by_field_name("kind")
-        kind = node_text(src, kind_node) if kind_node is not None else "entity"
+    kind = _declared_kind(node, src)
     if kind is not None:
         _add(index, node, src, path, kind)
-    elif node.type == "participant_declaration":
-        kind_node = node.child_by_field_name("kind")
-        _add(index, node, src, path,
-             node_text(src, kind_node) if kind_node is not None else "participant")
     elif node.type == "relation":
-        line = node_text(src, node).strip()
-        for field_name in ("left", "right"):
-            end = node.child_by_field_name(field_name)
-            if end is not None and end.type in ("identifier", "string"):
-                index.relations.setdefault(
-                    node_text(src, end).strip('"'), []
-                ).append(line)
+        _record_relation(node, src, index)
     for child in node.children:
         _walk(child, src, path, index)
+
+
+def _declared_kind(node: Node, src: bytes) -> str | None:
+    if node.type in _DECLARATIONS:
+        return _DECLARATIONS[node.type]
+    if node.type in ("entity_declaration", "participant_declaration"):
+        kind_node = node.child_by_field_name("kind")
+        if kind_node is not None:
+            return node_text(src, kind_node)
+        return "entity" if node.type == "entity_declaration" else "participant"
+    return None
+
+
+def _record_relation(node: Node, src: bytes, index: Index) -> None:
+    line = node_text(src, node).strip()
+    for field_name in ("left", "right"):
+        end = node.child_by_field_name(field_name)
+        if end is not None and end.type in ("identifier", "string"):
+            index.relations.setdefault(
+                node_text(src, end).strip('"'), []
+            ).append(line)
 
 
 def _add(index: Index, node: Node, src: bytes, path: str, kind: str) -> None:

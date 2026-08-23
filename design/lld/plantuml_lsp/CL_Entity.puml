@@ -1,0 +1,21 @@
+@startuml CL_Entity
+' requirement REQ-00005-1
+
+!startsub Entity
+
+namespace plantuml_lsp.index {
+  class Entity {
+    + id: str
+    + name: str
+    + kind: str
+    + path: str
+    + row: int
+    + scol: int
+    + ecol: int
+    + members: list[str]
+  }
+}
+
+!endsub
+
+@enduml

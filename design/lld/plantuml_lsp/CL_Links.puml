@@ -1,0 +1,14 @@
+@startuml CL_Links
+' requirement REQ-00006-1
+
+!startsub LinksModule
+
+namespace plantuml_lsp.links {
+  class "<<module>>" as LinksModule {
+    + collect_links(doc_path: str, src: bytes): list[LinkTuple]
+  }
+}
+
+!endsub
+
+@enduml

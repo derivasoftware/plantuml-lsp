@@ -1,7 +1,7 @@
 @startuml CL_Definitions
 ' requirement REQ-00003-1
 
-!startsub Definitions
+!startsub DefinitionsModule
 
 namespace plantuml_lsp.definitions {
   class "<<module>>" as DefinitionsModule {

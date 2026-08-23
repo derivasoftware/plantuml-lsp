@@ -6,4 +6,7 @@ verification:
     Index tests cover closure entities, alias ids, occurrences and cursor tokens
   method: test
   test_ids:
-    - tests/test_index.py
+    - tests/test_index.py::test_index_collects_document_and_closure_entities
+    - tests/test_index.py::test_participants_index_by_alias
+    - tests/test_index.py::test_occurrences_span_the_closure
+    - tests/test_index.py::test_identifier_at_reads_the_token_under_the_cursor

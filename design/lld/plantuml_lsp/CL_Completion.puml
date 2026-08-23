@@ -1,0 +1,15 @@
+@startuml CL_Completion
+' requirement REQ-00006-1
+
+!startsub CompletionModule
+
+namespace plantuml_lsp.completion {
+  class "<<module>>" as CompletionModule {
+    + collect_completions(index: Index): list[CompletionTuple]
+  }
+  CompletionModule ..> plantuml_lsp.index.Index
+}
+
+!endsub
+
+@enduml

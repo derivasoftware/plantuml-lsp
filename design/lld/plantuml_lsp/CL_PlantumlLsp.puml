@@ -3,25 +3,60 @@
 ' requirement REQ-00002-1
 ' requirement REQ-00003-1
 ' requirement REQ-00004-1
+' requirement REQ-00005-1
+' requirement REQ-00006-1
+' requirement REQ-00007-1
 
-!startsub Parsing
-!includesub ./CL_Parsing.puml!Parsing
+!startsub ParsingModule
+!includesub ./CL_Parsing.puml!ParsingModule
 !endsub
 
-!startsub Diagnostics
-!includesub ./CL_Diagnostics.puml!Diagnostics
+!startsub DiagnosticsModule
+!includesub ./CL_Diagnostics.puml!DiagnosticsModule
 !endsub
 
-!startsub Symbols
-!includesub ./CL_Symbols.puml!Symbols
+!startsub SymbolsModule
+!includesub ./CL_Symbols.puml!SymbolsModule
 !endsub
 
-!startsub Definitions
-!includesub ./CL_Definitions.puml!Definitions
+!startsub DefinitionsModule
+!includesub ./CL_Definitions.puml!DefinitionsModule
 !endsub
 
-!startsub Server
-!includesub ./CL_Server.puml!Server
+!startsub Entity
+!includesub ./CL_Entity.puml!Entity
+!endsub
+
+!startsub Index
+!includesub ./CL_Index.puml!Index
+!endsub
+
+!startsub IndexModule
+!includesub ./CL_IndexModule.puml!IndexModule
+!endsub
+
+!startsub CompletionModule
+!includesub ./CL_Completion.puml!CompletionModule
+!endsub
+
+!startsub HoverModule
+!includesub ./CL_Hover.puml!HoverModule
+!endsub
+
+!startsub RenameModule
+!includesub ./CL_Rename.puml!RenameModule
+!endsub
+
+!startsub LinksModule
+!includesub ./CL_Links.puml!LinksModule
+!endsub
+
+!startsub LintsModule
+!includesub ./CL_Lints.puml!LintsModule
+!endsub
+
+!startsub ServerModule
+!includesub ./CL_Server.puml!ServerModule
 !endsub
 
 @enduml
