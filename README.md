@@ -16,6 +16,11 @@ Third product of the `deriva/plantuml` toolchain family.
   to the file.
 - **Formatting** — `textDocument/formatting` delegates to `plantuml-fmt`.
 
+## Documentation
+
+- [`doc/clients.md`](doc/clients.md) — wiring VS Code, Neovim and
+  Helix; the capability table; pygls 2 notes.
+
 ## Usage
 
 ```bash
