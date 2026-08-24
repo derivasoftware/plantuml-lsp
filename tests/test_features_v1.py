@@ -117,3 +117,28 @@ def test_hover_enriches_participants_with_their_class_card(tmp_path):
     assert "**participant** `Widget`" in text
     assert "+draw() : None" in text
     assert "CL_W.puml" in text
+
+
+def test_entity_definitions_resolve_types_and_qualified_names(tmp_path):
+    from plantuml_lsp.definitions import entity_definitions
+    from plantuml_lsp.workspace import WorkspaceIndex
+
+    (tmp_path / "CL_Pedido.puml").write_text(
+        "@startuml\nnamespace pedidos {\n  class Pedido\n}\n@enduml\n"
+    )
+    doc = tmp_path / "CL_Uso.puml"
+    doc.write_text("@startuml\nclass Cafetera {\n  +preparar(p: Pedido) : Taza\n}\n@enduml\n")
+    ws = WorkspaceIndex(str(tmp_path))
+    index = build_index(str(doc), doc.read_bytes())
+    for name in ("Pedido", "pedidos.Pedido"):
+        locs = entity_definitions(name, index, ws)
+        assert locs, name
+        assert locs[0][0].endswith("CL_Pedido.puml")
+
+
+def test_word_at_reads_opaque_positions():
+    from plantuml_lsp.index import word_at
+
+    src = b"@startuml\nclass C {\n  +preparar(pedido: Pedido) : Taza\n}\n@enduml\n"
+    assert word_at(src, 2, 22) == "Pedido"
+    assert word_at(src, 2, 31) == "Taza"

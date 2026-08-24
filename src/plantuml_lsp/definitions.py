@@ -16,6 +16,35 @@ _STARTSUB = re.compile(r"^\s*!startsub\s+(\w+)\s*$")
 # (target_path, line)
 DefinitionTuple = tuple[str, int]
 
+# (path, row, start_col, end_col)
+EntityLocation = tuple[str, int, int, int]
+
+
+def entity_definitions(name, index, workspace) -> list[EntityLocation]:
+    """Declarations a name (qualified tails included) resolves to —
+    the document closure first, then the whole workspace."""
+    from plantuml_lsp.index import resolve_entity
+
+    names = [name]
+    if "." in name:
+        names.append(name.rsplit(".", 1)[-1])
+    found: list[EntityLocation] = []
+    seen: set[EntityLocation] = set()
+    resolved = resolve_entity(name, index.entities)
+    if resolved is not None:
+        e = index.entities[resolved]
+        loc = (e.path, e.row, e.scol, e.ecol)
+        seen.add(loc)
+        found.append(loc)
+    if workspace is not None:
+        for candidate in names:
+            for e in workspace.declarations(candidate):
+                loc = (e.path, e.row, e.scol, e.ecol)
+                if loc not in seen:
+                    seen.add(loc)
+                    found.append(loc)
+    return found
+
 
 def resolve_definition(doc_path: str, line_text: str) -> DefinitionTuple | None:
     m = _INCLUDESUB.match(line_text)

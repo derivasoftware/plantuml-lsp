@@ -6,7 +6,7 @@ from pygls.lsp.server import LanguageServer
 
 from plantuml_lsp.completion import collect_completions
 from plantuml_lsp.diagnostics import collect_diagnostics
-from plantuml_lsp.definitions import resolve_definition
+from plantuml_lsp.definitions import entity_definitions, resolve_definition
 from plantuml_lsp.hover import hover_for
 from plantuml_lsp.index import build_index, identifier_at, resolve_entity
 from plantuml_lsp.links import collect_links
@@ -146,16 +146,31 @@ def definition(ls: LanguageServer, params: types.DefinitionParams):
     if row >= len(lines):
         return None
     resolved = resolve_definition(doc.path, lines[row])
-    if resolved is None:
-        return None
-    path, line = resolved
-    return types.Location(
-        uri=f"file://{path}",
-        range=types.Range(
-            start=types.Position(line=line, character=0),
-            end=types.Position(line=line, character=0),
-        ),
+    if resolved is not None:
+        path, line = resolved
+        return types.Location(
+            uri=f"file://{path}",
+            range=types.Range(
+                start=types.Position(line=line, character=0),
+                end=types.Position(line=line, character=0),
+            ),
+        )
+    # not an include directive: jump to the entity's declaration
+    doc2, index = _index_of(ls, params.text_document.uri)
+    name = identifier_at(
+        doc2.source.encode(), params.position.line, params.position.character
     )
+    if not name:
+        return None
+    locations = [
+        types.Location(uri=f"file://{path}", range=_range(r, sc, r, ec))
+        for path, r, sc, ec in entity_definitions(
+            name, index, _workspace_of(ls, doc2)
+        )
+    ]
+    if not locations:
+        return None
+    return locations[0] if len(locations) == 1 else locations
 
 
 @server.feature(types.TEXT_DOCUMENT_FORMATTING)
