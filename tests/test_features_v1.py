@@ -100,3 +100,20 @@ def test_lints_flag_duplicate_declarations(tmp_path):
     doc, index = idx(tmp_path, "dup.puml", src)
     msgs = [msg for _r, _s, _e, _ec, msg, _sev in collect_lints(doc, src.encode(), index)]
     assert any("A" in m and "declared" in m for m in msgs)
+
+
+def test_hover_enriches_participants_with_their_class_card(tmp_path):
+    from plantuml_lsp.workspace import WorkspaceIndex
+
+    (tmp_path / "CL_W.puml").write_text(
+        "@startuml\nclass Widget {\n  +draw() : None\n}\n@enduml\n"
+    )
+    seq = tmp_path / "SEQ_F.puml"
+    seq.write_text("@startuml\nparticipant Widget\nactor U\nU -> Widget\n@enduml\n")
+    ws = WorkspaceIndex(str(tmp_path))
+    index = build_index(str(seq), seq.read_bytes())
+    text = hover_for("Widget", index, ws)
+    assert text is not None
+    assert "**participant** `Widget`" in text
+    assert "+draw() : None" in text
+    assert "CL_W.puml" in text

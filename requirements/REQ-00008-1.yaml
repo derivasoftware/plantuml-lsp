@@ -1,0 +1,21 @@
+requirement:
+  id: REQ-00008-1
+  title: The server shall maintain an incremental workspace index of every diagram
+  description: >
+    The server shall maintain an incremental workspace index of every diagram
+  rationale: >
+    One scan of the tree (excluded subtrees pruned during the walk, not
+    filtered after — hidden directories carry federation mirrors and
+    whole-repo worktree copies), each file cached under an
+    (mtime_ns, size) signature, only new or changed files reparsed on
+    refresh, deletions dropped. A per-file token-name set keeps
+    occurrence scans away from files that cannot contain the queried
+    name. Measured on the argos workspace: 460 diagrams indexed under
+    a second, no-change refresh ~30ms behind a TTL.
+  status: APPROVED
+  asil: QM
+  parent_ids:
+    - SREQ-00007-1
+  tags:
+    - workspace
+    - index

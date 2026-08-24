@@ -1,0 +1,11 @@
+verification:
+  id: VER-00008-1
+  req_id: REQ-00008-1
+  title: Workspace tests cover pruning, incremental refresh and deletions
+  description: >
+    Workspace tests cover pruning, incremental refresh and deletions
+  method: test
+  test_ids:
+    - tests/test_workspace.py::test_scans_the_tree_and_skips_vendored_dirs
+    - tests/test_workspace.py::test_refresh_picks_up_edits_and_deletions
+    - tests/test_workspace.py::test_occurrences_span_the_workspace

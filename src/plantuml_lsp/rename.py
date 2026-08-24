@@ -11,10 +11,16 @@ from plantuml_lsp.index import Index
 EditTuple = tuple[str, int, int, int, str]
 
 
-def rename_edits(entity_id: str, new_name: str, index: Index) -> list[EditTuple]:
+def edits_from(
+    occurrences: list[tuple[str, int, int, int]],
+    new_name: str,
+    read,
+) -> list[EditTuple]:
     edits: list[EditTuple] = []
-    for path, row, scol, ecol in index.occurrences(entity_id):
-        src = index.files[path]
+    for path, row, scol, ecol in occurrences:
+        src = read(path)
+        if src is None:
+            continue
         line = src.decode(errors="replace").splitlines()[row]
         token = line[scol:ecol]
         if token.startswith('"') and token.endswith('"'):
@@ -22,3 +28,7 @@ def rename_edits(entity_id: str, new_name: str, index: Index) -> list[EditTuple]
         else:
             edits.append((path, row, scol, ecol, new_name))
     return edits
+
+
+def rename_edits(entity_id: str, new_name: str, index: Index) -> list[EditTuple]:
+    return edits_from(index.occurrences(entity_id), new_name, index.files.get)

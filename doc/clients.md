@@ -47,11 +47,12 @@ language-servers = ["plantuml-lsp"]
 
 | Capability | Behaviour |
 |---|---|
-| diagnostics | parse errors + semantic lints (unknown endpoints in class mode, duplicates, broken includes) |
+| diagnostics | parse errors + semantic lints (unknown endpoints in class mode, duplicates, broken includes, class-cased participants no workspace class explains) |
 | completion | entities/participants across the include closure + statement keywords |
-| hover | kind, display name, members, relation lines, declaration site |
-| references | CST-backed occurrences across the closure |
-| rename | closure-wide, never touches labels/comments/note bodies; quoted names keep quotes |
+| hover | kind, display name, members, relation lines, declaration site; participants add the card of the class they play |
+| references | CST-backed occurrences across the closure and the whole workspace |
+| rename | closure- and workspace-wide (editor previews every edit), never touches labels/comments/note bodies; quoted names keep quotes |
+| workspace/symbol | jump to any entity of any diagram under the root |
 | documentLink | clickable `!include`/`!includesub` paths |
 | documentSymbol | classes/interfaces/enums (namespace-qualified), packages/namespaces, sequence participants |
 | definition | `!includesub file!NAME` → the `!startsub NAME` line; `!include file` → the file |

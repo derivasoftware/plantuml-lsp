@@ -1,0 +1,9 @@
+verification:
+  id: VER-00010-1
+  req_id: REQ-00010-1
+  title: Drift tests cover exemptions for actors, implicit and lowercase participants
+  description: >
+    Drift tests cover exemptions for actors, implicit and lowercase participants
+  method: test
+  test_ids:
+    - tests/test_workspace.py::test_unmatched_participants_reports_only_plain_participants

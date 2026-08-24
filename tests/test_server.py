@@ -23,6 +23,7 @@ def test_server_wires_all_features():
         "textDocument/references",
         "textDocument/rename",
         "textDocument/documentLink",
+        "workspace/symbol",
     }
 
 
