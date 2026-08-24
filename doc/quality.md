@@ -12,7 +12,7 @@ and the last test runs. Absent evidence reads `?`, never a guess.
 | Requirements | 14 |
 | Verifications | 14 |
 | Constraints | 0 |
-| Design diagrams | 16 |
+| Design diagrams | 17 |
 | Code classes | 4 |
 | Free functions | 70 |
 | Test cases | 49 |
@@ -22,12 +22,12 @@ and the last test runs. Absent evidence reads `?`, never a guess.
 | Metric | Value |
 | --- | --- |
 | Source files | 13 |
-| Source lines | 1673 |
+| Source lines | 1824 |
 | Documentation files | 5 |
 | Documentation lines (authored) | 161 |
 | Tests executed (UT) | 49 |
 | Tests executed (ST) | ? |
 | UT line coverage | 78% |
 | ST line coverage | ? |
-| argos diagnostics | 17 |
+| argos diagnostics | 8 |
 <!-- /folio -->
