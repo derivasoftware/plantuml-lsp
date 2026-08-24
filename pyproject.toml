@@ -1,6 +1,6 @@
 [project]
 name = "plantuml-lsp"
-version = "0.5.0"
+version = "0.6.0"
 description = "PlantUML language server built on tree-sitter-plantuml and plantuml-fmt"
 readme = "README.md"
 license = { text = "MIT" }

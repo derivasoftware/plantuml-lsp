@@ -4,7 +4,7 @@ from lsprotocol import types
 from plantuml_fmt.formatter import format_text
 from pygls.lsp.server import LanguageServer
 
-from plantuml_lsp.completion import collect_completions
+from plantuml_lsp.completion import contextual_completions
 from plantuml_lsp.diagnostics import collect_diagnostics
 from plantuml_lsp.definitions import (
     action_at,
@@ -226,17 +226,24 @@ def formatting(ls: LanguageServer, params: types.DocumentFormattingParams):
 
 @server.feature(types.TEXT_DOCUMENT_COMPLETION)
 def completion(ls: LanguageServer, params: types.CompletionParams):
-    _doc, index = _index_of(ls, params.text_document.uri)
+    doc, index = _index_of(ls, params.text_document.uri)
     kind_map = {"keyword": types.CompletionItemKind.Keyword,
                 "interface": types.CompletionItemKind.Interface,
-                "enum": types.CompletionItemKind.Enum}
+                "enum": types.CompletionItemKind.Enum,
+                "method": types.CompletionItemKind.Method}
+    items = contextual_completions(
+        doc.source.encode(), params.position.line, params.position.character,
+        index, _workspace_of(ls, doc),
+    )
+    if not items:
+        return None
     return [
         types.CompletionItem(
             label=label,
             kind=kind_map.get(kind, types.CompletionItemKind.Class),
-            detail=kind,
+            detail=detail or kind,
         )
-        for label, kind in collect_completions(index)
+        for label, kind, detail in items
     ]
 
 

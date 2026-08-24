@@ -1,0 +1,13 @@
+verification:
+  id: VER-00013-1
+  req_id: REQ-00013-1
+  title: Context tests cover the five contexts and the silence default
+  description: >
+    Context tests cover the five contexts and the silence default
+  method: test
+  test_ids:
+    - tests/test_completion_context.py::test_methods_after_the_message_colon
+    - tests/test_completion_context.py::test_participants_after_an_arrow
+    - tests/test_completion_context.py::test_lane_methods_in_an_activity_action
+    - tests/test_completion_context.py::test_keywords_and_entities_at_statement_head
+    - tests/test_completion_context.py::test_silence_in_free_label_text
