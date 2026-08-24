@@ -6,7 +6,11 @@ from pygls.lsp.server import LanguageServer
 
 from plantuml_lsp.completion import collect_completions
 from plantuml_lsp.diagnostics import collect_diagnostics
-from plantuml_lsp.definitions import entity_definitions, resolve_definition
+from plantuml_lsp.definitions import (
+    call_at,
+    entity_definitions,
+    resolve_definition,
+)
 from plantuml_lsp.hover import hover_for
 from plantuml_lsp.index import build_index, identifier_at, resolve_entity
 from plantuml_lsp.links import collect_links
@@ -91,8 +95,21 @@ def _publish(ls: LanguageServer, uri: str) -> None:
         )
         for sr, sc, er, ec, msg, severity in collect_lints(doc.path, src, index)
     )
-    # workspace drift: declared plain participants no class explains
+    # call-level drift: call-shaped labels whose receiver's class does
+    # not declare the method
     ws = _workspace_of(ls, doc)
+    from plantuml_lsp.lints import collect_call_lints
+
+    diags.extend(
+        types.Diagnostic(
+            range=_range(sr, sc, er, ec),
+            message=msg,
+            severity=types.DiagnosticSeverity.Warning,
+            source="plantuml-lsp",
+        )
+        for sr, sc, er, ec, msg in collect_call_lints(src, index, ws)
+    )
+    # workspace drift: declared plain participants no class explains
     diags.extend(
         types.Diagnostic(
             range=_range(e.row, e.scol, e.row, e.ecol),
@@ -155,10 +172,22 @@ def definition(ls: LanguageServer, params: types.DefinitionParams):
                 end=types.Position(line=line, character=0),
             ),
         )
-    # not an include directive: jump to the entity's declaration
+    # not an include directive: a call label resolves to the method
     doc2, index = _index_of(ls, params.text_document.uri)
+    src2 = doc2.source.encode()
+    call = call_at(src2, params.position.line, params.position.character)
+    if call is not None:
+        from plantuml_lsp.definitions import resolve_call
+
+        hit = resolve_call(call[0], call[1], index, _workspace_of(ls, doc2))
+        if hit is not None and hit[1] is not None:
+            entity, (mrow, mscol, mecol, _text) = hit
+            return types.Location(
+                uri=f"file://{entity.path}",
+                range=_range(mrow, mscol, mrow, mecol),
+            )
     name = identifier_at(
-        doc2.source.encode(), params.position.line, params.position.character
+        src2, params.position.line, params.position.character
     )
     if not name:
         return None
@@ -214,6 +243,19 @@ def hover(ls: LanguageServer, params: types.HoverParams):
         doc.source.encode(), params.position.line, params.position.character
     )
     text = hover_for(name, index, _workspace_of(ls, doc)) if name else None
+    if text is None:
+        call = call_at(
+            doc.source.encode(), params.position.line, params.position.character
+        )
+        if call is not None:
+            from plantuml_lsp.definitions import resolve_call
+
+            hit = resolve_call(call[0], call[1], index, _workspace_of(ls, doc))
+            if hit is not None and hit[1] is not None:
+                entity, (_r, _s, _e, member_text) = hit
+                text = (
+                    f"**{entity.kind}** `{entity.id}`\n\n```\n{member_text}\n```"
+                )
     if text is None:
         return None
     return types.Hover(
