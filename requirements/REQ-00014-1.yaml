@@ -1,0 +1,19 @@
+requirement:
+  id: REQ-00014-1
+  title: The server shall offer quick fixes reconciling lints with one key
+  description: >
+    The server shall offer quick fixes reconciling lints with one key
+  rationale: >
+    Code actions over the lints the server itself publishes: an
+    endpoint nothing declares gets its class declaration inserted
+    before @enduml; a broken include path gets the closest existing
+    workspace file (relative to the document); a drifting call gets
+    the method skeleton declared inside the receiver's class body —
+    wherever its file lives — matching the surrounding indentation.
+    Behaviour-to-structure reconciliation with one key.
+  status: APPROVED
+  asil: QM
+  parent_ids:
+    - SREQ-00007-1
+  tags:
+    - actions
