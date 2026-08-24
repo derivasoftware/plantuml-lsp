@@ -36,14 +36,16 @@ CLASS_KINDS = {
 
 
 class _FileEntry:
-    __slots__ = ("signature", "src", "entities", "names")
+    __slots__ = ("signature", "src", "entities", "names", "calls")
 
     def __init__(self, signature: tuple[int, int], src: bytes,
-                 entities: list[Entity], names: set[str]) -> None:
+                 entities: list[Entity], names: set[str],
+                 calls: dict) -> None:
         self.signature = signature
         self.src = src
         self.entities = entities
         self.names = names
+        self.calls = calls
 
 
 class WorkspaceIndex:
@@ -95,7 +97,7 @@ class WorkspaceIndex:
         entities = list(scratch.entities.values()) + scratch.duplicates
         names: set[str] = set()
         _collect_names(root, src, names)
-        return _FileEntry(signature, src, entities, names)
+        return _FileEntry(signature, src, entities, names, scratch.calls)
 
     # ── Queries ─────────────────────────────────────────────────────
 
@@ -131,6 +133,14 @@ class WorkspaceIndex:
     def file_bytes(self, path: str) -> bytes | None:
         entry = self._files.get(str(Path(path).resolve()))
         return entry.src if entry is not None else None
+
+    def call_sites(self, method: str) -> list[tuple[str, int, int, int]]:
+        """Every call-shaped use of the method name across the
+        workspace: sequence labels and activity actions."""
+        found: list[tuple[str, int, int, int]] = []
+        for entry in self._files.values():
+            found.extend(entry.calls.get(method, []))
+        return found
 
     def method_declarations(self, method: str) -> list[Entity]:
         """Every class of the workspace declaring the method — the

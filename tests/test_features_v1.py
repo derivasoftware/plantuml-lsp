@@ -218,3 +218,47 @@ def test_call_lint_unknown_is_information(tmp_path):
     assert len(lints) == 1
     *_span, msg, sev = lints[0]
     assert "error" in msg and sev == "information"
+
+
+def test_activity_actions_correlate_with_methods(tmp_path):
+    from plantuml_lsp.definitions import action_at, resolve_call
+    from plantuml_lsp.workspace import WorkspaceIndex
+
+    (tmp_path / "CL_C.puml").write_text(
+        "@startuml\nclass Cafetera {\n  -calentar(objetivo: float) : None\n}\n@enduml\n"
+    )
+    doc = tmp_path / "ACT.puml"
+    lines = ["@startuml", "|Cafetera|", ":calentar(objetivo);",
+             ":afilar(disco);", ":texto libre sin llamada;", "@enduml", ""]
+    src = "\n".join(lines).encode()
+    doc.write_bytes(src)
+    ws = WorkspaceIndex(str(tmp_path))
+    index = build_index(str(doc), src)
+
+    assert action_at(index, 2) == ("Cafetera", "calentar")
+    tier, entity, loc = resolve_call("Cafetera", "calentar", index, ws)
+    assert tier == "declared" and "objetivo: float" in loc[3]
+    # accion sin llamada no se registra
+    assert action_at(index, 4) is None
+    # sitios de llamada agregados al workspace
+    assert len(ws.call_sites("calentar")) == 1
+
+
+def test_activity_drift_lints_use_the_lane(tmp_path):
+    from plantuml_lsp.lints import collect_call_lints
+    from plantuml_lsp.workspace import WorkspaceIndex
+
+    (tmp_path / "CL_M.puml").write_text(
+        "@startuml\nclass Molinillo {\n  +moler(gramos: int) : Cafe\n}\n@enduml\n"
+    )
+    doc = tmp_path / "ACT.puml"
+    lines = ["@startuml", "|Molinillo|", ":moler(granos);",
+             ":afilar(disco);", "@enduml", ""]
+    src = "\n".join(lines).encode()
+    doc.write_bytes(src)
+    ws = WorkspaceIndex(str(tmp_path))
+    index = build_index(str(doc), src)
+    lints = collect_call_lints(src, index, ws)
+    msgs = [msg for *_s, msg, _sev in lints]
+    assert any("afilar" in m for m in msgs)
+    assert not any("'moler" in m for m in msgs)

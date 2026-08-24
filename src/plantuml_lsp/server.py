@@ -7,6 +7,7 @@ from pygls.lsp.server import LanguageServer
 from plantuml_lsp.completion import collect_completions
 from plantuml_lsp.diagnostics import collect_diagnostics
 from plantuml_lsp.definitions import (
+    action_at,
     call_at,
     entity_definitions,
     resolve_definition,
@@ -176,7 +177,8 @@ def definition(ls: LanguageServer, params: types.DefinitionParams):
     # not an include directive: a call label resolves to the method
     doc2, index = _index_of(ls, params.text_document.uri)
     src2 = doc2.source.encode()
-    call = call_at(src2, params.position.line, params.position.character)
+    call = call_at(src2, params.position.line, params.position.character) \
+        or action_at(index, params.position.line)
     if call is not None:
         from plantuml_lsp.definitions import resolve_call
 
@@ -248,7 +250,7 @@ def hover(ls: LanguageServer, params: types.HoverParams):
     if text is None:
         call = call_at(
             doc.source.encode(), params.position.line, params.position.character
-        )
+        ) or action_at(index, params.position.line)
         if call is not None:
             from plantuml_lsp.definitions import resolve_call
 
@@ -274,12 +276,37 @@ def references(ls: LanguageServer, params: types.ReferenceParams):
     )
     ws = _workspace_of(ls, doc)
     name = name and (resolve_entity(name, index.entities) or name)
-    if not name or (name not in index.entities and not ws.declarations(name)):
+    if not name:
         return None
-    return [
-        types.Location(uri=f"file://{path}", range=_range(row, scol, row, ecol))
-        for path, row, scol, ecol in _merged_occurrences(name, index, ws)
-    ]
+    results = []
+    if name in index.entities or ws.declarations(name):
+        results = [
+            types.Location(uri=f"file://{path}", range=_range(row, scol, row, ecol))
+            for path, row, scol, ecol in _merged_occurrences(name, index, ws)
+        ]
+    # a method name: add its call sites (sequence labels and activity
+    # actions) and its declarations across the workspace
+    is_method = any(
+        name in e.methods for e in index.entities.values()
+    ) or ws.method_declarations(name)
+    if is_method:
+        seen = {(l.uri, l.range.start.line, l.range.start.character)
+                for l in results}
+        for entity in ws.method_declarations(name):
+            row, scol, ecol, _txt = entity.methods[name]
+            loc = types.Location(uri=f"file://{entity.path}",
+                                 range=_range(row, scol, row, ecol))
+            key = (loc.uri, row, scol)
+            if key not in seen:
+                seen.add(key)
+                results.append(loc)
+        for path, row, scol, ecol in ws.call_sites(name):
+            key = (f"file://{path}", row, scol)
+            if key not in seen:
+                seen.add(key)
+                results.append(types.Location(
+                    uri=f"file://{path}", range=_range(row, scol, row, ecol)))
+    return results or None
 
 
 @server.feature(types.TEXT_DOCUMENT_RENAME)

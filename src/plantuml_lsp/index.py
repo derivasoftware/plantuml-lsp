@@ -28,6 +28,10 @@ _DECLARATIONS = {
 
 _REFERENCE_FIELDS = ("left", "right", "target")
 
+_LABEL_CALL = re.compile(r"^\s*(\w+)\s*\(")
+_ACTION_CALL = re.compile(r"^:\s*(\w+)\s*\(")
+_LANE_NAME = re.compile(r"^\|(?:#[^|]*\|)?([^|]+)\|")
+
 
 @dataclass
 class Entity:
@@ -52,6 +56,11 @@ class Index:
     duplicates: list[Entity] = field(default_factory=list)
     # relation lines by entity id, for hover
     relations: dict[str, list[str]] = field(default_factory=dict)
+    # call sites by method name: spans of the NAME inside labels and
+    # activity actions (path, row, scol, ecol)
+    calls: dict[str, list[tuple[str, int, int, int]]] = field(default_factory=dict)
+    # activity actions with their swimlane: (name, lane, row, scol, ecol)
+    actions: list[tuple[str, str | None, int, int, int]] = field(default_factory=list)
 
     def occurrences(self, entity_id: str) -> list[tuple[str, int, int, int]]:
         """CST-backed (path, row, start_col, end_col) of every identifier
@@ -109,14 +118,44 @@ def _index_file(path: str, src: bytes, index: Index, seen: set[str]) -> None:
                 _index_file(str(target), target.read_bytes(), index, seen)
 
 
-def _walk(node: Node, src: bytes, path: str, index: Index) -> None:
+def _register_call(index: Index, path: str, node: Node,
+                   name: str, offset: int) -> None:
+    row, scol = node.start_point
+    index.calls.setdefault(name, []).append(
+        (path, row, scol + offset, scol + offset + len(name)))
+
+
+def _walk(node: Node, src: bytes, path: str, index: Index,
+          lane: list = None) -> None:
+    if lane is None:
+        lane = [None]
     kind = _declared_kind(node, src)
     if kind is not None:
         _add(index, node, src, path, kind)
     elif node.type == "relation":
         _record_relation(node, src, index)
+        label = node.child_by_field_name("label")
+        if label is not None:
+            m = _LABEL_CALL.match(node_text(src, label))
+            if m is not None:
+                _register_call(index, path, label, m.group(1), m.start(1))
+    elif node.type == "swimlane":
+        name_node = node.child_by_field_name("name")
+        if name_node is not None:
+            m = _LANE_NAME.match(node_text(src, name_node))
+            lane[0] = m.group(1).strip() if m else None
+    elif node.type == "activity_action":
+        text_node = node.child_by_field_name("text")
+        if text_node is not None:
+            m = _ACTION_CALL.match(node_text(src, text_node))
+            if m is not None:
+                row, scol = text_node.start_point
+                index.actions.append((
+                    m.group(1), lane[0], row,
+                    scol + m.start(1), scol + m.start(1) + len(m.group(1))))
+                _register_call(index, path, text_node, m.group(1), m.start(1))
     for child in node.children:
-        _walk(child, src, path, index)
+        _walk(child, src, path, index, lane)
 
 
 def _declared_kind(node: Node, src: bytes) -> str | None:
