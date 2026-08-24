@@ -45,16 +45,19 @@ def collect_call_lints(src: bytes, index: Index, workspace):
                     receiver = node.child_by_field_name(
                         "left" if reversed_ else "right")
                     if receiver is not None:
-                        hit = resolve_call(
+                        tier, entity, _loc = resolve_call(
                             node_text(src, receiver).strip('"'),
                             m.group(1), index, workspace)
-                        if hit is not None and hit[1] is None:
-                            found.append((
-                                label.start_point[0], label.start_point[1],
-                                label.end_point[0], label.end_point[1],
-                                f"'{hit[0].id}' does not declare "
-                                f"'{m.group(1)}()'",
-                            ))
+                        span = (label.start_point[0], label.start_point[1],
+                                label.end_point[0], label.end_point[1])
+                        if tier == "drift":
+                            found.append((*span,
+                                f"'{entity.id}' does not declare "
+                                f"'{m.group(1)}()'", "warning"))
+                        elif tier == "unknown":
+                            found.append((*span,
+                                f"no class in the workspace declares "
+                                f"'{m.group(1)}()'", "information"))
         for child in node.children:
             walk(child)
 

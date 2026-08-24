@@ -164,11 +164,17 @@ def test_call_resolution_matches_by_name_only(tmp_path):
 
     call = call_at(src, 2, 26)
     assert call == ("Molinillo", "moler")
-    entity, method = resolve_call("Molinillo", "moler", index, ws)
-    assert method is not None and "gramos: int" in method[3]
-    # undeclared method on a correlated class -> drift candidate
-    entity2, missing = resolve_call("Molinillo", "afilar", index, ws)
-    assert entity2.kind == "class" and missing is None
+    tier, entity, method = resolve_call("Molinillo", "moler", index, ws)
+    assert tier == "declared" and "gramos: int" in method[3]
+    # undeclared method on a correlated class -> drift
+    tier2, entity2, _ = resolve_call("Molinillo", "afilar", index, ws)
+    assert tier2 == "drift" and entity2.kind == "class"
+    # classless receiver, method declared somewhere -> best-effort jump
+    tier3, entity3, loc3 = resolve_call("Actor", "moler", index, ws)
+    assert tier3 == "declared" and loc3 is not None
+    # classless receiver, declared nowhere -> unknown
+    tier4, _e, _l = resolve_call("Actor", "inventado", index, ws)
+    assert tier4 == "unknown"
     # free-text labels are not calls
     assert call_at(src, 4, 28) is None
 
@@ -189,6 +195,26 @@ def test_call_drift_lint_flags_only_undeclared(tmp_path):
     doc.write_bytes(src)
     ws = WorkspaceIndex(str(tmp_path))
     index = build_index(str(doc), src)
-    msgs = [msg for *_span, msg in collect_call_lints(src, index, ws)]
+    lints = collect_call_lints(src, index, ws)
+    msgs = [msg for *_span, msg, _sev in lints]
     assert any("afilar" in m for m in msgs)
     assert not any("moler" in m and "afilar" not in m for m in msgs)
+
+
+def test_call_lint_unknown_is_information(tmp_path):
+    from plantuml_lsp.lints import collect_call_lints
+    from plantuml_lsp.workspace import WorkspaceIndex
+
+    doc = tmp_path / "SEQ.puml"
+    lines = [
+        "@startuml", "actor Barista", "participant Cafetera",
+        "Cafetera --> Barista : error(mensaje)", "@enduml", "",
+    ]
+    src = "\n".join(lines).encode()
+    doc.write_bytes(src)
+    ws = WorkspaceIndex(str(tmp_path))
+    index = build_index(str(doc), src)
+    lints = collect_call_lints(src, index, ws)
+    assert len(lints) == 1
+    *_span, msg, sev = lints[0]
+    assert "error" in msg and sev == "information"
