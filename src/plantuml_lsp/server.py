@@ -227,7 +227,10 @@ def formatting(ls: LanguageServer, params: types.DocumentFormattingParams):
     ]
 
 
-@server.feature(types.TEXT_DOCUMENT_COMPLETION)
+@server.feature(
+    types.TEXT_DOCUMENT_COMPLETION,
+    types.CompletionOptions(trigger_characters=[":", ">", " ", "|"]),
+)
 def completion(ls: LanguageServer, params: types.CompletionParams):
     doc, index = _index_of(ls, params.text_document.uri)
     kind_map = {"keyword": types.CompletionItemKind.Keyword,
