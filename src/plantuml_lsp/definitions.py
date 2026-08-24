@@ -50,6 +50,14 @@ def call_at(src: bytes, row: int, col: int):
     return node_text(src, receiver).strip('"'), m.group(1)
 
 
+def action_at(index, row: int):
+    """(lane, method) when the row holds a call-shaped activity action."""
+    for name, lane, arow, _scol, _ecol in index.actions:
+        if arow == row:
+            return lane, name
+    return None
+
+
 def resolve_call(receiver: str, method: str, index, workspace):
     """Three tiers, as ('declared'|'drift'|'unknown', entity|None,
     location|None):

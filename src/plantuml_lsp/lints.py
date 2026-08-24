@@ -62,6 +62,17 @@ def collect_call_lints(src: bytes, index: Index, workspace):
             walk(child)
 
     walk(root)
+    # activity actions: the lane names the receiver (or nobody does)
+    for name, lane, row, scol, ecol in index.actions:
+        tier, entity, _loc = resolve_call(lane or "", name, index, workspace)
+        span = (row, scol, row, ecol)
+        if tier == "drift":
+            found.append((*span,
+                f"'{entity.id}' does not declare '{name}()'", "warning"))
+        elif tier == "unknown":
+            found.append((*span,
+                f"no class in the workspace declares '{name}()'",
+                "information"))
     return found
 
 
