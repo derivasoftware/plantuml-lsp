@@ -9,6 +9,10 @@
 ' requirement REQ-00008-1
 ' requirement REQ-00009-1
 ' requirement REQ-00010-1
+' requirement REQ-00011-1
+' requirement REQ-00012-1
+' requirement REQ-00013-1
+' requirement REQ-00014-1
 
 !startsub ParsingModule
 !includesub ./CL_Parsing.puml!ParsingModule
@@ -56,6 +60,10 @@
 
 !startsub LintsModule
 !includesub ./CL_Lints.puml!LintsModule
+!endsub
+
+!startsub ActionsModule
+!includesub ./CL_Actions.puml!ActionsModule
 !endsub
 
 !startsub WorkspaceIndex
