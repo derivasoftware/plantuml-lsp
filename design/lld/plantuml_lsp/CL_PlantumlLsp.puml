@@ -6,6 +6,9 @@
 ' requirement REQ-00005-1
 ' requirement REQ-00006-1
 ' requirement REQ-00007-1
+' requirement REQ-00008-1
+' requirement REQ-00009-1
+' requirement REQ-00010-1
 
 !startsub ParsingModule
 !includesub ./CL_Parsing.puml!ParsingModule
@@ -53,6 +56,10 @@
 
 !startsub LintsModule
 !includesub ./CL_Lints.puml!LintsModule
+!endsub
+
+!startsub WorkspaceIndex
+!includesub ./CL_Workspace.puml!WorkspaceIndex
 !endsub
 
 !startsub ServerModule

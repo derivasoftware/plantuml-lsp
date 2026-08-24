@@ -1,0 +1,18 @@
+requirement:
+  id: SREQ-00007-1
+  title: The server shall correlate entities across every diagram of the workspace
+  description: >
+    The server shall correlate entities across every diagram of the workspace.
+  rationale: >
+    Class diagrams structure the same entities the sequence diagrams
+    choreograph. A workspace-wide index — incremental, hidden and
+    vendored directories pruned — correlates them by id or display
+    name, powering cross-diagram references and rename, workspace
+    symbols, participant hovers showing the class they play, and a
+    quiet drift lint. Born from the first real usage friction: "¿se
+    correlacionan las entidades entre class y sequence?".
+  owner: dcoello-dev
+  status: APPROVED
+  asil: QM
+  parent_ids:
+    - SREQ-00001-1

@@ -1,0 +1,13 @@
+verification:
+  id: VER-00009-1
+  req_id: REQ-00009-1
+  title: Correlation tests cover symbols, alias matching, class cards and enriched hover
+  description: >
+    Correlation tests cover symbols, alias matching, class cards and enriched hover
+  method: test
+  test_ids:
+    - tests/test_workspace.py::test_symbols_query_matches_substrings_case_insensitively
+    - tests/test_workspace.py::test_correlates_a_class_with_its_sequence_participants
+    - tests/test_workspace.py::test_correlates_by_display_name_through_aliases
+    - tests/test_workspace.py::test_class_card_for_a_participant
+    - tests/test_features_v1.py::test_hover_enriches_participants_with_their_class_card

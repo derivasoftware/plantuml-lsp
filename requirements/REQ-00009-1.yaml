@@ -1,0 +1,19 @@
+requirement:
+  id: REQ-00009-1
+  title: The server shall answer symbols, references, rename and hover across the workspace
+  description: >
+    The server shall answer symbols, references, rename and hover across the workspace
+  rationale: >
+    Correlation is by name — id (alias) or display name. workspace/symbol
+    matches substrings case-insensitively; references and rename merge
+    the document-closure occurrences with the workspace occurrences
+    (CST tokens only, deduplicated, quoted names keep their quotes);
+    hovering a sequence participant appends the card — kind, members,
+    declaration site — of the class it plays.
+  status: APPROVED
+  asil: QM
+  parent_ids:
+    - SREQ-00007-1
+  tags:
+    - workspace
+    - features

@@ -7,8 +7,11 @@ Third product of the `deriva/plantuml` toolchain family.
 
 ## Features (v1)
 
-Workspace-aware: a symbol index over the document **plus its transitive
-`!include`/`!includesub` closure** feeds everything below.
+Workspace-aware at two levels: a symbol index over the document **plus
+its transitive `!include`/`!includesub` closure**, and an incremental
+**workspace index over every diagram under the root** that correlates
+entities across diagrams — the class a sequence participant
+choreographs, every sequence a class appears in.
 
 - **Diagnostics** — parse errors with exact positions, plus semantic
   lints: relation endpoints nothing declares (class mode; sequence
@@ -18,9 +21,15 @@ Workspace-aware: a symbol index over the document **plus its transitive
   statement keywords.
 - **Hover** — kind, display name, members, relation lines, declaration
   site.
-- **References / Rename** — CST-backed occurrences across the closure;
-  renames never touch labels, comments or note bodies, and quoted
+- **References / Rename** — CST-backed occurrences across the closure
+  **and the whole workspace** (a class rename also updates the
+  sequence diagrams it participates in; the editor previews every
+  edit); labels, comments and note bodies are never touched, quoted
   names keep their quotes.
+- **Workspace symbols** — jump to any entity of any diagram.
+- **Participant hovers** show the card of the class they play; a quiet
+  Information lint flags class-cased participants no workspace class
+  explains.
 - **Document links** — `!include` paths are clickable.
 - **Document symbols** — classes, interfaces, enums (namespace-qualified),
   packages/namespaces and sequence participants.

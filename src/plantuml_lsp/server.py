@@ -11,8 +11,9 @@ from plantuml_lsp.hover import hover_for
 from plantuml_lsp.index import build_index, identifier_at
 from plantuml_lsp.links import collect_links
 from plantuml_lsp.lints import collect_lints
-from plantuml_lsp.rename import rename_edits
+from plantuml_lsp.rename import edits_from
 from plantuml_lsp.symbols import collect_symbols
+from plantuml_lsp.workspace import WorkspaceIndex
 
 SYMBOL_KINDS = {
     "class": types.SymbolKind.Class,
@@ -23,7 +24,7 @@ SYMBOL_KINDS = {
     "participant": types.SymbolKind.Object,
 }
 
-server = LanguageServer("plantuml-lsp", "0.2.0")
+server = LanguageServer("plantuml-lsp", "0.3.0")
 
 
 _SEVERITIES = {
@@ -42,6 +43,30 @@ def _range(sr: int, sc: int, er: int, ec: int) -> types.Range:
 def _index_of(ls: LanguageServer, uri: str):
     doc = ls.workspace.get_text_document(uri)
     return doc, build_index(doc.path, doc.source.encode())
+
+
+_workspaces: dict[str, WorkspaceIndex] = {}
+
+
+def _workspace_of(ls: LanguageServer, doc) -> WorkspaceIndex:
+    import os
+    root = getattr(ls.workspace, "root_path", None) or os.path.dirname(doc.path)
+    ws = _workspaces.get(root)
+    if ws is None:
+        ws = _workspaces[root] = WorkspaceIndex(root)
+    else:
+        ws.refresh_if_stale()
+    return ws
+
+
+def _merged_occurrences(name: str, index, ws: WorkspaceIndex):
+    seen = set()
+    merged = []
+    for occ in index.occurrences(name) + ws.occurrences(name):
+        if occ not in seen:
+            seen.add(occ)
+            merged.append(occ)
+    return merged
 
 
 def _publish(ls: LanguageServer, uri: str) -> None:
@@ -65,6 +90,19 @@ def _publish(ls: LanguageServer, uri: str) -> None:
             source="plantuml-lsp",
         )
         for sr, sc, er, ec, msg, severity in collect_lints(doc.path, src, index)
+    )
+    # workspace drift: declared plain participants no class explains
+    ws = _workspace_of(ls, doc)
+    diags.extend(
+        types.Diagnostic(
+            range=_range(e.row, e.scol, e.row, e.ecol),
+            message=(
+                f"'{e.id}' no corresponde a ninguna clase del workspace"
+            ),
+            severity=types.DiagnosticSeverity.Information,
+            source="plantuml-lsp",
+        )
+        for e in ws.unmatched_participants(doc.path)
     )
     ls.text_document_publish_diagnostics(
         types.PublishDiagnosticsParams(uri=uri, diagnostics=diags)
@@ -160,7 +198,7 @@ def hover(ls: LanguageServer, params: types.HoverParams):
     name = identifier_at(
         doc.source.encode(), params.position.line, params.position.character
     )
-    text = hover_for(name, index) if name else None
+    text = hover_for(name, index, _workspace_of(ls, doc)) if name else None
     if text is None:
         return None
     return types.Hover(
@@ -174,11 +212,12 @@ def references(ls: LanguageServer, params: types.ReferenceParams):
     name = identifier_at(
         doc.source.encode(), params.position.line, params.position.character
     )
-    if not name or name not in index.entities:
+    ws = _workspace_of(ls, doc)
+    if not name or (name not in index.entities and not ws.declarations(name)):
         return None
     return [
         types.Location(uri=f"file://{path}", range=_range(row, scol, row, ecol))
-        for path, row, scol, ecol in index.occurrences(name)
+        for path, row, scol, ecol in _merged_occurrences(name, index, ws)
     ]
 
 
@@ -188,10 +227,14 @@ def rename(ls: LanguageServer, params: types.RenameParams):
     name = identifier_at(
         doc.source.encode(), params.position.line, params.position.character
     )
-    if not name or name not in index.entities:
+    ws = _workspace_of(ls, doc)
+    if not name or (name not in index.entities and not ws.declarations(name)):
         return None
+    read = lambda path: index.files.get(path) or ws.file_bytes(path)
     changes: dict[str, list[types.TextEdit]] = {}
-    for path, row, scol, ecol, new_text in rename_edits(name, params.new_name, index):
+    for path, row, scol, ecol, new_text in edits_from(
+        _merged_occurrences(name, index, ws), params.new_name, read
+    ):
         changes.setdefault(f"file://{path}", []).append(
             types.TextEdit(range=_range(row, scol, row, ecol), new_text=new_text)
         )
@@ -206,6 +249,28 @@ def document_link(ls: LanguageServer, params: types.DocumentLinkParams):
             range=_range(row, scol, row, ecol), target=f"file://{target}"
         )
         for row, scol, ecol, target in collect_links(doc.path, doc.source.encode())
+    ]
+
+
+@server.feature(types.WORKSPACE_SYMBOL)
+def workspace_symbol(ls: LanguageServer, params: types.WorkspaceSymbolParams):
+    if not _workspaces:
+        return None
+    hits = []
+    for ws in _workspaces.values():
+        ws.refresh_if_stale()
+        hits.extend(ws.symbols(params.query))
+    return [
+        types.SymbolInformation(
+            name=e.id,
+            kind=SYMBOL_KINDS.get(e.kind, types.SymbolKind.Object),
+            container_name=e.kind,
+            location=types.Location(
+                uri=f"file://{e.path}",
+                range=_range(e.row, e.scol, e.row, e.ecol),
+            ),
+        )
+        for e in hits[:200]
     ]
 
 
