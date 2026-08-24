@@ -128,6 +128,66 @@ def _active_lane(src: bytes, row: int) -> str | None:
     return None
 
 
+def _action_completions(
+    src: bytes, row: int, index: Index, workspace: WorkspaceIndex | None
+) -> list[ContextualTuple]:
+    """:accion bajo un carril → métodos de la clase del carril."""
+    lane = _active_lane(src, row)
+    if lane is None:
+        return []
+    return _receiver_methods(lane, index, workspace)
+
+
+def _head_completions(index: Index) -> list[ContextualTuple]:
+    """Cabecera de statement → keywords + entidades del documento."""
+    items: list[ContextualTuple] = [
+        (e.id, e.kind, e.name) for e in index.entities.values()
+    ]
+    items.extend((k, "keyword", "") for k in KEYWORDS)
+    return items
+
+
+def _participant_completions(workspace: WorkspaceIndex) -> list[ContextualTuple]:
+    """participant <cursor> → clases del workspace."""
+    return [
+        (e.id, e.kind, e.name)
+        for e in workspace.entities()
+        if e.kind in CLASS_KINDS
+    ][:100]
+
+
+def _label_completions(
+    prefix: str, index: Index, workspace: WorkspaceIndex | None
+) -> list[ContextualTuple]:
+    """A -> B : <cursor> → métodos del receptor."""
+    head, _, tail = prefix.rpartition(":")
+    if re.fullmatch(r"\s*\w*", tail) and _message_receiver(head):
+        return _receiver_methods(_message_receiver(head), index, workspace)
+    return []
+
+
+def _endpoint_completions(
+    index: Index, workspace: WorkspaceIndex | None
+) -> list[ContextualTuple]:
+    """A -> <cursor> → participantes y entidades, sin keywords."""
+    pool = list(index.entities.values())
+    if workspace is not None:
+        pool += [x for x in workspace.entities() if x.kind in CLASS_KINDS]
+    seen = set()
+    items = []
+    for e in pool:
+        if e.id not in seen:
+            seen.add(e.id)
+            items.append((e.id, e.kind, e.name))
+    return items
+
+
+def _after_operator(prefix: str) -> bool:
+    return _message_receiver(prefix + " x") is not None or bool(
+        prefix.rstrip() and _OPERATOR.fullmatch(prefix.split()[-1])
+    )
+
+
 def contextual_completions(
     src: bytes,
     row: int,
@@ -140,50 +200,14 @@ def contextual_completions(
         return []
     prefix = lines[row][:col]
 
-    # :accion bajo un carril → métodos de la clase del carril
     if _ACTION.match(prefix):
-        lane = _active_lane(src, row)
-        if lane is not None:
-            return _receiver_methods(lane, index, workspace)
-        return []
-
-    # cabecera de statement → keywords + entidades del documento
+        return _action_completions(src, row, index, workspace)
     if _HEAD.match(prefix):
-        items: list[ContextualTuple] = [
-            (e.id, e.kind, e.name) for e in index.entities.values()
-        ]
-        items.extend((k, "keyword", "") for k in KEYWORDS)
-        return items
-
-    # participant <cursor> → clases del workspace
+        return _head_completions(index)
     if _KIND_HEAD.match(prefix) and workspace is not None:
-        return [
-            (e.id, e.kind, e.name)
-            for e in workspace.entities()
-            if e.kind in CLASS_KINDS
-        ][:100]
-
-    # A -> B : <cursor> → métodos del receptor
+        return _participant_completions(workspace)
     if ":" in prefix:
-        head, _, tail = prefix.rpartition(":")
-        if re.fullmatch(r"\s*\w*", tail) and _message_receiver(head):
-            return _receiver_methods(_message_receiver(head), index, workspace)
-        return []
-
-    # A -> <cursor> → participantes y entidades, sin keywords
-    if _message_receiver(prefix + " x") is not None or (
-        prefix.rstrip() and _OPERATOR.fullmatch(prefix.split()[-1])
-    ):
-        seen = set()
-        items = []
-        for e in list(index.entities.values()) + (
-            [x for x in workspace.entities() if x.kind in CLASS_KINDS]
-            if workspace is not None
-            else []
-        ):
-            if e.id not in seen:
-                seen.add(e.id)
-                items.append((e.id, e.kind, e.name))
-        return items
-
+        return _label_completions(prefix, index, workspace)
+    if _after_operator(prefix):
+        return _endpoint_completions(index, workspace)
     return []
