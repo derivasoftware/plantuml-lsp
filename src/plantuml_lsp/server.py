@@ -34,6 +34,7 @@ server = LanguageServer("plantuml-lsp", "0.3.0")
 _SEVERITIES = {
     "error": types.DiagnosticSeverity.Error,
     "warning": types.DiagnosticSeverity.Warning,
+    "information": types.DiagnosticSeverity.Information,
 }
 
 
@@ -104,10 +105,10 @@ def _publish(ls: LanguageServer, uri: str) -> None:
         types.Diagnostic(
             range=_range(sr, sc, er, ec),
             message=msg,
-            severity=types.DiagnosticSeverity.Warning,
+            severity=_SEVERITIES[severity],
             source="plantuml-lsp",
         )
-        for sr, sc, er, ec, msg in collect_call_lints(src, index, ws)
+        for sr, sc, er, ec, msg, severity in collect_call_lints(src, index, ws)
     )
     # workspace drift: declared plain participants no class explains
     diags.extend(
@@ -179,9 +180,10 @@ def definition(ls: LanguageServer, params: types.DefinitionParams):
     if call is not None:
         from plantuml_lsp.definitions import resolve_call
 
-        hit = resolve_call(call[0], call[1], index, _workspace_of(ls, doc2))
-        if hit is not None and hit[1] is not None:
-            entity, (mrow, mscol, mecol, _text) = hit
+        tier, entity, loc = resolve_call(
+            call[0], call[1], index, _workspace_of(ls, doc2))
+        if tier == "declared" and loc is not None:
+            mrow, mscol, mecol, _text = loc
             return types.Location(
                 uri=f"file://{entity.path}",
                 range=_range(mrow, mscol, mrow, mecol),
@@ -250,9 +252,10 @@ def hover(ls: LanguageServer, params: types.HoverParams):
         if call is not None:
             from plantuml_lsp.definitions import resolve_call
 
-            hit = resolve_call(call[0], call[1], index, _workspace_of(ls, doc))
-            if hit is not None and hit[1] is not None:
-                entity, (_r, _s, _e, member_text) = hit
+            tier, entity, loc = resolve_call(
+                call[0], call[1], index, _workspace_of(ls, doc))
+            if tier == "declared" and loc is not None:
+                _r, _s, _e, member_text = loc
                 text = (
                     f"**{entity.kind}** `{entity.id}`\n\n```\n{member_text}\n```"
                 )

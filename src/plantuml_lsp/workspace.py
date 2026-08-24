@@ -132,6 +132,14 @@ class WorkspaceIndex:
         entry = self._files.get(str(Path(path).resolve()))
         return entry.src if entry is not None else None
 
+    def method_declarations(self, method: str) -> list[Entity]:
+        """Every class of the workspace declaring the method — the
+        fallback when a call's receiver has no class of its own."""
+        return [
+            e for e in self.entities()
+            if e.kind in CLASS_KINDS and method in e.methods
+        ]
+
     def class_card(self, name: str) -> Entity | None:
         """The structural declaration a name correlates with, if any."""
         for entity in self.declarations(name):

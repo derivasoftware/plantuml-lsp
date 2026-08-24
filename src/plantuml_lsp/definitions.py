@@ -51,8 +51,15 @@ def call_at(src: bytes, row: int, col: int):
 
 
 def resolve_call(receiver: str, method: str, index, workspace):
-    """(entity, (row, scol, ecol, text)) of the declared method the
-    call resolves to, through the local index or the workspace."""
+    """Three tiers, as ('declared'|'drift'|'unknown', entity|None,
+    location|None):
+
+    - declared: the receiver's class (or, receiver classless, some
+      class in the workspace) declares the method — gd/hover target;
+    - drift: the receiver correlates with a class that does NOT
+      declare it — behaviour drifting from structure (warning);
+    - unknown: no receiver class and no class anywhere declares it
+      (information)."""
     from plantuml_lsp.index import resolve_entity
     from plantuml_lsp.workspace import CLASS_KINDS
 
@@ -68,13 +75,14 @@ def resolve_call(receiver: str, method: str, index, workspace):
             candidates.append(card)
     for entity in candidates:
         if method in entity.methods:
-            return entity, entity.methods[method]
-    # the receiver correlates with a class that does NOT declare it:
-    # report the drift candidate (entity, None); no class -> None
+            return "declared", entity, entity.methods[method]
     for entity in candidates:
         if entity.kind in CLASS_KINDS:
-            return entity, None
-    return None
+            return "drift", entity, None
+    if workspace is not None:
+        for entity in workspace.method_declarations(method):
+            return "declared", entity, entity.methods[method]
+    return "unknown", None, None
 
 
 def entity_definitions(name, index, workspace) -> list[EntityLocation]:
