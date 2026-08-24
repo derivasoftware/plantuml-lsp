@@ -48,9 +48,7 @@ def _label_call_lints(src: bytes, index: Index, workspace) -> list:
     found = []
 
     def walk(node: Node) -> None:
-        label = (
-            node.child_by_field_name("label") if node.type == "relation" else None
-        )
+        label = node.child_by_field_name("label") if node.type == "relation" else None
         m = _CALL_SHAPE.match(node_text(src, label)) if label is not None else None
         receiver = _relation_receiver(src, node) if m is not None else None
         if receiver is not None:

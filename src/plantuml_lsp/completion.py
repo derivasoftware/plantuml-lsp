@@ -150,9 +150,7 @@ def _head_completions(index: Index) -> list[ContextualTuple]:
 def _participant_completions(workspace: WorkspaceIndex) -> list[ContextualTuple]:
     """participant <cursor> → clases del workspace."""
     return [
-        (e.id, e.kind, e.name)
-        for e in workspace.entities()
-        if e.kind in CLASS_KINDS
+        (e.id, e.kind, e.name) for e in workspace.entities() if e.kind in CLASS_KINDS
     ][:100]
 
 

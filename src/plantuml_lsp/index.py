@@ -141,9 +141,7 @@ def _visit_swimlane(node: Node, src: bytes, lane: list) -> None:
     lane[0] = m.group(1).strip() if m else None
 
 
-def _visit_action(
-    node: Node, src: bytes, path: str, index: Index, lane: list
-) -> None:
+def _visit_action(node: Node, src: bytes, path: str, index: Index, lane: list) -> None:
     text_node = node.child_by_field_name("text")
     if text_node is None:
         return

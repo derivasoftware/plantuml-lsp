@@ -282,6 +282,40 @@ def hover(ls: LanguageServer, params: types.HoverParams):
     )
 
 
+def _entity_reference_locations(name: str, index, ws) -> list:
+    """Occurrence locations of an entity across the closure and workspace."""
+    if name not in index.entities and not ws.declarations(name):
+        return []
+    return [
+        types.Location(uri=f"file://{path}", range=_range(row, scol, row, ecol))
+        for path, row, scol, ecol in _merged_occurrences(name, index, ws)
+    ]
+
+
+def _method_reference_locations(name: str, index, ws, results: list) -> None:
+    """Extend results with a method's declarations and call sites."""
+    is_method = any(
+        name in e.methods for e in index.entities.values()
+    ) or ws.method_declarations(name)
+    if not is_method:
+        return
+    seen = {
+        (loc.uri, loc.range.start.line, loc.range.start.character) for loc in results
+    }
+
+    def add(uri: str, row: int, scol: int, ecol: int) -> None:
+        key = (uri, row, scol)
+        if key not in seen:
+            seen.add(key)
+            results.append(types.Location(uri=uri, range=_range(row, scol, row, ecol)))
+
+    for entity in ws.method_declarations(name):
+        row, scol, ecol, _txt = entity.methods[name]
+        add(f"file://{entity.path}", row, scol, ecol)
+    for path, row, scol, ecol in ws.call_sites(name):
+        add(f"file://{path}", row, scol, ecol)
+
+
 @server.feature(types.TEXT_DOCUMENT_REFERENCES)
 def references(ls: LanguageServer, params: types.ReferenceParams):
     doc, index = _index_of(ls, params.text_document.uri)
@@ -292,40 +326,10 @@ def references(ls: LanguageServer, params: types.ReferenceParams):
     name = name and (resolve_entity(name, index.entities) or name)
     if not name:
         return None
-    results = []
-    if name in index.entities or ws.declarations(name):
-        results = [
-            types.Location(uri=f"file://{path}", range=_range(row, scol, row, ecol))
-            for path, row, scol, ecol in _merged_occurrences(name, index, ws)
-        ]
+    results = _entity_reference_locations(name, index, ws)
     # a method name: add its call sites (sequence labels and activity
     # actions) and its declarations across the workspace
-    is_method = any(
-        name in e.methods for e in index.entities.values()
-    ) or ws.method_declarations(name)
-    if is_method:
-        seen = {
-            (loc.uri, loc.range.start.line, loc.range.start.character)
-            for loc in results
-        }
-        for entity in ws.method_declarations(name):
-            row, scol, ecol, _txt = entity.methods[name]
-            loc = types.Location(
-                uri=f"file://{entity.path}", range=_range(row, scol, row, ecol)
-            )
-            key = (loc.uri, row, scol)
-            if key not in seen:
-                seen.add(key)
-                results.append(loc)
-        for path, row, scol, ecol in ws.call_sites(name):
-            key = (f"file://{path}", row, scol)
-            if key not in seen:
-                seen.add(key)
-                results.append(
-                    types.Location(
-                        uri=f"file://{path}", range=_range(row, scol, row, ecol)
-                    )
-                )
+    _method_reference_locations(name, index, ws, results)
     return results or None
 
 
