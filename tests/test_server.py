@@ -24,6 +24,7 @@ def test_server_wires_all_features():
         "textDocument/rename",
         "textDocument/documentLink",
         "workspace/symbol",
+        "textDocument/codeAction",
     }
 
 

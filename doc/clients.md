@@ -54,6 +54,7 @@ language-servers = ["plantuml-lsp"]
 | rename | closure- and workspace-wide (editor previews every edit), never touches labels/comments/note bodies; quoted names keep quotes |
 | workspace/symbol | jump to any entity of any diagram under the root |
 | documentLink | clickable `!include`/`!includesub` paths |
+| codeAction | quick fixes: declare the missing entity, fix the include path to the closest file, declare the drifting method in the receiver's class |
 | documentSymbol | classes/interfaces/enums (namespace-qualified), packages/namespaces, sequence participants |
 | definition | `!includesub file!NAME` → the `!startsub NAME` line; `!include file` → the file |
 | formatting | delegates to plantuml-fmt (one style, everywhere) |
