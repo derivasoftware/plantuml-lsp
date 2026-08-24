@@ -5,9 +5,9 @@
 
 namespace plantuml_lsp.diagnostics {
   class "<<module>>" as DiagnosticsModule {
-    + collect_diagnostics(src: bytes): list[DiagnosticTuple]
-    - _walk(node: Node, found: list[DiagnosticTuple]): None
-    - _entry(node: Node, message: str): DiagnosticTuple
+    + collect_diagnostics(src: bytes) : list[DiagnosticTuple]
+    - _walk(node: Node, found: list[DiagnosticTuple]) : None
+    - _entry(node: Node, message: str) : DiagnosticTuple
   }
   DiagnosticsModule ..> plantuml_lsp.parsing.ParsingModule
 }

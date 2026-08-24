@@ -88,9 +88,7 @@ def test_unmatched_participants_reports_only_plain_participants(tmp_path):
     assert unmatched == set()  # Ghost is implicit (no declaration), not declared
     # declare a participant with no class anywhere
     (tmp_path / "design" / "SEQ_Flow.puml").write_text(
-        SEQ.replace(
-            "actor User", "actor User\nparticipant Orphan\nparticipant daemon"
-        )
+        SEQ.replace("actor User", "actor User\nparticipant Orphan\nparticipant daemon")
     )
     ws.refresh()
     unmatched = {e.id for e in ws.unmatched_participants(seq)}

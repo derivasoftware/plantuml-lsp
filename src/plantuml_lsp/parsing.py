@@ -18,4 +18,4 @@ def parse(src: bytes) -> Tree:
 
 
 def node_text(src: bytes, node: Node) -> str:
-    return src[node.start_byte:node.end_byte].decode(errors="replace")
+    return src[node.start_byte : node.end_byte].decode(errors="replace")

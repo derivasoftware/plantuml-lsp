@@ -23,7 +23,9 @@ def _card(entity: Entity) -> list[str]:
 
 
 def hover_for(
-    entity_id: str, index: Index, workspace: WorkspaceIndex | None = None,
+    entity_id: str,
+    index: Index,
+    workspace: WorkspaceIndex | None = None,
 ) -> str | None:
     resolved = resolve_entity(entity_id, index.entities)
     entity = index.entities.get(resolved) if resolved else None
@@ -34,11 +36,7 @@ def hover_for(
         if card is None and "." in entity_id:
             card = workspace.class_card(entity_id.rsplit(".", 1)[-1])
         return "\n".join(_card(card)) if card is not None else None
-    if (
-        workspace is not None
-        and entity.kind not in CLASS_KINDS
-        and not entity.members
-    ):
+    if workspace is not None and entity.kind not in CLASS_KINDS and not entity.members:
         card = workspace.class_card(entity.id) or workspace.class_card(entity.name)
         if card is not None:
             local = _hover_body(entity, index)

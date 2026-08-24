@@ -30,17 +30,30 @@ _SKIP_DIRS = {"node_modules", "build", "__pycache__"}
 _REFRESH_TTL = 10.0
 
 CLASS_KINDS = {
-    "class", "interface", "enum", "annotation", "exception",
-    "metaclass", "protocol", "struct", "record", "dataclass",
+    "class",
+    "interface",
+    "enum",
+    "annotation",
+    "exception",
+    "metaclass",
+    "protocol",
+    "struct",
+    "record",
+    "dataclass",
 }
 
 
 class _FileEntry:
     __slots__ = ("signature", "src", "entities", "names", "calls")
 
-    def __init__(self, signature: tuple[int, int], src: bytes,
-                 entities: list[Entity], names: set[str],
-                 calls: dict) -> None:
+    def __init__(
+        self,
+        signature: tuple[int, int],
+        src: bytes,
+        entities: list[Entity],
+        names: set[str],
+        calls: dict,
+    ) -> None:
         self.signature = signature
         self.src = src
         self.entities = entities
@@ -64,8 +77,7 @@ class WorkspaceIndex:
             # prune excluded subtrees instead of filtering afterwards —
             # walking a .venv to discard it costs more than the scan
             dirnames[:] = [
-                d for d in dirnames
-                if d not in _SKIP_DIRS and not d.startswith(".")
+                d for d in dirnames if d not in _SKIP_DIRS and not d.startswith(".")
             ]
             for name in filenames:
                 if Path(name).suffix in _EXTENSIONS:
@@ -89,8 +101,7 @@ class WorkspaceIndex:
         if time.monotonic() - self._last_refresh > _REFRESH_TTL:
             self.refresh()
 
-    def _scan(self, key: str, src: bytes,
-              signature: tuple[int, int]) -> _FileEntry:
+    def _scan(self, key: str, src: bytes, signature: tuple[int, int]) -> _FileEntry:
         scratch = Index(doc_path=key)
         root = parse(src).root_node
         _walk(root, src, key, scratch)
@@ -106,15 +117,13 @@ class WorkspaceIndex:
 
     def declarations(self, name: str) -> list[Entity]:
         """Every declaration the name correlates with, id or display name."""
-        return [
-            e for e in self.entities()
-            if e.id == name or e.name == name
-        ]
+        return [e for e in self.entities() if e.id == name or e.name == name]
 
     def symbols(self, query: str) -> list[Entity]:
         needle = query.lower()
         return [
-            e for e in self.entities()
+            e
+            for e in self.entities()
             if needle in e.id.lower() or needle in e.name.lower()
         ]
 
@@ -126,8 +135,7 @@ class WorkspaceIndex:
                 n.endswith(suffix) for n in entry.names
             ):
                 continue
-            _scan_occurrences(parse(entry.src).root_node, entry.src,
-                              name, key, found)
+            _scan_occurrences(parse(entry.src).root_node, entry.src, name, key, found)
         return found
 
     def file_bytes(self, path: str) -> bytes | None:
@@ -146,8 +154,7 @@ class WorkspaceIndex:
         """Every class of the workspace declaring the method — the
         fallback when a call's receiver has no class of its own."""
         return [
-            e for e in self.entities()
-            if e.kind in CLASS_KINDS and method in e.methods
+            e for e in self.entities() if e.kind in CLASS_KINDS and method in e.methods
         ]
 
     def class_card(self, name: str) -> Entity | None:
@@ -165,7 +172,8 @@ class WorkspaceIndex:
         if entry is None:
             return []
         return [
-            e for e in entry.entities
+            e
+            for e in entry.entities
             if e.kind == "participant"
             # class-cased names only: lowercase participants (cli,
             # daemon…) are conceptual actors, not missing classes

@@ -5,7 +5,7 @@
 
 namespace plantuml_lsp.links {
   class "<<module>>" as LinksModule {
-    + collect_links(doc_path: str, src: bytes): list[LinkTuple]
+    + collect_links(doc_path: str, src: bytes) : list[LinkTuple]
   }
 }
 

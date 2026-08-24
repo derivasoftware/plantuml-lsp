@@ -14,16 +14,50 @@ from plantuml_lsp.index import Index, resolve_entity
 from plantuml_lsp.workspace import CLASS_KINDS, WorkspaceIndex
 
 KEYWORDS = (
-    "class", "abstract class", "interface", "enum",
-    "annotation", "exception", "metaclass", "protocol",
-    "struct", "record", "dataclass",
-    "participant", "actor", "boundary", "control", "entity",
-    "database", "collections", "queue",
-    "package", "namespace", "together",
-    "note", "hide", "show", "remove", "restore",
-    "alt", "opt", "loop", "par", "break", "critical", "group", "else", "end",
-    "activate", "deactivate", "return", "create", "destroy",
-    "autonumber", "title", "skinparam",
+    "class",
+    "abstract class",
+    "interface",
+    "enum",
+    "annotation",
+    "exception",
+    "metaclass",
+    "protocol",
+    "struct",
+    "record",
+    "dataclass",
+    "participant",
+    "actor",
+    "boundary",
+    "control",
+    "entity",
+    "database",
+    "collections",
+    "queue",
+    "package",
+    "namespace",
+    "together",
+    "note",
+    "hide",
+    "show",
+    "remove",
+    "restore",
+    "alt",
+    "opt",
+    "loop",
+    "par",
+    "break",
+    "critical",
+    "group",
+    "else",
+    "end",
+    "activate",
+    "deactivate",
+    "return",
+    "create",
+    "destroy",
+    "autonumber",
+    "title",
+    "skinparam",
 )
 
 # (label, kind) — kind is an entity kind or "keyword"
@@ -52,7 +86,9 @@ _LANE = re.compile(r"^\s*\|(?:#[^|]*\|)?([^|]+)\|")
 
 
 def _receiver_methods(
-    receiver: str, index: Index, workspace: WorkspaceIndex | None,
+    receiver: str,
+    index: Index,
+    workspace: WorkspaceIndex | None,
 ) -> list[ContextualTuple]:
     entity = None
     resolved = resolve_entity(receiver, index.entities)
@@ -93,8 +129,11 @@ def _active_lane(src: bytes, row: int) -> str | None:
 
 
 def contextual_completions(
-    src: bytes, row: int, col: int,
-    index: Index, workspace: WorkspaceIndex | None = None,
+    src: bytes,
+    row: int,
+    col: int,
+    index: Index,
+    workspace: WorkspaceIndex | None = None,
 ) -> list[ContextualTuple]:
     lines = src.decode(errors="replace").splitlines()
     if row >= len(lines):
@@ -128,18 +167,19 @@ def contextual_completions(
     if ":" in prefix:
         head, _, tail = prefix.rpartition(":")
         if re.fullmatch(r"\s*\w*", tail) and _message_receiver(head):
-            return _receiver_methods(
-                _message_receiver(head), index, workspace)
+            return _receiver_methods(_message_receiver(head), index, workspace)
         return []
 
     # A -> <cursor> → participantes y entidades, sin keywords
-    if _message_receiver(prefix + " x") is not None or \
-            (prefix.rstrip() and _OPERATOR.fullmatch(prefix.split()[-1])):
+    if _message_receiver(prefix + " x") is not None or (
+        prefix.rstrip() and _OPERATOR.fullmatch(prefix.split()[-1])
+    ):
         seen = set()
         items = []
         for e in list(index.entities.values()) + (
             [x for x in workspace.entities() if x.kind in CLASS_KINDS]
-            if workspace is not None else []
+            if workspace is not None
+            else []
         ):
             if e.id not in seen:
                 seen.add(e.id)

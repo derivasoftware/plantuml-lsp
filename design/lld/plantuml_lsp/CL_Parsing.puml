@@ -5,9 +5,9 @@
 
 namespace plantuml_lsp.parsing {
   class "<<module>>" as ParsingModule {
-    + get_parser(): Parser
-    + parse(src: bytes): Tree
-    + node_text(src: bytes, node: Node): str
+    + get_parser() : Parser
+    + parse(src: bytes) : Tree
+    + node_text(src: bytes, node: Node) : str
   }
 }
 

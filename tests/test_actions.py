@@ -1,7 +1,5 @@
 """Quick-fix builders: declaration, include path, method skeleton."""
 
-from pathlib import Path
-
 from plantuml_lsp.actions import declare_entity, declare_method, fix_include_path
 from plantuml_lsp.workspace import WorkspaceIndex
 
