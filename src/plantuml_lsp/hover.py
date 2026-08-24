@@ -4,7 +4,7 @@ the class it choreographs — the class↔sequence correlation."""
 
 from pathlib import Path
 
-from plantuml_lsp.index import Entity, Index
+from plantuml_lsp.index import Entity, Index, resolve_entity
 from plantuml_lsp.workspace import CLASS_KINDS, WorkspaceIndex
 
 
@@ -25,11 +25,14 @@ def _card(entity: Entity) -> list[str]:
 def hover_for(
     entity_id: str, index: Index, workspace: WorkspaceIndex | None = None,
 ) -> str | None:
-    entity = index.entities.get(entity_id)
+    resolved = resolve_entity(entity_id, index.entities)
+    entity = index.entities.get(resolved) if resolved else None
     if entity is None:
         if workspace is None:
             return None
         card = workspace.class_card(entity_id)
+        if card is None and "." in entity_id:
+            card = workspace.class_card(entity_id.rsplit(".", 1)[-1])
         return "\n".join(_card(card)) if card is not None else None
     if (
         workspace is not None

@@ -8,7 +8,7 @@ from plantuml_lsp.completion import collect_completions
 from plantuml_lsp.diagnostics import collect_diagnostics
 from plantuml_lsp.definitions import resolve_definition
 from plantuml_lsp.hover import hover_for
-from plantuml_lsp.index import build_index, identifier_at
+from plantuml_lsp.index import build_index, identifier_at, resolve_entity
 from plantuml_lsp.links import collect_links
 from plantuml_lsp.lints import collect_lints
 from plantuml_lsp.rename import edits_from
@@ -213,6 +213,7 @@ def references(ls: LanguageServer, params: types.ReferenceParams):
         doc.source.encode(), params.position.line, params.position.character
     )
     ws = _workspace_of(ls, doc)
+    name = name and (resolve_entity(name, index.entities) or name)
     if not name or (name not in index.entities and not ws.declarations(name)):
         return None
     return [
@@ -228,6 +229,7 @@ def rename(ls: LanguageServer, params: types.RenameParams):
         doc.source.encode(), params.position.line, params.position.character
     )
     ws = _workspace_of(ls, doc)
+    name = name and (resolve_entity(name, index.entities) or name)
     if not name or (name not in index.entities and not ws.declarations(name)):
         return None
     read = lambda path: index.files.get(path) or ws.file_bytes(path)

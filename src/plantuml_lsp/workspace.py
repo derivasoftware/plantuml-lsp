@@ -118,8 +118,11 @@ class WorkspaceIndex:
 
     def occurrences(self, name: str) -> list[tuple[str, int, int, int]]:
         found: list[tuple[str, int, int, int]] = []
+        suffix = "." + name
         for key, entry in self._files.items():
-            if name not in entry.names:
+            if name not in entry.names and not any(
+                n.endswith(suffix) for n in entry.names
+            ):
                 continue
             _scan_occurrences(parse(entry.src).root_node, entry.src,
                               name, key, found)
