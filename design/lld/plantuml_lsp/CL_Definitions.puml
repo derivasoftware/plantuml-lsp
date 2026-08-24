@@ -1,11 +1,17 @@
 @startuml CL_Definitions
 ' requirement REQ-00003-1
+' requirement REQ-00011-1
+' requirement REQ-00012-1
 
 !startsub DefinitionsModule
 
 namespace plantuml_lsp.definitions {
   class "<<module>>" as DefinitionsModule {
     + resolve_definition(doc_path: str, line_text: str): DefinitionTuple | None
+    + entity_definitions(name, index, workspace): list[EntityLocation]
+    + call_at(src: bytes, row: int, col: int)
+    + action_at(index, row: int)
+    + resolve_call(receiver: str, method: str, index, workspace)
     - _find_startsub(target: Path, sub_name: str): DefinitionTuple | None
   }
 }

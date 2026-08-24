@@ -1,5 +1,7 @@
 @startuml CL_Index
 ' requirement REQ-00005-1
+' requirement REQ-00011-1
+' requirement REQ-00012-1
 
 !startsub Index
 
@@ -10,6 +12,8 @@ namespace plantuml_lsp.index {
     + files: dict[str, bytes]
     + duplicates: list[Entity]
     + relations: dict[str, list[str]]
+    + calls: dict[str, list[tuple[str, int, int, int]]]
+    + actions: list[tuple[str, str | None, int, int, int]]
     + occurrences(entity_id: str): list[tuple[str, int, int, int]]
   }
   Index ..> plantuml_lsp.index.Entity

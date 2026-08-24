@@ -1,11 +1,14 @@
 @startuml CL_Lints
 ' requirement REQ-00007-1
+' requirement REQ-00011-1
+' requirement REQ-00012-1
 
 !startsub LintsModule
 
 namespace plantuml_lsp.lints {
   class "<<module>>" as LintsModule {
     + collect_lints(doc_path: str, src: bytes, index: Index): list[LintTuple]
+    + collect_call_lints(src: bytes, index: Index, workspace): list[LintTuple]
     - _is_class_diagram(root: Node): bool
     - _lint_unknown_endpoints(node: Node, src: bytes, index: Index, lints: list[LintTuple]): None
     - _lint_duplicates(doc_path: str, index: Index, lints: list[LintTuple]): None

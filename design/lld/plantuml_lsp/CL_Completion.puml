@@ -1,11 +1,13 @@
 @startuml CL_Completion
 ' requirement REQ-00006-1
+' requirement REQ-00013-1
 
 !startsub CompletionModule
 
 namespace plantuml_lsp.completion {
   class "<<module>>" as CompletionModule {
     + collect_completions(index: Index): list[CompletionTuple]
+    + contextual_completions(src: bytes, row: int, col: int, index: Index, workspace: WorkspaceIndex | None): list[ContextualTuple]
   }
   CompletionModule ..> plantuml_lsp.index.Index
 }
