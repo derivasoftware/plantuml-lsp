@@ -33,13 +33,20 @@ def declare_entity(name: str, doc_path: str, src: bytes) -> FixTuple | None:
         if lines[row].strip().startswith("@enduml"):
             return (
                 f"Crear declaración: class {name}",
-                doc_path, row, 0, 0, f"class {name}\n",
+                doc_path,
+                row,
+                0,
+                0,
+                f"class {name}\n",
             )
     return None
 
 
 def fix_include_path(
-    row: int, line: str, doc_path: str, workspace: WorkspaceIndex,
+    row: int,
+    line: str,
+    doc_path: str,
+    workspace: WorkspaceIndex,
 ) -> FixTuple | None:
     m = _DIRECTIVE.match(line)
     if m is None:
@@ -56,12 +63,18 @@ def fix_include_path(
     scol = m.start(2)
     return (
         f"Corregir ruta: {rel}",
-        doc_path, row, scol, scol + len(broken), rel,
+        doc_path,
+        row,
+        scol,
+        scol + len(broken),
+        rel,
     )
 
 
 def declare_method(
-    method: str, entity: Entity, workspace: WorkspaceIndex,
+    method: str,
+    entity: Entity,
+    workspace: WorkspaceIndex,
 ) -> FixTuple | None:
     src = workspace.file_bytes(entity.path)
     if src is None:
@@ -83,7 +96,11 @@ def declare_method(
         indent = line[: len(line) - len(line.lstrip())]
     return (
         f"Declarar '+{method}()' en {entity.id}",
-        entity.path, brace_row, 0, 0, f"{indent}+{method}() : None\n",
+        entity.path,
+        brace_row,
+        0,
+        0,
+        f"{indent}+{method}() : None\n",
     )
 
 

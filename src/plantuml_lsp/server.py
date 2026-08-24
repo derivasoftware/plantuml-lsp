@@ -59,6 +59,7 @@ _workspaces: dict[str, WorkspaceIndex] = {}
 
 def _workspace_of(ls: LanguageServer, doc) -> WorkspaceIndex:
     import os
+
     root = getattr(ls.workspace, "root_path", None) or os.path.dirname(doc.path)
     ws = _workspaces.get(root)
     if ws is None:
@@ -118,9 +119,7 @@ def _publish(ls: LanguageServer, uri: str) -> None:
     diags.extend(
         types.Diagnostic(
             range=_range(e.row, e.scol, e.row, e.ecol),
-            message=(
-                f"'{e.id}' no corresponde a ninguna clase del workspace"
-            ),
+            message=(f"'{e.id}' no corresponde a ninguna clase del workspace"),
             severity=types.DiagnosticSeverity.Information,
             source="plantuml-lsp",
         )
@@ -180,29 +179,27 @@ def definition(ls: LanguageServer, params: types.DefinitionParams):
     # not an include directive: a call label resolves to the method
     doc2, index = _index_of(ls, params.text_document.uri)
     src2 = doc2.source.encode()
-    call = call_at(src2, params.position.line, params.position.character) \
-        or action_at(index, params.position.line)
+    call = call_at(src2, params.position.line, params.position.character) or action_at(
+        index, params.position.line
+    )
     if call is not None:
         from plantuml_lsp.definitions import resolve_call
 
         tier, entity, loc = resolve_call(
-            call[0], call[1], index, _workspace_of(ls, doc2))
+            call[0], call[1], index, _workspace_of(ls, doc2)
+        )
         if tier == "declared" and loc is not None:
             mrow, mscol, mecol, _text = loc
             return types.Location(
                 uri=f"file://{entity.path}",
                 range=_range(mrow, mscol, mrow, mecol),
             )
-    name = identifier_at(
-        src2, params.position.line, params.position.character
-    )
+    name = identifier_at(src2, params.position.line, params.position.character)
     if not name:
         return None
     locations = [
         types.Location(uri=f"file://{path}", range=_range(r, sc, r, ec))
-        for path, r, sc, ec in entity_definitions(
-            name, index, _workspace_of(ls, doc2)
-        )
+        for path, r, sc, ec in entity_definitions(name, index, _workspace_of(ls, doc2))
     ]
     if not locations:
         return None
@@ -233,13 +230,18 @@ def formatting(ls: LanguageServer, params: types.DocumentFormattingParams):
 )
 def completion(ls: LanguageServer, params: types.CompletionParams):
     doc, index = _index_of(ls, params.text_document.uri)
-    kind_map = {"keyword": types.CompletionItemKind.Keyword,
-                "interface": types.CompletionItemKind.Interface,
-                "enum": types.CompletionItemKind.Enum,
-                "method": types.CompletionItemKind.Method}
+    kind_map = {
+        "keyword": types.CompletionItemKind.Keyword,
+        "interface": types.CompletionItemKind.Interface,
+        "enum": types.CompletionItemKind.Enum,
+        "method": types.CompletionItemKind.Method,
+    }
     items = contextual_completions(
-        doc.source.encode(), params.position.line, params.position.character,
-        index, _workspace_of(ls, doc),
+        doc.source.encode(),
+        params.position.line,
+        params.position.character,
+        index,
+        _workspace_of(ls, doc),
     )
     if not items:
         return None
@@ -268,17 +270,50 @@ def hover(ls: LanguageServer, params: types.HoverParams):
             from plantuml_lsp.definitions import resolve_call
 
             tier, entity, loc = resolve_call(
-                call[0], call[1], index, _workspace_of(ls, doc))
+                call[0], call[1], index, _workspace_of(ls, doc)
+            )
             if tier == "declared" and loc is not None:
                 _r, _s, _e, member_text = loc
-                text = (
-                    f"**{entity.kind}** `{entity.id}`\n\n```\n{member_text}\n```"
-                )
+                text = f"**{entity.kind}** `{entity.id}`\n\n```\n{member_text}\n```"
     if text is None:
         return None
     return types.Hover(
         contents=types.MarkupContent(kind=types.MarkupKind.Markdown, value=text)
     )
+
+
+def _entity_reference_locations(name: str, index, ws) -> list:
+    """Occurrence locations of an entity across the closure and workspace."""
+    if name not in index.entities and not ws.declarations(name):
+        return []
+    return [
+        types.Location(uri=f"file://{path}", range=_range(row, scol, row, ecol))
+        for path, row, scol, ecol in _merged_occurrences(name, index, ws)
+    ]
+
+
+def _method_reference_locations(name: str, index, ws, results: list) -> None:
+    """Extend results with a method's declarations and call sites."""
+    is_method = any(
+        name in e.methods for e in index.entities.values()
+    ) or ws.method_declarations(name)
+    if not is_method:
+        return
+    seen = {
+        (loc.uri, loc.range.start.line, loc.range.start.character) for loc in results
+    }
+
+    def add(uri: str, row: int, scol: int, ecol: int) -> None:
+        key = (uri, row, scol)
+        if key not in seen:
+            seen.add(key)
+            results.append(types.Location(uri=uri, range=_range(row, scol, row, ecol)))
+
+    for entity in ws.method_declarations(name):
+        row, scol, ecol, _txt = entity.methods[name]
+        add(f"file://{entity.path}", row, scol, ecol)
+    for path, row, scol, ecol in ws.call_sites(name):
+        add(f"file://{path}", row, scol, ecol)
 
 
 @server.feature(types.TEXT_DOCUMENT_REFERENCES)
@@ -291,34 +326,10 @@ def references(ls: LanguageServer, params: types.ReferenceParams):
     name = name and (resolve_entity(name, index.entities) or name)
     if not name:
         return None
-    results = []
-    if name in index.entities or ws.declarations(name):
-        results = [
-            types.Location(uri=f"file://{path}", range=_range(row, scol, row, ecol))
-            for path, row, scol, ecol in _merged_occurrences(name, index, ws)
-        ]
+    results = _entity_reference_locations(name, index, ws)
     # a method name: add its call sites (sequence labels and activity
     # actions) and its declarations across the workspace
-    is_method = any(
-        name in e.methods for e in index.entities.values()
-    ) or ws.method_declarations(name)
-    if is_method:
-        seen = {(l.uri, l.range.start.line, l.range.start.character)
-                for l in results}
-        for entity in ws.method_declarations(name):
-            row, scol, ecol, _txt = entity.methods[name]
-            loc = types.Location(uri=f"file://{entity.path}",
-                                 range=_range(row, scol, row, ecol))
-            key = (loc.uri, row, scol)
-            if key not in seen:
-                seen.add(key)
-                results.append(loc)
-        for path, row, scol, ecol in ws.call_sites(name):
-            key = (f"file://{path}", row, scol)
-            if key not in seen:
-                seen.add(key)
-                results.append(types.Location(
-                    uri=f"file://{path}", range=_range(row, scol, row, ecol)))
+    _method_reference_locations(name, index, ws, results)
     return results or None
 
 
@@ -332,7 +343,10 @@ def rename(ls: LanguageServer, params: types.RenameParams):
     name = name and (resolve_entity(name, index.entities) or name)
     if not name or (name not in index.entities and not ws.declarations(name)):
         return None
-    read = lambda path: index.files.get(path) or ws.file_bytes(path)
+
+    def read(path: str) -> bytes | None:
+        return index.files.get(path) or ws.file_bytes(path)
+
     changes: dict[str, list[types.TextEdit]] = {}
     for path, row, scol, ecol, new_text in edits_from(
         _merged_occurrences(name, index, ws), params.new_name, read
@@ -398,8 +412,7 @@ def code_action(ls: LanguageServer, params: types.CodeActionParams):
         if m:
             row = diag.range.start.line
             if row < len(lines):
-                fixes.append(
-                    (fix_include_path(row, lines[row], doc.path, ws), diag))
+                fixes.append((fix_include_path(row, lines[row], doc.path, ws), diag))
             continue
         m = _DRIFT_MSG.search(msg)
         if m:
@@ -411,15 +424,22 @@ def code_action(ls: LanguageServer, params: types.CodeActionParams):
         if fix is None:
             continue
         title, path, row, scol, ecol, new_text = fix
-        actions.append(types.CodeAction(
-            title=title,
-            kind=types.CodeActionKind.QuickFix,
-            diagnostics=[diag],
-            edit=types.WorkspaceEdit(changes={
-                f"file://{path}": [types.TextEdit(
-                    range=_range(row, scol, row, ecol), new_text=new_text)],
-            }),
-        ))
+        actions.append(
+            types.CodeAction(
+                title=title,
+                kind=types.CodeActionKind.QuickFix,
+                diagnostics=[diag],
+                edit=types.WorkspaceEdit(
+                    changes={
+                        f"file://{path}": [
+                            types.TextEdit(
+                                range=_range(row, scol, row, ecol), new_text=new_text
+                            )
+                        ],
+                    }
+                ),
+            )
+        )
     return actions or None
 
 

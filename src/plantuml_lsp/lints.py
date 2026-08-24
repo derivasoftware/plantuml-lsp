@@ -24,56 +24,71 @@ _STARTSUB = re.compile(r"^\s*!startsub\s+(\w+)\s*$")
 LintTuple = tuple[int, int, int, int, str, str]
 
 
+def _tier_lint(tier: str, entity, method: str, span: tuple) -> tuple | None:
+    """One lint tuple for a resolved call tier, or None when declared."""
+    if tier == "drift":
+        return (*span, f"'{entity.id}' does not declare '{method}()'", "warning")
+    if tier == "unknown":
+        return (
+            *span,
+            f"no class in the workspace declares '{method}()'",
+            "information",
+        )
+    return None
+
+
+def _label_call_lints(src: bytes, index: Index, workspace) -> list:
+    """Drift lints over call-shaped relation labels."""
+    from plantuml_lsp.definitions import (
+        _CALL_SHAPE,
+        _relation_receiver,
+        resolve_call,
+    )
+
+    found = []
+
+    def walk(node: Node) -> None:
+        label = node.child_by_field_name("label") if node.type == "relation" else None
+        m = _CALL_SHAPE.match(node_text(src, label)) if label is not None else None
+        receiver = _relation_receiver(src, node) if m is not None else None
+        if receiver is not None:
+            tier, entity, _loc = resolve_call(receiver, m.group(1), index, workspace)
+            span = (
+                label.start_point[0],
+                label.start_point[1],
+                label.end_point[0],
+                label.end_point[1],
+            )
+            lint = _tier_lint(tier, entity, m.group(1), span)
+            if lint is not None:
+                found.append(lint)
+        for child in node.children:
+            walk(child)
+
+    walk(parse(src).root_node)
+    return found
+
+
+def _action_call_lints(index: Index, workspace) -> list:
+    """Drift lints over activity actions: the lane names the receiver."""
+    from plantuml_lsp.definitions import resolve_call
+
+    found = []
+    for name, lane, row, scol, ecol in index.actions:
+        tier, entity, _loc = resolve_call(lane or "", name, index, workspace)
+        lint = _tier_lint(tier, entity, name, (row, scol, row, ecol))
+        if lint is not None:
+            found.append(lint)
+    return found
+
+
 def collect_call_lints(src: bytes, index: Index, workspace):
     """Call-shaped message labels whose receiver correlates with a
     class that does not declare the method — behaviour drifting from
     structure. Free-text labels and classless receivers stay silent."""
-    from plantuml_lsp.definitions import _CALL_SHAPE, resolve_call
-
-    found = []
-    root = parse(src).root_node
-
-    def walk(node: Node) -> None:
-        if node.type == "relation":
-            label = node.child_by_field_name("label")
-            if label is not None:
-                m = _CALL_SHAPE.match(node_text(src, label))
-                if m is not None:
-                    operator = node.child_by_field_name("operator")
-                    reversed_ = operator is not None and node_text(
-                        src, operator).startswith("<")
-                    receiver = node.child_by_field_name(
-                        "left" if reversed_ else "right")
-                    if receiver is not None:
-                        tier, entity, _loc = resolve_call(
-                            node_text(src, receiver).strip('"'),
-                            m.group(1), index, workspace)
-                        span = (label.start_point[0], label.start_point[1],
-                                label.end_point[0], label.end_point[1])
-                        if tier == "drift":
-                            found.append((*span,
-                                f"'{entity.id}' does not declare "
-                                f"'{m.group(1)}()'", "warning"))
-                        elif tier == "unknown":
-                            found.append((*span,
-                                f"no class in the workspace declares "
-                                f"'{m.group(1)}()'", "information"))
-        for child in node.children:
-            walk(child)
-
-    walk(root)
-    # activity actions: the lane names the receiver (or nobody does)
-    for name, lane, row, scol, ecol in index.actions:
-        tier, entity, _loc = resolve_call(lane or "", name, index, workspace)
-        span = (row, scol, row, ecol)
-        if tier == "drift":
-            found.append((*span,
-                f"'{entity.id}' does not declare '{name}()'", "warning"))
-        elif tier == "unknown":
-            found.append((*span,
-                f"no class in the workspace declares '{name}()'",
-                "information"))
-    return found
+    return _label_call_lints(src, index, workspace) + _action_call_lints(
+        index, workspace
+    )
 
 
 def collect_lints(doc_path: str, src: bytes, index: Index) -> list[LintTuple]:
@@ -93,8 +108,12 @@ def _is_class_diagram(root: Node) -> bool:
         nonlocal has_class
         if node.type in ("participant_declaration", "frame_block"):
             return True
-        if node.type in ("class_declaration", "interface_declaration",
-                         "enum_declaration", "entity_declaration"):
+        if node.type in (
+            "class_declaration",
+            "interface_declaration",
+            "enum_declaration",
+            "entity_declaration",
+        ):
             has_class = True
         return any(walk(child) for child in node.children)
 
@@ -103,7 +122,10 @@ def _is_class_diagram(root: Node) -> bool:
 
 
 def _lint_unknown_endpoints(
-    node: Node, src: bytes, index: Index, lints: list[LintTuple],
+    node: Node,
+    src: bytes,
+    index: Index,
+    lints: list[LintTuple],
 ) -> None:
     if node.type == "relation":
         for field_name in ("left", "right"):
@@ -113,12 +135,16 @@ def _lint_unknown_endpoints(
             name = node_text(src, end).strip('"')
             short = name.rsplit(".", 1)[-1]
             if name not in index.entities and short not in index.entities:
-                lints.append((
-                    end.start_point[0], end.start_point[1], end.end_point[0],
-                    end.end_point[1],
-                    f"no declaration for '{name}' in this document or its includes",
-                    "warning",
-                ))
+                lints.append(
+                    (
+                        end.start_point[0],
+                        end.start_point[1],
+                        end.end_point[0],
+                        end.end_point[1],
+                        f"no declaration for '{name}' in this document or its includes",
+                        "warning",
+                    )
+                )
     for child in node.children:
         _lint_unknown_endpoints(child, src, index, lints)
 
@@ -129,12 +155,17 @@ def _lint_duplicates(doc_path: str, index: Index, lints: list[LintTuple]) -> Non
         if dup.path != resolved:
             continue
         first = index.entities[dup.id]
-        lints.append((
-            dup.row, dup.scol, dup.row, dup.ecol,
-            f"'{dup.id}' is already declared as {first.kind} "
-            f"({Path(first.path).name}:{first.row + 1})",
-            "warning",
-        ))
+        lints.append(
+            (
+                dup.row,
+                dup.scol,
+                dup.row,
+                dup.ecol,
+                f"'{dup.id}' is already declared as {first.kind} "
+                f"({Path(first.path).name}:{first.row + 1})",
+                "warning",
+            )
+        )
 
 
 def _lint_includes(doc_path: str, src: bytes, lints: list[LintTuple]) -> None:
@@ -144,17 +175,40 @@ def _lint_includes(doc_path: str, src: bytes, lints: list[LintTuple]) -> None:
         if m:
             target = (base / m.group(1)).resolve()
             if not target.is_file():
-                lints.append((row, 0, row, len(line),
-                              f"include target not found: {m.group(1)}", "error"))
+                lints.append(
+                    (
+                        row,
+                        0,
+                        row,
+                        len(line),
+                        f"include target not found: {m.group(1)}",
+                        "error",
+                    )
+                )
             elif not _has_startsub(target, m.group(2)):
-                lints.append((row, 0, row, len(line),
-                              f"fragment '{m.group(2)}' not found in {m.group(1)}",
-                              "error"))
+                lints.append(
+                    (
+                        row,
+                        0,
+                        row,
+                        len(line),
+                        f"fragment '{m.group(2)}' not found in {m.group(1)}",
+                        "error",
+                    )
+                )
             continue
         m = _INCLUDE.match(line)
         if m and not (base / m.group(1)).resolve().is_file():
-            lints.append((row, 0, row, len(line),
-                          f"include target not found: {m.group(1)}", "error"))
+            lints.append(
+                (
+                    row,
+                    0,
+                    row,
+                    len(line),
+                    f"include target not found: {m.group(1)}",
+                    "error",
+                )
+            )
 
 
 def _has_startsub(target: Path, sub_name: str) -> bool:

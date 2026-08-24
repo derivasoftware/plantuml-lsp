@@ -33,7 +33,9 @@ def _walk(node: Node, src: bytes, ns: list[str], found: list[SymbolTuple]) -> No
             _walk(child, src, [*ns, name], found)
         return
     if kind in _ENTITY_KINDS:
-        found.append(_entry(".".join([*ns, _name_of(node, src)]), _ENTITY_KINDS[kind], node))
+        found.append(
+            _entry(".".join([*ns, _name_of(node, src)]), _ENTITY_KINDS[kind], node)
+        )
     elif kind == "participant_declaration":
         alias = node.child_by_field_name("alias")
         target = alias if alias is not None else node.child_by_field_name("name")

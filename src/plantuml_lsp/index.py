@@ -87,8 +87,6 @@ def identifier_at(src: bytes, row: int, col: int) -> str | None:
     return word_at(src, row, col)
 
 
-import re
-
 _WORD = re.compile(r"[A-Za-z_][\w]*(?:[.-][A-Za-z_]\w*)*")
 
 
@@ -118,42 +116,63 @@ def _index_file(path: str, src: bytes, index: Index, seen: set[str]) -> None:
                 _index_file(str(target), target.read_bytes(), index, seen)
 
 
-def _register_call(index: Index, path: str, node: Node,
-                   name: str, offset: int) -> None:
+def _register_call(index: Index, path: str, node: Node, name: str, offset: int) -> None:
     row, scol = node.start_point
     index.calls.setdefault(name, []).append(
-        (path, row, scol + offset, scol + offset + len(name)))
+        (path, row, scol + offset, scol + offset + len(name))
+    )
 
 
-def _walk(node: Node, src: bytes, path: str, index: Index,
-          lane: list = None) -> None:
+def _visit_relation(node: Node, src: bytes, path: str, index: Index) -> None:
+    _record_relation(node, src, index)
+    label = node.child_by_field_name("label")
+    if label is None:
+        return
+    m = _LABEL_CALL.match(node_text(src, label))
+    if m is not None:
+        _register_call(index, path, label, m.group(1), m.start(1))
+
+
+def _visit_swimlane(node: Node, src: bytes, lane: list) -> None:
+    name_node = node.child_by_field_name("name")
+    if name_node is None:
+        return
+    m = _LANE_NAME.match(node_text(src, name_node))
+    lane[0] = m.group(1).strip() if m else None
+
+
+def _visit_action(node: Node, src: bytes, path: str, index: Index, lane: list) -> None:
+    text_node = node.child_by_field_name("text")
+    if text_node is None:
+        return
+    m = _ACTION_CALL.match(node_text(src, text_node))
+    if m is None:
+        return
+    row, scol = text_node.start_point
+    index.actions.append(
+        (
+            m.group(1),
+            lane[0],
+            row,
+            scol + m.start(1),
+            scol + m.start(1) + len(m.group(1)),
+        )
+    )
+    _register_call(index, path, text_node, m.group(1), m.start(1))
+
+
+def _walk(node: Node, src: bytes, path: str, index: Index, lane: list = None) -> None:
     if lane is None:
         lane = [None]
     kind = _declared_kind(node, src)
     if kind is not None:
         _add(index, node, src, path, kind)
     elif node.type == "relation":
-        _record_relation(node, src, index)
-        label = node.child_by_field_name("label")
-        if label is not None:
-            m = _LABEL_CALL.match(node_text(src, label))
-            if m is not None:
-                _register_call(index, path, label, m.group(1), m.start(1))
+        _visit_relation(node, src, path, index)
     elif node.type == "swimlane":
-        name_node = node.child_by_field_name("name")
-        if name_node is not None:
-            m = _LANE_NAME.match(node_text(src, name_node))
-            lane[0] = m.group(1).strip() if m else None
+        _visit_swimlane(node, src, lane)
     elif node.type == "activity_action":
-        text_node = node.child_by_field_name("text")
-        if text_node is not None:
-            m = _ACTION_CALL.match(node_text(src, text_node))
-            if m is not None:
-                row, scol = text_node.start_point
-                index.actions.append((
-                    m.group(1), lane[0], row,
-                    scol + m.start(1), scol + m.start(1) + len(m.group(1))))
-                _register_call(index, path, text_node, m.group(1), m.start(1))
+        _visit_action(node, src, path, index, lane)
     for child in node.children:
         _walk(child, src, path, index, lane)
 
@@ -174,9 +193,7 @@ def _record_relation(node: Node, src: bytes, index: Index) -> None:
     for field_name in ("left", "right"):
         end = node.child_by_field_name(field_name)
         if end is not None and end.type in ("identifier", "string"):
-            index.relations.setdefault(
-                node_text(src, end).strip('"'), []
-            ).append(line)
+            index.relations.setdefault(node_text(src, end).strip('"'), []).append(line)
 
 
 def _add(index: Index, node: Node, src: bytes, path: str, kind: str) -> None:
@@ -251,20 +268,30 @@ def resolve_entity(name: str, entities: dict[str, "Entity"]) -> str | None:
 
 
 def _scan_occurrences(
-    node: Node, src: bytes, entity_id: str, path: str,
+    node: Node,
+    src: bytes,
+    entity_id: str,
+    path: str,
     found: list[tuple[str, int, int, int]],
 ) -> None:
     if node.type in ("identifier", "string"):
         text = node_text(src, node).strip('"')
         if text == entity_id:
-            found.append((path, node.start_point[0],
-                          node.start_point[1], node.end_point[1]))
+            found.append(
+                (path, node.start_point[0], node.start_point[1], node.end_point[1])
+            )
         elif text.endswith("." + entity_id):
             # qualified use: report the span of the tail segment only,
             # so references highlight and renames rewrite just the name
             offset = (node.end_point[1] - node.start_point[1]) - len(entity_id)
-            found.append((path, node.start_point[0],
-                          node.start_point[1] + offset, node.end_point[1]))
+            found.append(
+                (
+                    path,
+                    node.start_point[0],
+                    node.start_point[1] + offset,
+                    node.end_point[1],
+                )
+            )
         return
     for child in node.children:
         _scan_occurrences(child, src, entity_id, path, found)

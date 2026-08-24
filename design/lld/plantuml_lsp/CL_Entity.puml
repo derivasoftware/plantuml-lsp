@@ -5,15 +5,15 @@
 
 namespace plantuml_lsp.index {
   class Entity {
-    + id: str
-    + name: str
-    + kind: str
-    + path: str
-    + row: int
-    + scol: int
-    + ecol: int
-    + members: list[str]
-    + methods: dict[str, tuple[int, int, int, str]]
+    + id : str
+    + name : str
+    + kind : str
+    + path : str
+    + row : int
+    + scol : int
+    + ecol : int
+    + members : list[str]
+    + methods : dict[str, tuple[int, int, int, str]]
   }
 }
 

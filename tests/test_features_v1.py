@@ -90,7 +90,9 @@ def test_lints_flag_broken_includes(tmp_path):
     src = "@startuml\n!include missing.iuml\n!includesub lib.iuml!Nope\n@enduml\n"
     (tmp_path / "lib.iuml").write_text("@startuml\n!startsub Real\n!endsub\n@enduml\n")
     doc, index = idx(tmp_path, "b.puml", src)
-    msgs = [msg for _r, _s, _e, _ec, msg, _sev in collect_lints(doc, src.encode(), index)]
+    msgs = [
+        msg for _r, _s, _e, _ec, msg, _sev in collect_lints(doc, src.encode(), index)
+    ]
     assert any("missing.iuml" in m for m in msgs)
     assert any("Nope" in m for m in msgs)
 
@@ -98,7 +100,9 @@ def test_lints_flag_broken_includes(tmp_path):
 def test_lints_flag_duplicate_declarations(tmp_path):
     src = "@startuml\nclass A\ninterface A\n@enduml\n"
     doc, index = idx(tmp_path, "dup.puml", src)
-    msgs = [msg for _r, _s, _e, _ec, msg, _sev in collect_lints(doc, src.encode(), index)]
+    msgs = [
+        msg for _r, _s, _e, _ec, msg, _sev in collect_lints(doc, src.encode(), index)
+    ]
     assert any("A" in m and "declared" in m for m in msgs)
 
 
@@ -127,7 +131,9 @@ def test_entity_definitions_resolve_types_and_qualified_names(tmp_path):
         "@startuml\nnamespace pedidos {\n  class Pedido\n}\n@enduml\n"
     )
     doc = tmp_path / "CL_Uso.puml"
-    doc.write_text("@startuml\nclass Cafetera {\n  +preparar(p: Pedido) : Taza\n}\n@enduml\n")
+    doc.write_text(
+        "@startuml\nclass Cafetera {\n  +preparar(p: Pedido) : Taza\n}\n@enduml\n"
+    )
     ws = WorkspaceIndex(str(tmp_path))
     index = build_index(str(doc), doc.read_bytes())
     for name in ("Pedido", "pedidos.Pedido"):
@@ -207,8 +213,12 @@ def test_call_lint_unknown_is_information(tmp_path):
 
     doc = tmp_path / "SEQ.puml"
     lines = [
-        "@startuml", "actor Barista", "participant Cafetera",
-        "Cafetera --> Barista : error(mensaje)", "@enduml", "",
+        "@startuml",
+        "actor Barista",
+        "participant Cafetera",
+        "Cafetera --> Barista : error(mensaje)",
+        "@enduml",
+        "",
     ]
     src = "\n".join(lines).encode()
     doc.write_bytes(src)
@@ -228,8 +238,15 @@ def test_activity_actions_correlate_with_methods(tmp_path):
         "@startuml\nclass Cafetera {\n  -calentar(objetivo: float) : None\n}\n@enduml\n"
     )
     doc = tmp_path / "ACT.puml"
-    lines = ["@startuml", "|Cafetera|", ":calentar(objetivo);",
-             ":afilar(disco);", ":texto libre sin llamada;", "@enduml", ""]
+    lines = [
+        "@startuml",
+        "|Cafetera|",
+        ":calentar(objetivo);",
+        ":afilar(disco);",
+        ":texto libre sin llamada;",
+        "@enduml",
+        "",
+    ]
     src = "\n".join(lines).encode()
     doc.write_bytes(src)
     ws = WorkspaceIndex(str(tmp_path))
@@ -252,8 +269,14 @@ def test_activity_drift_lints_use_the_lane(tmp_path):
         "@startuml\nclass Molinillo {\n  +moler(gramos: int) : Cafe\n}\n@enduml\n"
     )
     doc = tmp_path / "ACT.puml"
-    lines = ["@startuml", "|Molinillo|", ":moler(granos);",
-             ":afilar(disco);", "@enduml", ""]
+    lines = [
+        "@startuml",
+        "|Molinillo|",
+        ":moler(granos);",
+        ":afilar(disco);",
+        "@enduml",
+        "",
+    ]
     src = "\n".join(lines).encode()
     doc.write_bytes(src)
     ws = WorkspaceIndex(str(tmp_path))

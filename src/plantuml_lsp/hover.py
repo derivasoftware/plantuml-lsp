@@ -22,27 +22,41 @@ def _card(entity: Entity) -> list[str]:
     return lines
 
 
+def _workspace_card(entity_id: str, workspace: WorkspaceIndex | None):
+    """The workspace class card a name (or its qualified tail) denotes."""
+    if workspace is None:
+        return None
+    card = workspace.class_card(entity_id)
+    if card is None and "." in entity_id:
+        card = workspace.class_card(entity_id.rsplit(".", 1)[-1])
+    return card
+
+
+def _participant_enrichment(
+    entity, index: Index, workspace: WorkspaceIndex | None
+) -> str | None:
+    """A classless participant's hover, enriched with its class card."""
+    if workspace is None or entity.kind in CLASS_KINDS or entity.members:
+        return None
+    card = workspace.class_card(entity.id) or workspace.class_card(entity.name)
+    if card is None:
+        return None
+    return _hover_body(entity, index) + "\n\n---\n\n" + "\n".join(_card(card))
+
+
 def hover_for(
-    entity_id: str, index: Index, workspace: WorkspaceIndex | None = None,
+    entity_id: str,
+    index: Index,
+    workspace: WorkspaceIndex | None = None,
 ) -> str | None:
     resolved = resolve_entity(entity_id, index.entities)
     entity = index.entities.get(resolved) if resolved else None
     if entity is None:
-        if workspace is None:
-            return None
-        card = workspace.class_card(entity_id)
-        if card is None and "." in entity_id:
-            card = workspace.class_card(entity_id.rsplit(".", 1)[-1])
+        card = _workspace_card(entity_id, workspace)
         return "\n".join(_card(card)) if card is not None else None
-    if (
-        workspace is not None
-        and entity.kind not in CLASS_KINDS
-        and not entity.members
-    ):
-        card = workspace.class_card(entity.id) or workspace.class_card(entity.name)
-        if card is not None:
-            local = _hover_body(entity, index)
-            return local + "\n\n---\n\n" + "\n".join(_card(card))
+    enriched = _participant_enrichment(entity, index, workspace)
+    if enriched is not None:
+        return enriched
     return _hover_body(entity, index)
 
 

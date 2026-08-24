@@ -7,13 +7,13 @@
 
 namespace plantuml_lsp.lints {
   class "<<module>>" as LintsModule {
-    + collect_lints(doc_path: str, src: bytes, index: Index): list[LintTuple]
-    + collect_call_lints(src: bytes, index: Index, workspace): list[LintTuple]
-    - _is_class_diagram(root: Node): bool
-    - _lint_unknown_endpoints(node: Node, src: bytes, index: Index, lints: list[LintTuple]): None
-    - _lint_duplicates(doc_path: str, index: Index, lints: list[LintTuple]): None
-    - _lint_includes(doc_path: str, src: bytes, lints: list[LintTuple]): None
-    - _has_startsub(target: Path, sub_name: str): bool
+    + collect_lints(doc_path: str, src: bytes, index: Index) : list[LintTuple]
+    + collect_call_lints(src: bytes, index: Index, workspace) : list[LintTuple]
+    - _is_class_diagram(root: Node) : bool
+    - _lint_unknown_endpoints(node: Node, src: bytes, index: Index, lints: list[LintTuple]) : None
+    - _lint_duplicates(doc_path: str, index: Index, lints: list[LintTuple]) : None
+    - _lint_includes(doc_path: str, src: bytes, lints: list[LintTuple]) : None
+    - _has_startsub(target: Path, sub_name: str) : bool
   }
   LintsModule ..> plantuml_lsp.index.Index
   LintsModule ..> plantuml_lsp.parsing.ParsingModule

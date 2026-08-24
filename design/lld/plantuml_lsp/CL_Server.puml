@@ -8,13 +8,13 @@
 
 namespace plantuml_lsp.server {
   class "<<module>>" as ServerModule {
-    + did_open(ls: LanguageServer, params: DidOpenTextDocumentParams): None
-    + did_change(ls: LanguageServer, params: DidChangeTextDocumentParams): None
+    + did_open(ls: LanguageServer, params: DidOpenTextDocumentParams) : None
+    + did_change(ls: LanguageServer, params: DidChangeTextDocumentParams) : None
     + document_symbol(ls: LanguageServer, params: DocumentSymbolParams)
     + definition(ls: LanguageServer, params: DefinitionParams)
     + formatting(ls: LanguageServer, params: DocumentFormattingParams)
-    + main(): None
-    - _publish(ls: LanguageServer, uri: str): None
+    + main() : None
+    - _publish(ls: LanguageServer, uri: str) : None
   }
   ServerModule ..> plantuml_lsp.diagnostics.DiagnosticsModule
   ServerModule ..> plantuml_lsp.symbols.SymbolsModule

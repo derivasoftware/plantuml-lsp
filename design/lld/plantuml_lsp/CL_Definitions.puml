@@ -7,12 +7,12 @@
 
 namespace plantuml_lsp.definitions {
   class "<<module>>" as DefinitionsModule {
-    + resolve_definition(doc_path: str, line_text: str): DefinitionTuple | None
-    + entity_definitions(name, index, workspace): list[EntityLocation]
+    + resolve_definition(doc_path: str, line_text: str) : DefinitionTuple | None
+    + entity_definitions(name, index, workspace) : list[EntityLocation]
     + call_at(src: bytes, row: int, col: int)
     + action_at(index, row: int)
     + resolve_call(receiver: str, method: str, index, workspace)
-    - _find_startsub(target: Path, sub_name: str): DefinitionTuple | None
+    - _find_startsub(target: Path, sub_name: str) : DefinitionTuple | None
   }
 }
 
