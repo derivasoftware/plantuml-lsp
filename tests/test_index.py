@@ -64,3 +64,25 @@ def test_identifier_at_reads_the_token_under_the_cursor():
     assert identifier_at(src, 1, 2) == "Widget"
     assert identifier_at(src, 1, 12) == "FN"
     assert identifier_at(src, 1, 8) is None  # on the operator
+
+
+def test_occurrences_match_qualified_tails(tmp_path):
+    doc = tmp_path / "agg.puml"
+    src = b"@startuml\nclass Widget\nmaquina.Widget --> Otro\n@enduml\n"
+    doc.write_bytes(src)
+    index = build_index(str(doc), src)
+    occs = index.occurrences("Widget")
+    assert len(occs) == 2
+    # the qualified use reports the tail span only
+    _p, row, scol, ecol = occs[1]
+    assert (row, ecol - scol) == (2, len("Widget"))
+    assert scol == len("maquina.")
+
+
+def test_resolve_entity_falls_back_to_the_tail():
+    from plantuml_lsp.index import resolve_entity
+
+    entities = {"Widget": object()}
+    assert resolve_entity("Widget", entities) == "Widget"
+    assert resolve_entity("maquina.Widget", entities) == "Widget"
+    assert resolve_entity("otra.Cosa", entities) is None

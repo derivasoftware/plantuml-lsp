@@ -156,14 +156,33 @@ def _members(node: Node, src: bytes) -> list[str]:
     ]
 
 
+def resolve_entity(name: str, entities: dict[str, "Entity"]) -> str | None:
+    """The id a cursor token resolves to: exact, or the tail of a
+    qualified name (maquina.Cafetera -> Cafetera)."""
+    if name in entities:
+        return name
+    if "." in name:
+        tail = name.rsplit(".", 1)[-1]
+        if tail in entities:
+            return tail
+    return None
+
+
 def _scan_occurrences(
     node: Node, src: bytes, entity_id: str, path: str,
     found: list[tuple[str, int, int, int]],
 ) -> None:
     if node.type in ("identifier", "string"):
-        if node_text(src, node).strip('"') == entity_id:
+        text = node_text(src, node).strip('"')
+        if text == entity_id:
             found.append((path, node.start_point[0],
                           node.start_point[1], node.end_point[1]))
+        elif text.endswith("." + entity_id):
+            # qualified use: report the span of the tail segment only,
+            # so references highlight and renames rewrite just the name
+            offset = (node.end_point[1] - node.start_point[1]) - len(entity_id)
+            found.append((path, node.start_point[0],
+                          node.start_point[1] + offset, node.end_point[1]))
         return
     for child in node.children:
         _scan_occurrences(child, src, entity_id, path, found)
