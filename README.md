@@ -1,7 +1,7 @@
 # plantuml-lsp
 
 <!-- folio: colophon --project plantuml-lsp --junit test-results/junit.xml --coverage_ut test-results/coverage-ut.xml -->
-![powered by: argos](https://img.shields.io/badge/powered%20by-argos-1f6feb) ![traced: 43%](https://img.shields.io/badge/traced-43%25-e05d44) ![verified: 100%](https://img.shields.io/badge/verified-100%25-2ea44f) ![tests: 100%](https://img.shields.io/badge/tests-100%25-2ea44f) ![UT: 78%](https://img.shields.io/badge/UT-78%25-dfb317) ![ST: n/a](https://img.shields.io/badge/ST-n%2Fa-lightgrey) ![diagnostics: 8](https://img.shields.io/badge/diagnostics-8-dfb317)
+![powered by: argos](https://img.shields.io/badge/powered%20by-argos-1f6feb) ![traced: 43%](https://img.shields.io/badge/traced-43%25-e05d44) ![verified: 100%](https://img.shields.io/badge/verified-100%25-2ea44f) ![tests: 100%](https://img.shields.io/badge/tests-100%25-2ea44f) ![UT: 78%](https://img.shields.io/badge/UT-78%25-dfb317) ![ST: n/a](https://img.shields.io/badge/ST-n%2Fa-lightgrey) ![diagnostics: 1](https://img.shields.io/badge/diagnostics-1-dfb317)
 
 > **plantuml-lsp** is powered by **argos**. **folio** generates this documentation from the repository's model: 14 requirements · 14 verifications · 0 constraints. Quality: 43% traced to code · 100% verified · 100% tests passing · 78% UT coverage.
 <!-- /folio -->
