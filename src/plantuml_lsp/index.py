@@ -123,6 +123,46 @@ def _register_call(index: Index, path: str, node: Node, name: str, offset: int) 
     )
 
 
+def _visit_relation(node: Node, src: bytes, path: str, index: Index) -> None:
+    _record_relation(node, src, index)
+    label = node.child_by_field_name("label")
+    if label is None:
+        return
+    m = _LABEL_CALL.match(node_text(src, label))
+    if m is not None:
+        _register_call(index, path, label, m.group(1), m.start(1))
+
+
+def _visit_swimlane(node: Node, src: bytes, lane: list) -> None:
+    name_node = node.child_by_field_name("name")
+    if name_node is None:
+        return
+    m = _LANE_NAME.match(node_text(src, name_node))
+    lane[0] = m.group(1).strip() if m else None
+
+
+def _visit_action(
+    node: Node, src: bytes, path: str, index: Index, lane: list
+) -> None:
+    text_node = node.child_by_field_name("text")
+    if text_node is None:
+        return
+    m = _ACTION_CALL.match(node_text(src, text_node))
+    if m is None:
+        return
+    row, scol = text_node.start_point
+    index.actions.append(
+        (
+            m.group(1),
+            lane[0],
+            row,
+            scol + m.start(1),
+            scol + m.start(1) + len(m.group(1)),
+        )
+    )
+    _register_call(index, path, text_node, m.group(1), m.start(1))
+
+
 def _walk(node: Node, src: bytes, path: str, index: Index, lane: list = None) -> None:
     if lane is None:
         lane = [None]
@@ -130,33 +170,11 @@ def _walk(node: Node, src: bytes, path: str, index: Index, lane: list = None) ->
     if kind is not None:
         _add(index, node, src, path, kind)
     elif node.type == "relation":
-        _record_relation(node, src, index)
-        label = node.child_by_field_name("label")
-        if label is not None:
-            m = _LABEL_CALL.match(node_text(src, label))
-            if m is not None:
-                _register_call(index, path, label, m.group(1), m.start(1))
+        _visit_relation(node, src, path, index)
     elif node.type == "swimlane":
-        name_node = node.child_by_field_name("name")
-        if name_node is not None:
-            m = _LANE_NAME.match(node_text(src, name_node))
-            lane[0] = m.group(1).strip() if m else None
+        _visit_swimlane(node, src, lane)
     elif node.type == "activity_action":
-        text_node = node.child_by_field_name("text")
-        if text_node is not None:
-            m = _ACTION_CALL.match(node_text(src, text_node))
-            if m is not None:
-                row, scol = text_node.start_point
-                index.actions.append(
-                    (
-                        m.group(1),
-                        lane[0],
-                        row,
-                        scol + m.start(1),
-                        scol + m.start(1) + len(m.group(1)),
-                    )
-                )
-                _register_call(index, path, text_node, m.group(1), m.start(1))
+        _visit_action(node, src, path, index, lane)
     for child in node.children:
         _walk(child, src, path, index, lane)
 
