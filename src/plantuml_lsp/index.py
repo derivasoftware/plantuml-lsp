@@ -39,6 +39,8 @@ class Entity:
     scol: int
     ecol: int
     members: list[str] = field(default_factory=list)
+    # method name -> (row, scol, ecol, member line text)
+    methods: dict[str, tuple[int, int, int, str]] = field(default_factory=dict)
 
 
 @dataclass
@@ -154,11 +156,36 @@ def _add(index: Index, node: Node, src: bytes, path: str, kind: str) -> None:
         scol=id_node.start_point[1],
         ecol=id_node.end_point[1],
         members=_members(node, src),
+        methods=_methods(node, src),
     )
     if entity_id in index.entities:
         index.duplicates.append(entity)
     else:
         index.entities[entity_id] = entity
+
+
+def _methods(node: Node, src: bytes) -> dict[str, tuple[int, int, int, str]]:
+    """Method name -> declaration location and line, for call-level
+    correlation (sequence labels are invocations; arguments are free
+    text, so matching is by name only)."""
+    body = node.child_by_field_name("body")
+    if body is None:
+        return {}
+    methods: dict[str, tuple[int, int, int, str]] = {}
+    for member in body.named_children:
+        if member.type != "member":
+            continue
+        for child in member.named_children:
+            if child.type == "method":
+                name_node = child.child_by_field_name("name")
+                if name_node is not None:
+                    methods[node_text(src, name_node)] = (
+                        name_node.start_point[0],
+                        name_node.start_point[1],
+                        name_node.end_point[1],
+                        node_text(src, member).strip(),
+                    )
+    return methods
 
 
 def _members(node: Node, src: bytes) -> list[str]:

@@ -24,6 +24,44 @@ _STARTSUB = re.compile(r"^\s*!startsub\s+(\w+)\s*$")
 LintTuple = tuple[int, int, int, int, str, str]
 
 
+def collect_call_lints(src: bytes, index: Index, workspace):
+    """Call-shaped message labels whose receiver correlates with a
+    class that does not declare the method — behaviour drifting from
+    structure. Free-text labels and classless receivers stay silent."""
+    from plantuml_lsp.definitions import _CALL_SHAPE, resolve_call
+
+    found = []
+    root = parse(src).root_node
+
+    def walk(node: Node) -> None:
+        if node.type == "relation":
+            label = node.child_by_field_name("label")
+            if label is not None:
+                m = _CALL_SHAPE.match(node_text(src, label))
+                if m is not None:
+                    operator = node.child_by_field_name("operator")
+                    reversed_ = operator is not None and node_text(
+                        src, operator).startswith("<")
+                    receiver = node.child_by_field_name(
+                        "left" if reversed_ else "right")
+                    if receiver is not None:
+                        hit = resolve_call(
+                            node_text(src, receiver).strip('"'),
+                            m.group(1), index, workspace)
+                        if hit is not None and hit[1] is None:
+                            found.append((
+                                label.start_point[0], label.start_point[1],
+                                label.end_point[0], label.end_point[1],
+                                f"'{hit[0].id}' does not declare "
+                                f"'{m.group(1)}()'",
+                            ))
+        for child in node.children:
+            walk(child)
+
+    walk(root)
+    return found
+
+
 def collect_lints(doc_path: str, src: bytes, index: Index) -> list[LintTuple]:
     lints: list[LintTuple] = []
     tree = parse(src)

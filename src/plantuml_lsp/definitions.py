@@ -9,6 +9,8 @@ document, matching PlantUML's own preprocessor semantics.
 import re
 from pathlib import Path
 
+from plantuml_lsp.parsing import node_text, parse
+
 _INCLUDESUB = re.compile(r"^\s*!includesub\s+([^\s!]+)!(\w+)\s*$")
 _INCLUDE = re.compile(r"^\s*!include\s+(\S+)\s*$")
 _STARTSUB = re.compile(r"^\s*!startsub\s+(\w+)\s*$")
@@ -18,6 +20,61 @@ DefinitionTuple = tuple[str, int]
 
 # (path, row, start_col, end_col)
 EntityLocation = tuple[str, int, int, int]
+
+
+_CALL_SHAPE = re.compile(r"^\s*(\w+)\s*\(")
+
+
+def call_at(src: bytes, row: int, col: int):
+    """(receiver_name, method_name) when the cursor sits on the label
+    of a message whose text is call-shaped; arguments are free text and
+    never matter. None anywhere else."""
+    node = parse(src).root_node.descendant_for_point_range((row, col), (row, col))
+    while node is not None and node.type != "relation":
+        if node.type == "label":
+            break
+        node = node.parent
+    if node is None or node.type != "label":
+        return None
+    relation = node.parent
+    if relation is None or relation.type != "relation":
+        return None
+    m = _CALL_SHAPE.match(node_text(src, node))
+    if m is None:
+        return None
+    operator = relation.child_by_field_name("operator")
+    reversed_ = operator is not None and node_text(src, operator).startswith("<")
+    receiver = relation.child_by_field_name("left" if reversed_ else "right")
+    if receiver is None:
+        return None
+    return node_text(src, receiver).strip('"'), m.group(1)
+
+
+def resolve_call(receiver: str, method: str, index, workspace):
+    """(entity, (row, scol, ecol, text)) of the declared method the
+    call resolves to, through the local index or the workspace."""
+    from plantuml_lsp.index import resolve_entity
+    from plantuml_lsp.workspace import CLASS_KINDS
+
+    candidates = []
+    resolved = resolve_entity(receiver, index.entities)
+    if resolved is not None:
+        candidates.append(index.entities[resolved])
+    if workspace is not None:
+        card = workspace.class_card(receiver)
+        if card is None and "." in receiver:
+            card = workspace.class_card(receiver.rsplit(".", 1)[-1])
+        if card is not None:
+            candidates.append(card)
+    for entity in candidates:
+        if method in entity.methods:
+            return entity, entity.methods[method]
+    # the receiver correlates with a class that does NOT declare it:
+    # report the drift candidate (entity, None); no class -> None
+    for entity in candidates:
+        if entity.kind in CLASS_KINDS:
+            return entity, None
+    return None
 
 
 def entity_definitions(name, index, workspace) -> list[EntityLocation]:

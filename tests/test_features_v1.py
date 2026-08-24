@@ -142,3 +142,53 @@ def test_word_at_reads_opaque_positions():
     src = b"@startuml\nclass C {\n  +preparar(pedido: Pedido) : Taza\n}\n@enduml\n"
     assert word_at(src, 2, 22) == "Pedido"
     assert word_at(src, 2, 31) == "Taza"
+
+
+def test_call_resolution_matches_by_name_only(tmp_path):
+    from plantuml_lsp.definitions import call_at, resolve_call
+    from plantuml_lsp.workspace import WorkspaceIndex
+
+    (tmp_path / "CL_M.puml").write_text(
+        "@startuml\nclass Molinillo {\n  +moler(gramos: int) : Cafe\n}\n@enduml\n"
+    )
+    doc = tmp_path / "SEQ.puml"
+    src = (
+        "@startuml\nparticipant Molinillo\n"
+        "Cafetera -> Molinillo : moler(num_granos)\n"
+        "Cafetera -> Molinillo : afilar(disco)\n"
+        "Molinillo --> Cafetera : el cafe listo\n@enduml\n"
+    ).encode()
+    doc.write_bytes(src)
+    ws = WorkspaceIndex(str(tmp_path))
+    index = build_index(str(doc), src)
+
+    call = call_at(src, 2, 26)
+    assert call == ("Molinillo", "moler")
+    entity, method = resolve_call("Molinillo", "moler", index, ws)
+    assert method is not None and "gramos: int" in method[3]
+    # undeclared method on a correlated class -> drift candidate
+    entity2, missing = resolve_call("Molinillo", "afilar", index, ws)
+    assert entity2.kind == "class" and missing is None
+    # free-text labels are not calls
+    assert call_at(src, 4, 28) is None
+
+
+def test_call_drift_lint_flags_only_undeclared(tmp_path):
+    from plantuml_lsp.lints import collect_call_lints
+    from plantuml_lsp.workspace import WorkspaceIndex
+
+    (tmp_path / "CL_M.puml").write_text(
+        "@startuml\nclass Molinillo {\n  +moler(gramos: int) : Cafe\n}\n@enduml\n"
+    )
+    doc = tmp_path / "SEQ.puml"
+    src = (
+        "@startuml\nparticipant Molinillo\n"
+        "Cafetera -> Molinillo : moler(num_granos)\n"
+        "Cafetera -> Molinillo : afilar(disco)\n@enduml\n"
+    ).encode()
+    doc.write_bytes(src)
+    ws = WorkspaceIndex(str(tmp_path))
+    index = build_index(str(doc), src)
+    msgs = [msg for *_span, msg in collect_call_lints(src, index, ws)]
+    assert any("afilar" in m for m in msgs)
+    assert not any("moler" in m and "afilar" not in m for m in msgs)
