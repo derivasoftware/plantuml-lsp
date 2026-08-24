@@ -19,4 +19,7 @@ test:
         "https://${CI_SERVER_HOST}/"
       python3 -m venv .venv-ci
       ./.venv-ci/bin/pip install -q -e ".[dev]"
-      ./.venv-ci/bin/pytest -q
+      mkdir -p test-results
+      ./.venv-ci/bin/pytest -q \
+        --junitxml=test-results/junit.xml \
+        --cov=plantuml_lsp --cov-report=xml:test-results/coverage-ut.xml
