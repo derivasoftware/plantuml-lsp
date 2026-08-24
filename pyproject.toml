@@ -1,6 +1,6 @@
 [project]
 name = "plantuml-lsp"
-version = "0.2.0"
+version = "0.2.1"
 description = "PlantUML language server built on tree-sitter-plantuml and plantuml-fmt"
 readme = "README.md"
 license = { text = "MIT" }
@@ -9,7 +9,7 @@ requires-python = ">=3.10"
 dependencies = [
     "pygls>=2,<3",
     "tree-sitter>=0.25",
-    "tree-sitter-plantuml @ git+https://gitlab.semantiqa.dev/deriva/plantuml/tree-sitter-plantuml.git@v0.6.0",
+    "tree-sitter-plantuml @ git+https://gitlab.semantiqa.dev/deriva/plantuml/tree-sitter-plantuml.git@v0.7.0",
     "plantuml-fmt @ git+https://gitlab.semantiqa.dev/deriva/plantuml/plantuml-fmt.git@main",
 ]
 
