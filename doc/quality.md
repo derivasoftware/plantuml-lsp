@@ -24,7 +24,7 @@ and the last test runs. Absent evidence reads `?`, never a guess.
 | Source files | 13 |
 | Source lines | 1901 |
 | Documentation files | 5 |
-| Documentation lines (authored) | 161 |
+| Documentation lines (authored) | 173 |
 | Tests executed (UT) | 49 |
 | Tests executed (ST) | ? |
 | UT line coverage | 78% |

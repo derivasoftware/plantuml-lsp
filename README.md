@@ -1,14 +1,14 @@
 # plantuml-lsp
 
 <!-- folio: colophon --project plantuml-lsp --junit test-results/junit.xml --coverage_ut test-results/coverage-ut.xml -->
-![powered by: argos](https://img.shields.io/badge/powered%20by-argos-1f6feb) ![traced: 43%](https://img.shields.io/badge/traced-43%25-e05d44) ![verified: 100%](https://img.shields.io/badge/verified-100%25-2ea44f) ![tests: 100%](https://img.shields.io/badge/tests-100%25-2ea44f) ![UT: 78%](https://img.shields.io/badge/UT-78%25-dfb317) ![ST: n/a](https://img.shields.io/badge/ST-n%2Fa-lightgrey) ![diagnostics: 0](https://img.shields.io/badge/diagnostics-0-2ea44f)
+![powered by: argos](https://img.shields.io/badge/powered%20by-argos-1f6feb) ![traced: 100%](https://img.shields.io/badge/traced-100%25-2ea44f) ![verified: 100%](https://img.shields.io/badge/verified-100%25-2ea44f) ![tests: 100%](https://img.shields.io/badge/tests-100%25-2ea44f) ![UT: 78%](https://img.shields.io/badge/UT-78%25-dfb317) ![ST: n/a](https://img.shields.io/badge/ST-n%2Fa-lightgrey) ![diagnostics: 0](https://img.shields.io/badge/diagnostics-0-2ea44f)
 
-> **plantuml-lsp** is powered by **argos**. **folio** generates this documentation from the repository's model: 14 requirements · 14 verifications · 0 constraints. Quality: 43% traced to code · 100% verified · 100% tests passing · 78% UT coverage.
+> **plantuml-lsp** is powered by **argos**. **folio** generates this documentation from the repository's model: 14 requirements · 14 verifications · 0 constraints. Quality: 100% traced to code · 100% verified · 100% tests passing · 78% UT coverage.
 <!-- /folio -->
 
 PlantUML language server, built on
-[tree-sitter-plantuml](https://gitlab.semantiqa.dev/deriva/plantuml/tree-sitter-plantuml)
-and [plantuml-fmt](https://gitlab.semantiqa.dev/deriva/plantuml/plantuml-fmt).
+[tree-sitter-plantuml](https://github.com/derivasoftware/tree-sitter-plantuml)
+and [plantuml-fmt](https://github.com/derivasoftware/plantuml-fmt).
 Part of the `deriva/plantuml` family: grammar → formatter → LSP → editor.
 
 ## Install
@@ -18,10 +18,10 @@ itself. The block below is generated from the manifest and the latest tag:
 
 <!-- folio: install -->
 ```bash
-pip install git+https://gitlab.semantiqa.dev/deriva/plantuml/plantuml-lsp.git@v0.7.1
+pip install git+https://github.com/derivasoftware/plantuml-lsp.git@v0.7.1
 ```
 
-Or from a clone: `git clone https://gitlab.semantiqa.dev/deriva/plantuml/plantuml-lsp && pip install ./plantuml-lsp`.
+Or from a clone: `git clone https://github.com/derivasoftware/plantuml-lsp && pip install ./plantuml-lsp`.
 <!-- /folio -->
 
 Then run `plantuml-lsp`; it speaks LSP over stdio.
@@ -29,7 +29,7 @@ Then run `plantuml-lsp`; it speaks LSP over stdio.
 ## Use cases
 
 **Neovim**: install
-[plantuml.nvim](https://gitlab.semantiqa.dev/deriva/plantuml/plantuml.nvim).
+[plantuml.nvim](https://github.com/derivasoftware/plantuml.nvim).
 It builds the pinned grammar, wires this server and enables completion,
 hover, navigation and lints with no further setup.
 

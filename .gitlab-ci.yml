@@ -13,10 +13,6 @@ test:
   script:
     - |
       set -euo pipefail
-      export GIT_CONFIG_GLOBAL="$CI_PROJECT_DIR/.gitconfig-ci"
-      git config --file "$GIT_CONFIG_GLOBAL" \
-        url."https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}/".insteadOf \
-        "https://${CI_SERVER_HOST}/"
       python3 -m venv .venv-ci
       ./.venv-ci/bin/pip install -q -e ".[dev]"
       mkdir -p test-results

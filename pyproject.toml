@@ -9,8 +9,8 @@ requires-python = ">=3.10"
 dependencies = [
     "pygls>=2,<3",
     "tree-sitter>=0.25",
-    "tree-sitter-plantuml @ git+https://gitlab.semantiqa.dev/deriva/plantuml/tree-sitter-plantuml.git@v0.8.0",
-    "plantuml-fmt @ git+https://gitlab.semantiqa.dev/deriva/plantuml/plantuml-fmt.git@main",
+    "tree-sitter-plantuml @ git+https://github.com/derivasoftware/tree-sitter-plantuml.git@v0.8.0",
+    "plantuml-fmt @ git+https://github.com/derivasoftware/plantuml-fmt.git@v0.3.2",
 ]
 
 [project.optional-dependencies]
@@ -20,7 +20,7 @@ dev = ["pytest", "pytest-cov"]
 plantuml-lsp = "plantuml_lsp.server:main"
 
 [project.urls]
-Homepage = "https://gitlab.semantiqa.dev/deriva/plantuml/plantuml-lsp"
+Homepage = "https://github.com/derivasoftware/plantuml-lsp"
 
 [build-system]
 requires = ["setuptools>=68"]
