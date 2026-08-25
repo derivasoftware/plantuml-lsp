@@ -52,9 +52,22 @@ VS Code and Helix wiring plus the capability table.
 - Formatting delegated to plantuml-fmt: editor and pre-commit emit the
   same bytes.
 
+## Scope
+
+The family covers a standard-driven subset of PlantUML, never the whole
+language. Class diagrams: 125 of 149 standard constructs structural;
+sequence: 70 of 111, with the lifecycle verbs (activate, ref, box,
+delays) still raw; activity: actions and swimlanes structural, control
+flow raw. Everything else (deployment, components, state, mindmaps,
+gantt) parses lossless as raw lines, never an ERROR, but gets no
+structure. The language intelligence applies to the structured
+subset; other diagram types get parse diagnostics only.
+
 ## Documentation
 
 - [Client wiring](doc/clients.md): VS Code, Neovim, Helix; capability table
 - [Architecture](doc/architecture.md): the model's diagrams, rendered from source
 - [Requirements & status](doc/requirements.md): what was asked and the traceability matrix
 - [Repo quality](doc/quality.md): artefact inventory and health metrics
+
+*Not affiliated with or endorsed by the PlantUML project.*
