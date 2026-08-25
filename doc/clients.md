@@ -4,14 +4,13 @@ The server speaks LSP over **stdio**; install it where the editor can
 spawn it:
 
 ```bash
-pip install plantuml-lsp \
-  --index-url https://gitlab.semantiqa.dev/api/v4/groups/deriva/-/packages/pypi/simple
+pip install git+https://github.com/derivasoftware/plantuml-lsp.git@v0.7.2
 ```
 
 ## VS Code
 
 Install the family's own
-[plantuml-vscode](https://gitlab.semantiqa.dev/deriva/plantuml/plantuml-vscode)
+[plantuml-vscode](https://github.com/derivasoftware/plantuml-vscode)
 pack — it ships the client. Settings: `plantuml.lsp.path` (default
 `plantuml-lsp`, resolved through PATH) and `plantuml.lsp.enabled`.
 
