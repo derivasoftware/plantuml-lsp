@@ -7,18 +7,24 @@
 !startsub ServerModule
 
 namespace plantuml_lsp.server {
-  class "<<module>>" as ServerModule {
+  class did_open <<function>> {
     + did_open(ls: LanguageServer, params: DidOpenTextDocumentParams) : None
-    + did_change(ls: LanguageServer, params: DidChangeTextDocumentParams) : None
-    + document_symbol(ls: LanguageServer, params: DocumentSymbolParams)
-    + definition(ls: LanguageServer, params: DefinitionParams)
-    + formatting(ls: LanguageServer, params: DocumentFormattingParams)
-    + main() : None
-    - _publish(ls: LanguageServer, uri: str) : None
   }
-  ServerModule ..> plantuml_lsp.diagnostics.DiagnosticsModule
-  ServerModule ..> plantuml_lsp.symbols.SymbolsModule
-  ServerModule ..> plantuml_lsp.definitions.DefinitionsModule
+  class did_change <<function>> {
+    + did_change(ls: LanguageServer, params: DidChangeTextDocumentParams) : None
+  }
+  class document_symbol <<function>> {
+    + document_symbol(ls: LanguageServer, params: DocumentSymbolParams)
+  }
+  class definition <<function>> {
+    + definition(ls: LanguageServer, params: DefinitionParams)
+  }
+  class formatting <<function>> {
+    + formatting(ls: LanguageServer, params: DocumentFormattingParams)
+  }
+  class main <<function>> {
+    + main() : None
+  }
 }
 
 !endsub

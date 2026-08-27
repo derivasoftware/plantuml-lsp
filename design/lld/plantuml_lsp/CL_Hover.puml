@@ -4,13 +4,9 @@
 !startsub HoverModule
 
 namespace plantuml_lsp.hover {
-  class "<<module>>" as HoverModule {
+  class hover_for <<function>> {
     + hover_for(entity_id: str, index: Index, workspace: WorkspaceIndex | None) : str | None
-    - _card(entity: Entity) : list[str]
-    - _hover_body(entity: Entity, index: Index) : str
   }
-  HoverModule ..> plantuml_lsp.index.Index
-  HoverModule ..> plantuml_lsp.workspace.WorkspaceIndex
 }
 
 !endsub
