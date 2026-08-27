@@ -4,14 +4,15 @@
 !startsub ActionsModule
 
 namespace plantuml_lsp.actions {
-  class "<<module>>" as ActionsModule {
+  class declare_entity <<function>> {
     + declare_entity(name: str, doc_path: str, src: bytes) : FixTuple | None
-    + fix_include_path(row: int, line: str, doc_path: str, workspace: WorkspaceIndex) : FixTuple | None
-    + declare_method(method: str, entity: Entity, workspace: WorkspaceIndex) : FixTuple | None
-    - _body_of_declaration_at(root, src: bytes, entity: Entity)
   }
-  ActionsModule ..> plantuml_lsp.index.Entity
-  ActionsModule ..> plantuml_lsp.workspace.WorkspaceIndex
+  class fix_include_path <<function>> {
+    + fix_include_path(row: int, line: str, doc_path: str, workspace: WorkspaceIndex) : FixTuple | None
+  }
+  class declare_method <<function>> {
+    + declare_method(method: str, entity: Entity, workspace: WorkspaceIndex) : FixTuple | None
+  }
 }
 
 !endsub

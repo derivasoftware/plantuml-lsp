@@ -5,11 +5,12 @@
 !startsub CompletionModule
 
 namespace plantuml_lsp.completion {
-  class "<<module>>" as CompletionModule {
+  class collect_completions <<function>> {
     + collect_completions(index: Index) : list[CompletionTuple]
+  }
+  class contextual_completions <<function>> {
     + contextual_completions(src: bytes, row: int, col: int, index: Index, workspace: WorkspaceIndex | None) : list[ContextualTuple]
   }
-  CompletionModule ..> plantuml_lsp.index.Index
 }
 
 !endsub

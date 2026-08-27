@@ -4,19 +4,12 @@
 !startsub IndexModule
 
 namespace plantuml_lsp.index {
-  class "<<module>>" as IndexModule {
+  class build_index <<function>> {
     + build_index(doc_path: str, src: bytes) : Index
-    + identifier_at(src: bytes, row: int, col: int) : str | None
-    - _index_file(path: str, src: bytes, index: Index, seen: set[str]) : None
-    - _walk(node: Node, src: bytes, path: str, index: Index) : None
-    - _declared_kind(node: Node, src: bytes) : str | None
-    - _record_relation(node: Node, src: bytes, index: Index) : None
-    - _add(index: Index, node: Node, src: bytes, path: str, kind: str) : None
-    - _members(node: Node, src: bytes) : list[str]
-    - _scan_occurrences(node: Node, src: bytes, entity_id: str, path: str, found: list) : None
   }
-  IndexModule ..> plantuml_lsp.parsing.ParsingModule
-  IndexModule ..> plantuml_lsp.index.Index
+  class identifier_at <<function>> {
+    + identifier_at(src: bytes, row: int, col: int) : str | None
+  }
 }
 
 !endsub

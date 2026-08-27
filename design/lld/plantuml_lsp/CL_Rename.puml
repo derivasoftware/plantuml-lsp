@@ -4,10 +4,9 @@
 !startsub RenameModule
 
 namespace plantuml_lsp.rename {
-  class "<<module>>" as RenameModule {
+  class rename_edits <<function>> {
     + rename_edits(entity_id: str, new_name: str, index: Index) : list[EditTuple]
   }
-  RenameModule ..> plantuml_lsp.index.Index
 }
 
 !endsub
