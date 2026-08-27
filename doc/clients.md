@@ -4,7 +4,7 @@ The server speaks LSP over **stdio**; install it where the editor can
 spawn it:
 
 ```bash
-pip install git+https://github.com/derivasoftware/plantuml-lsp.git@v0.7.2
+pip install git+https://github.com/derivasoftware/plantuml-lsp.git@v0.7.3
 ```
 
 ## VS Code
