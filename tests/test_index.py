@@ -86,3 +86,15 @@ def test_resolve_entity_falls_back_to_the_tail():
     assert resolve_entity("Widget", entities) == "Widget"
     assert resolve_entity("maquina.Widget", entities) == "Widget"
     assert resolve_entity("otra.Cosa", entities) is None
+
+
+def test_plain_return_type_methods_reach_the_index(tmp_path):
+    # grammar 0.9.7 (tree-sitter-plantuml#7): a C++-direction member
+    # with a plain identifier return type is a method, so the drift
+    # lint sees `void execute()` as declared — the miss that motivated
+    # the issue.
+    doc = tmp_path / "cpp.puml"
+    src = b"@startuml\nclass Runner {\n  + void execute()\n}\n@enduml\n"
+    doc.write_text(src.decode())
+    index = build_index(str(doc), src)
+    assert "execute" in index.entities["Runner"].methods
