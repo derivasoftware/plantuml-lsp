@@ -3,10 +3,14 @@ verification:
   req_id: REQ-00005-1
   title: Index tests cover closure entities, alias ids, occurrences and cursor tokens
   description: >
-    Index tests cover closure entities, alias ids, occurrences and cursor tokens
+    Index tests cover closure entities, alias ids, occurrences and
+    cursor tokens; with grammar 0.9.7 one case pins that a C++
+    plain-return member (void execute()) reaches the method index —
+    the drift-lint miss tree-sitter-plantuml#7 reported.
   method: test
   test_ids:
     - tests/test_index.py::test_index_collects_document_and_closure_entities
     - tests/test_index.py::test_participants_index_by_alias
     - tests/test_index.py::test_occurrences_span_the_closure
     - tests/test_index.py::test_identifier_at_reads_the_token_under_the_cursor
+    - tests/test_index.py::test_plain_return_type_methods_reach_the_index

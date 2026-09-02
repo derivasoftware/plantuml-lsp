@@ -15,7 +15,7 @@ and the last test runs. Absent evidence reads `?`, never a guess.
 | Design diagrams | 17 |
 | Code classes | 4 |
 | Free functions | 89 |
-| Test cases | 49 |
+| Test cases | 50 |
 
 ### Metrics
 
@@ -25,7 +25,7 @@ and the last test runs. Absent evidence reads `?`, never a guess.
 | Source lines | 1901 |
 | Documentation files | 5 |
 | Documentation lines (authored) | 173 |
-| Tests executed (UT) | 49 |
+| Tests executed (UT) | 50 |
 | Tests executed (ST) | ? |
 | UT line coverage | 78% |
 | ST line coverage | ? |

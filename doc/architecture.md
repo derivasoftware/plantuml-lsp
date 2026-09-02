@@ -26,7 +26,7 @@ _cl · `design/lld/plantuml_lsp/CL_PlantumlLsp.puml`_
 
 - traces to: `REQ-00001-1` `REQ-00002-1` `REQ-00003-1` `REQ-00004-1` `REQ-00005-1` `REQ-00006-1` `REQ-00007-1` `REQ-00008-1` `REQ-00009-1` `REQ-00010-1` `REQ-00011-1` `REQ-00012-1` `REQ-00013-1` `REQ-00014-1`
 - implemented in: `src/plantuml_lsp/actions.py` · `src/plantuml_lsp/completion.py` · `src/plantuml_lsp/definitions.py` · `src/plantuml_lsp/diagnostics.py` · `src/plantuml_lsp/hover.py` · `src/plantuml_lsp/index.py` · `src/plantuml_lsp/links.py` · `src/plantuml_lsp/lints.py` · `src/plantuml_lsp/parsing.py` · `src/plantuml_lsp/rename.py` · `src/plantuml_lsp/server.py` · `src/plantuml_lsp/symbols.py` · `src/plantuml_lsp/workspace.py`
-- verified by: `tests/test_actions.py` (3) · `tests/test_completion_context.py` (5) · `tests/test_definitions.py` (3) · `tests/test_diagnostics.py` (2) · `tests/test_features_v1.py` (13) · `tests/test_formatting.py` (1) · `tests/test_index.py` (4) · `tests/test_server.py` (1) · `tests/test_symbols.py` (2) · `tests/test_workspace.py` (8)
+- verified by: `tests/test_actions.py` (3) · `tests/test_completion_context.py` (5) · `tests/test_definitions.py` (3) · `tests/test_diagnostics.py` (2) · `tests/test_features_v1.py` (13) · `tests/test_formatting.py` (1) · `tests/test_index.py` (5) · `tests/test_server.py` (1) · `tests/test_symbols.py` (2) · `tests/test_workspace.py` (8)
 
 ![CL_PlantumlLsp](assets/CL_PlantumlLsp.svg)
 
@@ -77,7 +77,7 @@ _cl · `design/lld/plantuml_lsp/CL_PlantumlLsp.puml`_
 <ul>
 <li>source: <code>design/lld/plantuml_lsp/CL_Entity.puml</code></li>
 <li>implemented in: <code>src/plantuml_lsp/index.py</code></li>
-<li>verified by: <code>tests/test_index.py</code> (4)</li>
+<li>verified by: <code>tests/test_index.py</code> (5)</li>
 </ul>
 <p><img alt="CL_Entity" src="assets/CL_Entity.svg"></p>
 </details>
@@ -87,7 +87,7 @@ _cl · `design/lld/plantuml_lsp/CL_PlantumlLsp.puml`_
 <ul>
 <li>source: <code>design/lld/plantuml_lsp/CL_Index.puml</code></li>
 <li>implemented in: <code>src/plantuml_lsp/index.py</code></li>
-<li>verified by: <code>tests/test_features_v1.py</code> (4), <code>tests/test_index.py</code> (4)</li>
+<li>verified by: <code>tests/test_features_v1.py</code> (4), <code>tests/test_index.py</code> (5)</li>
 </ul>
 <p><img alt="CL_Index" src="assets/CL_Index.svg"></p>
 </details>
@@ -97,7 +97,7 @@ _cl · `design/lld/plantuml_lsp/CL_PlantumlLsp.puml`_
 <ul>
 <li>source: <code>design/lld/plantuml_lsp/CL_IndexModule.puml</code></li>
 <li>implemented in: <code>src/plantuml_lsp/index.py</code></li>
-<li>verified by: <code>tests/test_index.py</code> (4)</li>
+<li>verified by: <code>tests/test_index.py</code> (5)</li>
 </ul>
 <p><img alt="CL_IndexModule" src="assets/CL_IndexModule.svg"></p>
 </details>
