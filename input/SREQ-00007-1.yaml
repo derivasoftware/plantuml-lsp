@@ -16,3 +16,6 @@ requirement:
   asil: QM
   parent_ids:
     - SREQ-00001-1
+  tags:
+    - language-tooling
+    - analysis
