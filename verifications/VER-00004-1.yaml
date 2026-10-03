@@ -6,4 +6,4 @@ verification:
     Formatting test pins the plantuml-fmt delegation
   method: test
   test_ids:
-    - tests/test_formatting.py::test_formatter_dependency_normalizes_indentation
+    - tests/integration/test_formatting.py::test_formatter_dependency_normalizes_indentation

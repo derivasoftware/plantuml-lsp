@@ -6,5 +6,5 @@ verification:
     Call tests cover name-only resolution, drift candidates and quiet free text
   method: test
   test_ids:
-    - tests/test_features_v1.py::test_call_resolution_matches_by_name_only
-    - tests/test_features_v1.py::test_call_drift_lint_flags_only_undeclared
+    - tests/integration/test_it_features_v1.py::test_call_resolution_matches_by_name_only
+    - tests/integration/test_it_features_v1.py::test_call_drift_lint_flags_only_undeclared

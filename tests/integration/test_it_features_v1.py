@@ -1,13 +1,15 @@
-"""LSP v1 pure features: completion, hover, references, rename, links, lints."""
+"""Integration tests: the functions the verifications register, which drive
+the product at its boundary; the rest of tests/unit/test_features_v1.py stays unit.
+"""
 
 from pathlib import Path
-
 from plantuml_lsp.completion import collect_completions
 from plantuml_lsp.hover import hover_for
 from plantuml_lsp.index import build_index
 from plantuml_lsp.links import collect_links
 from plantuml_lsp.lints import collect_lints
 from plantuml_lsp.rename import rename_edits
+
 
 SRC = """@startuml
 class Widget {
@@ -43,11 +45,6 @@ def test_hover_summarizes_an_entity(tmp_path):
     assert "**class** `Widget`" in text
     assert "+draw() : None" in text
     assert "Widget --> Drawable" in text
-
-
-def test_hover_unknown_returns_none(tmp_path):
-    _, index = idx(tmp_path)
-    assert hover_for("Nope", index) is None
 
 
 def test_references_and_rename_cover_declaration_and_uses(tmp_path):
@@ -123,33 +120,6 @@ def test_hover_enriches_participants_with_their_class_card(tmp_path):
     assert "CL_W.puml" in text
 
 
-def test_entity_definitions_resolve_types_and_qualified_names(tmp_path):
-    from plantuml_lsp.definitions import entity_definitions
-    from plantuml_lsp.workspace import WorkspaceIndex
-
-    (tmp_path / "CL_Pedido.puml").write_text(
-        "@startuml\nnamespace pedidos {\n  class Pedido\n}\n@enduml\n"
-    )
-    doc = tmp_path / "CL_Uso.puml"
-    doc.write_text(
-        "@startuml\nclass Cafetera {\n  +preparar(p: Pedido) : Taza\n}\n@enduml\n"
-    )
-    ws = WorkspaceIndex(str(tmp_path))
-    index = build_index(str(doc), doc.read_bytes())
-    for name in ("Pedido", "pedidos.Pedido"):
-        locs = entity_definitions(name, index, ws)
-        assert locs, name
-        assert locs[0][0].endswith("CL_Pedido.puml")
-
-
-def test_word_at_reads_opaque_positions():
-    from plantuml_lsp.index import word_at
-
-    src = b"@startuml\nclass C {\n  +preparar(pedido: Pedido) : Taza\n}\n@enduml\n"
-    assert word_at(src, 2, 22) == "Pedido"
-    assert word_at(src, 2, 31) == "Taza"
-
-
 def test_call_resolution_matches_by_name_only(tmp_path):
     from plantuml_lsp.definitions import call_at, resolve_call
     from plantuml_lsp.workspace import WorkspaceIndex
@@ -205,29 +175,6 @@ def test_call_drift_lint_flags_only_undeclared(tmp_path):
     msgs = [msg for *_span, msg, _sev in lints]
     assert any("afilar" in m for m in msgs)
     assert not any("moler" in m and "afilar" not in m for m in msgs)
-
-
-def test_call_lint_unknown_is_information(tmp_path):
-    from plantuml_lsp.lints import collect_call_lints
-    from plantuml_lsp.workspace import WorkspaceIndex
-
-    doc = tmp_path / "SEQ.puml"
-    lines = [
-        "@startuml",
-        "actor Barista",
-        "participant Cafetera",
-        "Cafetera --> Barista : error(mensaje)",
-        "@enduml",
-        "",
-    ]
-    src = "\n".join(lines).encode()
-    doc.write_bytes(src)
-    ws = WorkspaceIndex(str(tmp_path))
-    index = build_index(str(doc), src)
-    lints = collect_call_lints(src, index, ws)
-    assert len(lints) == 1
-    *_span, msg, sev = lints[0]
-    assert "error" in msg and sev == "information"
 
 
 def test_activity_actions_correlate_with_methods(tmp_path):

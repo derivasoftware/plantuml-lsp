@@ -7,6 +7,12 @@ namespace plantuml_lsp.diagnostics {
   class collect_diagnostics <<function>> {
     + collect_diagnostics(src: bytes) : list[DiagnosticTuple]
   }
+  class _entry <<function>> {
+    - _entry(node: Node, message: str) : DiagnosticTuple
+  }
+  class _walk <<function>> {
+    - _walk(node: Node, found: list[DiagnosticTuple]) : None
+  }
 }
 
 !endsub

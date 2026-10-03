@@ -6,5 +6,5 @@ verification:
     Symbol tests cover inventory and positions
   method: test
   test_ids:
-    - tests/test_symbols.py::test_symbols_inventory
-    - tests/test_symbols.py::test_symbol_positions_are_line_accurate
+    - tests/integration/test_symbols.py::test_symbols_inventory
+    - tests/integration/test_symbols.py::test_symbol_positions_are_line_accurate

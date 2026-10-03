@@ -13,6 +13,9 @@ namespace plantuml_lsp.actions {
   class declare_method <<function>> {
     + declare_method(method: str, entity: Entity, workspace: WorkspaceIndex) : FixTuple | None
   }
+  class _body_of_declaration_at <<function>> {
+    - _body_of_declaration_at(root, src: bytes, entity: Entity)
+  }
 }
 
 !endsub

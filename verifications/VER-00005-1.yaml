@@ -9,8 +9,8 @@ verification:
     the drift-lint miss tree-sitter-plantuml#7 reported.
   method: test
   test_ids:
-    - tests/test_index.py::test_index_collects_document_and_closure_entities
-    - tests/test_index.py::test_participants_index_by_alias
-    - tests/test_index.py::test_occurrences_span_the_closure
-    - tests/test_index.py::test_identifier_at_reads_the_token_under_the_cursor
-    - tests/test_index.py::test_plain_return_type_methods_reach_the_index
+    - tests/integration/test_it_index.py::test_index_collects_document_and_closure_entities
+    - tests/integration/test_it_index.py::test_participants_index_by_alias
+    - tests/integration/test_it_index.py::test_occurrences_span_the_closure
+    - tests/integration/test_it_index.py::test_identifier_at_reads_the_token_under_the_cursor
+    - tests/integration/test_it_index.py::test_plain_return_type_methods_reach_the_index
