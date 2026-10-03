@@ -7,6 +7,15 @@ namespace plantuml_lsp.symbols {
   class collect_symbols <<function>> {
     + collect_symbols(src: bytes) : list[SymbolTuple]
   }
+  class _entry <<function>> {
+    - _entry(name: str, kind: str, node: Node) : SymbolTuple
+  }
+  class _name_of <<function>> {
+    - _name_of(node: Node, src: bytes) : str
+  }
+  class _walk <<function>> {
+    - _walk(node: Node, src: bytes, ns: list[str], found: list[SymbolTuple]) : None
+  }
 }
 
 !endsub

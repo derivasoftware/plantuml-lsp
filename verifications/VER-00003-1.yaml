@@ -6,6 +6,6 @@ verification:
     Definition tests cover includesub, include and unresolvable lines
   method: test
   test_ids:
-    - tests/test_definitions.py::test_includesub_resolves_to_startsub_line
-    - tests/test_definitions.py::test_include_resolves_to_file_top
-    - tests/test_definitions.py::test_unresolvable_targets_return_none
+    - tests/integration/test_definitions.py::test_includesub_resolves_to_startsub_line
+    - tests/integration/test_definitions.py::test_include_resolves_to_file_top
+    - tests/integration/test_definitions.py::test_unresolvable_targets_return_none

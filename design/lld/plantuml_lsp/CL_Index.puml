@@ -4,6 +4,7 @@
 ' requirement REQ-00012-1
 
 !startsub Index
+!includesub ./CL_Entity.puml!Entity
 
 namespace plantuml_lsp.index {
   class Index {
@@ -19,6 +20,7 @@ namespace plantuml_lsp.index {
   Index ..> plantuml_lsp.index.Entity
 }
 
+Index *-- Entity
 !endsub
 
 @enduml

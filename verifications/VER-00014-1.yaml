@@ -6,6 +6,6 @@ verification:
     Action tests cover the three builders and their placement rules
   method: test
   test_ids:
-    - tests/test_actions.py::test_declare_entity_inserts_before_enduml
-    - tests/test_actions.py::test_fix_include_path_suggests_the_closest_file
-    - tests/test_actions.py::test_declare_method_inserts_the_skeleton_with_matching_indent
+    - tests/integration/test_actions.py::test_declare_entity_inserts_before_enduml
+    - tests/integration/test_actions.py::test_fix_include_path_suggests_the_closest_file
+    - tests/integration/test_actions.py::test_declare_method_inserts_the_skeleton_with_matching_indent

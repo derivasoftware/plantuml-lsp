@@ -6,5 +6,5 @@ verification:
     Diagnostics tests cover clean and broken sources
   method: test
   test_ids:
-    - tests/test_diagnostics.py::test_clean_source_has_no_diagnostics
-    - tests/test_diagnostics.py::test_broken_source_reports_positions
+    - tests/integration/test_diagnostics.py::test_clean_source_has_no_diagnostics
+    - tests/integration/test_diagnostics.py::test_broken_source_reports_positions

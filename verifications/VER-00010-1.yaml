@@ -6,4 +6,4 @@ verification:
     Drift tests cover exemptions for actors, implicit and lowercase participants
   method: test
   test_ids:
-    - tests/test_workspace.py::test_unmatched_participants_reports_only_plain_participants
+    - tests/integration/test_workspace.py::test_unmatched_participants_reports_only_plain_participants

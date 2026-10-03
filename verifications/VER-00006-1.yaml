@@ -6,8 +6,8 @@ verification:
     Feature tests cover completion, hover, rename edits and link resolution
   method: test
   test_ids:
-    - tests/test_features_v1.py::test_completion_offers_entities_and_keywords
-    - tests/test_features_v1.py::test_hover_summarizes_an_entity
-    - tests/test_features_v1.py::test_references_and_rename_cover_declaration_and_uses
-    - tests/test_features_v1.py::test_links_resolve_include_targets
-    - tests/test_server.py::test_server_wires_all_features
+    - tests/integration/test_it_features_v1.py::test_completion_offers_entities_and_keywords
+    - tests/integration/test_it_features_v1.py::test_hover_summarizes_an_entity
+    - tests/integration/test_it_features_v1.py::test_references_and_rename_cover_declaration_and_uses
+    - tests/integration/test_it_features_v1.py::test_links_resolve_include_targets
+    - tests/integration/test_it_server.py::test_server_wires_all_features

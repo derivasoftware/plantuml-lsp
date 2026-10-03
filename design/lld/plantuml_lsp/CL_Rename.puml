@@ -7,6 +7,9 @@ namespace plantuml_lsp.rename {
   class rename_edits <<function>> {
     + rename_edits(entity_id: str, new_name: str, index: Index) : list[EditTuple]
   }
+  class edits_from <<function>> {
+    + edits_from(occurrences: list[tuple[str, int, int, int]], new_name: str, read) : list[EditTuple]
+  }
 }
 
 !endsub

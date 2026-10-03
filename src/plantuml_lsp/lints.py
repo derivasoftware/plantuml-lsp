@@ -82,7 +82,7 @@ def _action_call_lints(index: Index, workspace) -> list:
     return found
 
 
-def collect_call_lints(src: bytes, index: Index, workspace):
+def collect_call_lints(src: bytes, index: Index, workspace) -> list[LintTuple]:
     """Call-shaped message labels whose receiver correlates with a
     class that does not declare the method — behaviour drifting from
     structure. Free-text labels and classless receivers stay silent."""

@@ -7,6 +7,18 @@ namespace plantuml_lsp.hover {
   class hover_for <<function>> {
     + hover_for(entity_id: str, index: Index, workspace: WorkspaceIndex | None) : str | None
   }
+  class _card <<function>> {
+    - _card(entity: Entity) : list[str]
+  }
+  class _hover_body <<function>> {
+    - _hover_body(entity: Entity, index: Index) : str
+  }
+  class _participant_enrichment <<function>> {
+    - _participant_enrichment(entity, index: Index, workspace: WorkspaceIndex | None) : str | None
+  }
+  class _workspace_card <<function>> {
+    - _workspace_card(entity_id: str, workspace: WorkspaceIndex | None)
+  }
 }
 
 !endsub

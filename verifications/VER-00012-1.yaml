@@ -6,5 +6,5 @@ verification:
     Activity tests cover lane receivers, drift tiers and cross-diagram call sites
   method: test
   test_ids:
-    - tests/test_features_v1.py::test_activity_actions_correlate_with_methods
-    - tests/test_features_v1.py::test_activity_drift_lints_use_the_lane
+    - tests/integration/test_it_features_v1.py::test_activity_actions_correlate_with_methods
+    - tests/integration/test_it_features_v1.py::test_activity_drift_lints_use_the_lane

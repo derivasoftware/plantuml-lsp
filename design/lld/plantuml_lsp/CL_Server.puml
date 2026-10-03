@@ -8,22 +8,64 @@
 
 namespace plantuml_lsp.server {
   class did_open <<function>> {
-    + did_open(ls: LanguageServer, params: DidOpenTextDocumentParams) : None
+    + did_open(ls: LanguageServer, params: types.DidOpenTextDocumentParams) : None
   }
   class did_change <<function>> {
-    + did_change(ls: LanguageServer, params: DidChangeTextDocumentParams) : None
+    + did_change(ls: LanguageServer, params: types.DidChangeTextDocumentParams) : None
   }
   class document_symbol <<function>> {
-    + document_symbol(ls: LanguageServer, params: DocumentSymbolParams)
+    + document_symbol(ls: LanguageServer, params: types.DocumentSymbolParams)
   }
   class definition <<function>> {
-    + definition(ls: LanguageServer, params: DefinitionParams)
+    + definition(ls: LanguageServer, params: types.DefinitionParams)
   }
   class formatting <<function>> {
-    + formatting(ls: LanguageServer, params: DocumentFormattingParams)
+    + formatting(ls: LanguageServer, params: types.DocumentFormattingParams)
   }
   class main <<function>> {
     + main() : None
+  }
+  class _entity_reference_locations <<function>> {
+    - _entity_reference_locations(name: str, index, ws) : list
+  }
+  class _index_of <<function>> {
+    - _index_of(ls: LanguageServer, uri: str)
+  }
+  class _merged_occurrences <<function>> {
+    - _merged_occurrences(name: str, index, ws: WorkspaceIndex)
+  }
+  class _method_reference_locations <<function>> {
+    - _method_reference_locations(name: str, index, ws, results: list) : None
+  }
+  class _publish <<function>> {
+    - _publish(ls: LanguageServer, uri: str) : None
+  }
+  class _range <<function>> {
+    - _range(sr: int, sc: int, er: int, ec: int) : types.Range
+  }
+  class _workspace_of <<function>> {
+    - _workspace_of(ls: LanguageServer, doc) : WorkspaceIndex
+  }
+  class code_action <<function>> {
+    + code_action(ls: LanguageServer, params: types.CodeActionParams)
+  }
+  class completion <<function>> {
+    + completion(ls: LanguageServer, params: types.CompletionParams)
+  }
+  class document_link <<function>> {
+    + document_link(ls: LanguageServer, params: types.DocumentLinkParams)
+  }
+  class hover <<function>> {
+    + hover(ls: LanguageServer, params: types.HoverParams)
+  }
+  class references <<function>> {
+    + references(ls: LanguageServer, params: types.ReferenceParams)
+  }
+  class rename <<function>> {
+    + rename(ls: LanguageServer, params: types.RenameParams)
+  }
+  class workspace_symbol <<function>> {
+    + workspace_symbol(ls: LanguageServer, params: types.WorkspaceSymbolParams)
   }
 }
 

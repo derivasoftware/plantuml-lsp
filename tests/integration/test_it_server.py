@@ -1,8 +1,5 @@
-"""Smoke test: the wiring module imports and registers every feature.
-
-This is the test that was missing when pygls 2 broke the import path —
-the pure feature modules were covered but nothing ever imported the
-server itself.
+"""Integration tests: the functions the verifications register, which drive
+the product at its boundary; the rest of tests/unit/test_server.py stays unit.
 """
 
 import plantuml_lsp.server as server_module
@@ -26,7 +23,3 @@ def test_server_wires_all_features():
         "workspace/symbol",
         "textDocument/codeAction",
     }
-
-
-def test_entrypoint_exists():
-    assert callable(server_module.main)
