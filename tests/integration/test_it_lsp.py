@@ -51,6 +51,40 @@ def test_publishes_parse_errors_lints_drift_and_participants(tmp_path):
     assert by_uri[uris["b.puml"]]
 
 
+def test_a_participant_naming_a_box_of_the_hld_resolves_and_is_not_an_orphan(tmp_path):
+    hld = "@startuml\nnamespace Engine <<package>> {\n}\n@enduml\n"
+    seq = "@startuml\nparticipant Engine\nparticipant Ghost\nEngine -> Ghost : run\n@enduml\n"
+    ls, uris = _setup(tmp_path, {"HLD.puml": hld, "HSEQ.puml": seq})
+    did_open(
+        ls,
+        types.DidOpenTextDocumentParams(
+            text_document=types.TextDocumentItem(
+                uri=uris["HSEQ.puml"], language_id="plantuml", version=1, text=""
+            )
+        ),
+    )
+    lints = [
+        d.message
+        for p in ls.published
+        if p.uri == uris["HSEQ.puml"]
+        for d in p.diagnostics
+    ]
+    assert any("Ghost" in m for m in lints)
+    assert not any("Engine" in m for m in lints)
+    card = hover(
+        ls,
+        types.HoverParams(text_document=doc_id(uris["HSEQ.puml"]), position=at(1, 14)),
+    )
+    assert "**package** `Engine`" in card.contents.value
+    locations = definition(
+        ls,
+        types.DefinitionParams(
+            text_document=doc_id(uris["HSEQ.puml"]), position=at(3, 2)
+        ),
+    )
+    assert any(loc.uri == uris["HLD.puml"] for loc in locations)
+
+
 def test_document_symbols_reach_the_editor(tmp_path):
     ls, uris = _setup(tmp_path)
     names = {

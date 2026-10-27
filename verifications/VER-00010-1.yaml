@@ -4,7 +4,11 @@ verification:
   title: Drift tests cover exemptions for actors, implicit and lowercase participants
   description: >
     Drift tests cover exemptions for actors, implicit and lowercase participants
+    A participant naming a box of the high-level design (a stereotyped
+    namespace or package) is explained: it resolves to the box, hovers its
+    card and is not linted as an orphan (DDEV-476).
   method: test
   test_ids:
     - tests/integration/test_workspace.py::test_unmatched_participants_reports_only_plain_participants
+    - "tests/integration/test_it_lsp.py::test_a_participant_naming_a_box_of_the_hld_resolves_and_is_not_an_orphan"
   status: APPROVED

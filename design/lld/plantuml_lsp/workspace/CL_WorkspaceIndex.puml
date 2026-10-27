@@ -25,6 +25,7 @@ namespace plantuml_lsp.workspace.WorkspaceIndex {
     + call_sites(method: str) : list[tuple[str, int, int, int]]
     + method_declarations(method: str) : list[Entity]
     + class_card(name: str) : Entity | None
+    + box_card(name: str) : Entity | None
     + entities_of(doc_path: str) : list[Entity]
   }
   WorkspaceIndex *-- _FileEntry

@@ -17,3 +17,5 @@ class Entity:
     members: list[str] = field(default_factory=list)
     # method name -> (row, scol, ecol, member line text)
     methods: dict[str, tuple[int, int, int, str]] = field(default_factory=dict)
+    # a high-level box: a stereotyped namespace or package, kind = stereotype
+    box: bool = False

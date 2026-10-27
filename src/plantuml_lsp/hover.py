@@ -29,7 +29,7 @@ def _workspace_card(entity_id: str, workspace: WorkspaceIndex | None):
     card = workspace.class_card(entity_id)
     if card is None and "." in entity_id:
         card = workspace.class_card(entity_id.rsplit(".", 1)[-1])
-    return card
+    return card or workspace.box_card(entity_id)
 
 
 def _participant_enrichment(
@@ -38,7 +38,12 @@ def _participant_enrichment(
     """A classless participant's hover, enriched with its class card."""
     if workspace is None or entity.kind in CLASS_KINDS or entity.members:
         return None
-    card = workspace.class_card(entity.id) or workspace.class_card(entity.name)
+    card = (
+        workspace.class_card(entity.id)
+        or workspace.class_card(entity.name)
+        or workspace.box_card(entity.id)
+        or workspace.box_card(entity.name)
+    )
     if card is None:
         return None
     return _hover_body(entity, index) + "\n\n---\n\n" + "\n".join(_card(card))
