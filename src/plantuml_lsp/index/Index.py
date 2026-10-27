@@ -28,6 +28,10 @@ _DECLARATIONS = {
     "enum_declaration": "enum",
 }
 
+# A stereotyped namespace or package is a box of the high-level design
+# (`namespace argos.cli <<package>>`): an entity whose kind is its stereotype.
+_BOX_BLOCKS = ("namespace_block", "package_block")
+
 _REFERENCE_FIELDS = ("left", "right", "target")
 
 _LABEL_CALL = re.compile(r"^\s*(\w+)\s*\(")
@@ -151,6 +155,10 @@ def _declared_kind(node: Node, src: bytes) -> str | None:
         if kind_node is not None:
             return node_text(src, kind_node)
         return "entity" if node.type == "entity_declaration" else "participant"
+    if node.type in _BOX_BLOCKS:
+        stereotype = node.child_by_field_name("stereotype")
+        if stereotype is not None:
+            return node_text(src, stereotype).strip("<> ")
     return None
 
 
@@ -179,6 +187,7 @@ def _add(index: Index, node: Node, src: bytes, path: str, kind: str) -> None:
         ecol=id_node.end_point[1],
         members=_members(node, src),
         methods=_methods(node, src),
+        box=node.type in _BOX_BLOCKS,
     )
     if entity_id in index.entities:
         index.duplicates.append(entity)

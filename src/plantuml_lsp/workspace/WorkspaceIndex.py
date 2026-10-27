@@ -168,6 +168,13 @@ class WorkspaceIndex:
                 return entity
         return None
 
+    def box_card(self, name: str) -> Entity | None:
+        """The high-level box a name denotes, if any."""
+        for entity in self.declarations(name):
+            if entity.box:
+                return entity
+        return None
+
     def entities_of(self, doc_path: str) -> list[Entity]:
         """The entities one indexed document declares, or none."""
         entry = self._files.get(str(Path(doc_path).resolve()))

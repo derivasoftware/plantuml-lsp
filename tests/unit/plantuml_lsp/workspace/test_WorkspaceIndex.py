@@ -24,3 +24,12 @@ def test_a_refresh_over_an_unchanged_tree_keeps_the_index(tmp_path: Path) -> Non
     before = [e.name for e in index.entities()]
     index.refresh()
     assert [e.name for e in index.entities()] == before == ["Widget"]
+
+
+def test_a_box_card_finds_the_box_a_name_denotes(tmp_path: Path) -> None:
+    (tmp_path / "HLD.puml").write_text(
+        "@startuml\nnamespace argos.cli <<package>> {\n}\nclass Widget\n@enduml\n"
+    )
+    ws = WorkspaceIndex(str(tmp_path))
+    assert ws.box_card("argos.cli").kind == "package"
+    assert ws.box_card("Widget") is None

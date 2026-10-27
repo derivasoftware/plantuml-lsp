@@ -20,4 +20,7 @@ def unmatched_participants(workspace: WorkspaceIndex, doc_path: str) -> list[Ent
         and e.name[:1].isupper()
         and workspace.class_card(e.id) is None
         and workspace.class_card(e.name) is None
+        # a participant naming a box of the high-level design is explained
+        and workspace.box_card(e.id) is None
+        and workspace.box_card(e.name) is None
     ]

@@ -14,6 +14,7 @@ namespace plantuml_lsp.index.Entity {
     + ecol : int
     + members : list[str]
     + methods : dict[str, tuple[int, int, int, str]]
+    + box : bool
   }
 }
 !endsub

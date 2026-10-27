@@ -33,6 +33,17 @@ def _workspace(tmp_path: Path) -> Path:
 
 
 class TestBuildIndex:
+    def test_a_stereotyped_namespace_is_a_box_whose_kind_is_its_stereotype(
+        self, tmp_path
+    ) -> None:
+        doc = tmp_path / "h.puml"
+        doc.write_bytes(
+            b"@startuml\nnamespace argos.cli <<package>> {\n}\nnamespace plain {\n}\n@enduml\n"
+        )
+        entities = build_index(str(doc), doc.read_bytes()).entities
+        assert entities["argos.cli"].box and entities["argos.cli"].kind == "package"
+        assert "plain" not in entities
+
     def test_indexes_the_document_and_its_include_closure(self, tmp_path) -> None:
         doc = _workspace(tmp_path)
         index = build_index(str(doc), doc.read_bytes())
