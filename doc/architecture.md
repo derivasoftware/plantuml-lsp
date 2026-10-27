@@ -20,165 +20,348 @@ _hld · `design/hld/HLD_PlantumlLsp.puml`_
 
 ### Module overview
 
+#### CL_Actions
+
+_cl · `design/lld/plantuml_lsp/CL_Actions.puml`_
+
+- traces to: `REQ-00014-1`
+- implemented in: `src/plantuml_lsp/actions.py`
+- verified by: `tests/integration/test_actions.py` (3) · `tests/integration/test_it_lsp.py` (1)
+
+![CL_Actions](assets/CL_Actions.svg)
+
+#### CL_Activities
+
+_cl · `design/lld/plantuml_lsp/correlation/CL_Activities.puml`_
+
+- traces to: `REQ-00012-2`
+- implemented in: `src/plantuml_lsp/correlation/activities.py`
+- verified by: `tests/integration/test_it_features_v1.py` (2)
+
+![CL_Activities](assets/CL_Activities.svg)
+
+#### CL_Context
+
+_cl · `design/lld/plantuml_lsp/completion/CL_Context.puml`_
+
+- traces to: `REQ-00013-2`
+- implemented in: `src/plantuml_lsp/completion/context.py`
+- verified by: `tests/integration/test_completion_context.py` (5) · `tests/integration/test_it_lsp.py` (1)
+
+![CL_Context](assets/CL_Context.svg)
+
+#### CL_Core
+
+_cl · `design/lld/plantuml_lsp/server/CL_Core.puml`_
+
+- traces to: `REQ-00021-1`
+- implemented in: `src/plantuml_lsp/server/core.py`
+- verified by: `tests/integration/test_it_lsp.py` (1) · `tests/integration/test_it_server.py` (1)
+
+![CL_Core](assets/CL_Core.svg)
+
+#### CL_Correlation
+
+_cl · `design/lld/plantuml_lsp/correlation/CL_Correlation.puml`_
+
+- traces to: `REQ-00016-1`
+- implemented in: `src/plantuml_lsp/correlation/activities.py` · `src/plantuml_lsp/correlation/messages.py` · `src/plantuml_lsp/correlation/participants.py`
+
+![CL_Correlation](assets/CL_Correlation.svg)
+
+#### CL_Cursor
+
+_cl · `design/lld/plantuml_lsp/index/CL_Cursor.puml`_
+
+- traces to: `REQ-00005-1`
+- implemented in: `src/plantuml_lsp/index/cursor.py`
+- verified by: `tests/integration/test_it_index.py` (5)
+
+![CL_Cursor](assets/CL_Cursor.svg)
+
+#### CL_Definitions
+
+_cl · `design/lld/plantuml_lsp/CL_Definitions.puml`_
+
+- traces to: `REQ-00003-1`
+- implemented in: `src/plantuml_lsp/definitions.py`
+- verified by: `tests/integration/test_definitions.py` (3) · `tests/integration/test_it_lsp.py` (2)
+
+![CL_Definitions](assets/CL_Definitions.svg)
+
+#### CL_Diagnostics
+
+_cl · `design/lld/plantuml_lsp/CL_Diagnostics.puml`_
+
+- traces to: `REQ-00001-1`
+- implemented in: `src/plantuml_lsp/diagnostics.py`
+- verified by: `tests/integration/test_diagnostics.py` (2) · `tests/integration/test_it_lsp.py` (1)
+
+![CL_Diagnostics](assets/CL_Diagnostics.svg)
+
+#### CL_EditorFeatures
+
+_cl · `design/lld/plantuml_lsp/CL_EditorFeatures.puml`_
+
+- traces to: `REQ-00006-1`
+- implemented in: `src/plantuml_lsp/completion/context.py` · `src/plantuml_lsp/completion/vocabulary.py` · `src/plantuml_lsp/hover.py` · `src/plantuml_lsp/links.py` · `src/plantuml_lsp/rename.py`
+
+![CL_EditorFeatures](assets/CL_EditorFeatures.svg)
+
+### Class detail
+
+<details>
+<summary><code>CL_Links</code> · traces to <code>REQ-00020-1</code></summary>
+<ul>
+<li>source: <code>design/lld/plantuml_lsp/CL_Links.puml</code></li>
+<li>implemented in: <code>src/plantuml_lsp/links.py</code></li>
+<li>verified by: <code>tests/integration/test_it_features_v1.py</code> (1), <code>tests/integration/test_it_lsp.py</code> (1)</li>
+</ul>
+<p><img alt="CL_Links" src="assets/CL_Links.svg"></p>
+</details>
+
+### Module overview
+
+#### CL_FileEntry
+
+_cl · `design/lld/plantuml_lsp/workspace/CL_FileEntry.puml`_
+
+- traces to: `REQ-00008-1`
+- implemented in: `src/plantuml_lsp/workspace/WorkspaceIndex.py`
+- verified by: `tests/integration/test_workspace.py` (3)
+
+![CL_FileEntry](assets/CL_FileEntry.svg)
+
+#### CL_Hover
+
+_cl · `design/lld/plantuml_lsp/CL_Hover.puml`_
+
+- traces to: `REQ-00018-1`
+- implemented in: `src/plantuml_lsp/hover.py`
+- verified by: `tests/integration/test_it_features_v1.py` (1) · `tests/integration/test_it_lsp.py` (1)
+
+![CL_Hover](assets/CL_Hover.svg)
+
+#### CL_Index
+
+_cl · `design/lld/plantuml_lsp/index/CL_Index.puml`_
+
+- traces to: `REQ-00005-1`
+- implemented in: `src/plantuml_lsp/index/Index.py`
+- verified by: `tests/integration/test_it_index.py` (5)
+
+![CL_Index](assets/CL_Index.svg)
+
+#### CL_Lints
+
+_cl · `design/lld/plantuml_lsp/CL_Lints.puml`_
+
+- traces to: `REQ-00007-1`
+- implemented in: `src/plantuml_lsp/lints.py`
+- verified by: `tests/integration/test_it_features_v1.py` (4)
+
+![CL_Lints](assets/CL_Lints.svg)
+
+#### CL_LspCodeActions
+
+_cl · `design/lld/plantuml_lsp/server/CL_LspCodeActions.puml`_
+
+- traces to: `REQ-00014-1`
+- implemented in: `src/plantuml_lsp/server/lsp_code_actions.py`
+- verified by: `tests/integration/test_actions.py` (3) · `tests/integration/test_it_lsp.py` (1)
+
+![CL_LspCodeActions](assets/CL_LspCodeActions.svg)
+
+#### CL_LspCompletion
+
+_cl · `design/lld/plantuml_lsp/server/CL_LspCompletion.puml`_
+
+- traces to: `REQ-00013-2`
+- implemented in: `src/plantuml_lsp/server/lsp_completion.py`
+- verified by: `tests/integration/test_completion_context.py` (5) · `tests/integration/test_it_lsp.py` (1)
+
+![CL_LspCompletion](assets/CL_LspCompletion.svg)
+
+#### CL_LspDefinition
+
+_cl · `design/lld/plantuml_lsp/server/CL_LspDefinition.puml`_
+
+- traces to: `REQ-00003-1`
+- implemented in: `src/plantuml_lsp/server/lsp_definition.py`
+- verified by: `tests/integration/test_definitions.py` (3) · `tests/integration/test_it_lsp.py` (2)
+
+![CL_LspDefinition](assets/CL_LspDefinition.svg)
+
+#### CL_LspDiagnostics
+
+_cl · `design/lld/plantuml_lsp/server/CL_LspDiagnostics.puml`_
+
+- traces to: `REQ-00001-1`
+- implemented in: `src/plantuml_lsp/server/lsp_diagnostics.py`
+- verified by: `tests/integration/test_diagnostics.py` (2) · `tests/integration/test_it_lsp.py` (1)
+
+![CL_LspDiagnostics](assets/CL_LspDiagnostics.svg)
+
+#### CL_LspFormatting
+
+_cl · `design/lld/plantuml_lsp/server/CL_LspFormatting.puml`_
+
+- traces to: `REQ-00004-1`
+- implemented in: `src/plantuml_lsp/server/lsp_formatting.py`
+- verified by: `tests/integration/test_formatting.py` (1) · `tests/integration/test_it_lsp.py` (1)
+
+![CL_LspFormatting](assets/CL_LspFormatting.svg)
+
+#### CL_LspHover
+
+_cl · `design/lld/plantuml_lsp/server/CL_LspHover.puml`_
+
+- traces to: `REQ-00018-1`
+- implemented in: `src/plantuml_lsp/server/lsp_hover.py`
+- verified by: `tests/integration/test_it_features_v1.py` (1) · `tests/integration/test_it_lsp.py` (1)
+
+![CL_LspHover](assets/CL_LspHover.svg)
+
+#### CL_LspLinks
+
+_cl · `design/lld/plantuml_lsp/server/CL_LspLinks.puml`_
+
+- traces to: `REQ-00020-1`
+- implemented in: `src/plantuml_lsp/server/lsp_links.py`
+- verified by: `tests/integration/test_it_features_v1.py` (1) · `tests/integration/test_it_lsp.py` (1)
+
+![CL_LspLinks](assets/CL_LspLinks.svg)
+
+#### CL_LspReferences
+
+_cl · `design/lld/plantuml_lsp/server/CL_LspReferences.puml`_
+
+- traces to: `REQ-00019-1`
+- implemented in: `src/plantuml_lsp/server/lsp_references.py`
+- verified by: `tests/integration/test_it_features_v1.py` (1) · `tests/integration/test_it_lsp.py` (1)
+
+![CL_LspReferences](assets/CL_LspReferences.svg)
+
+#### CL_LspSymbols
+
+_cl · `design/lld/plantuml_lsp/server/CL_LspSymbols.puml`_
+
+- traces to: `REQ-00002-1`
+- implemented in: `src/plantuml_lsp/server/lsp_symbols.py`
+- verified by: `tests/integration/test_it_lsp.py` (1) · `tests/integration/test_symbols.py` (2)
+
+![CL_LspSymbols](assets/CL_LspSymbols.svg)
+
+#### CL_LspWorkspaceSymbols
+
+_cl · `design/lld/plantuml_lsp/server/CL_LspWorkspaceSymbols.puml`_
+
+- traces to: `REQ-00009-1`
+- implemented in: `src/plantuml_lsp/server/lsp_workspace_symbols.py`
+- verified by: `tests/integration/test_it_features_v1.py` (1) · `tests/integration/test_it_lsp.py` (1) · `tests/integration/test_workspace.py` (4)
+
+![CL_LspWorkspaceSymbols](assets/CL_LspWorkspaceSymbols.svg)
+
+#### CL_Messages
+
+_cl · `design/lld/plantuml_lsp/correlation/CL_Messages.puml`_
+
+- traces to: `REQ-00011-2`
+- implemented in: `src/plantuml_lsp/correlation/messages.py`
+- verified by: `tests/integration/test_it_features_v1.py` (2) · `tests/integration/test_it_lsp.py` (1)
+
+![CL_Messages](assets/CL_Messages.svg)
+
+#### CL_Occurrences
+
+_cl · `design/lld/plantuml_lsp/index/CL_Occurrences.puml`_
+
+- traces to: `REQ-00005-1`
+- implemented in: `src/plantuml_lsp/index/occurrences.py`
+- verified by: `tests/integration/test_it_index.py` (5)
+
+![CL_Occurrences](assets/CL_Occurrences.svg)
+
+#### CL_Participants
+
+_cl · `design/lld/plantuml_lsp/correlation/CL_Participants.puml`_
+
+- traces to: `REQ-00010-2`
+- implemented in: `src/plantuml_lsp/correlation/participants.py`
+- verified by: `tests/integration/test_it_lsp.py` (1) · `tests/integration/test_workspace.py` (1)
+
+![CL_Participants](assets/CL_Participants.svg)
+
 #### CL_PlantumlLsp
 
 _cl · `design/lld/plantuml_lsp/CL_PlantumlLsp.puml`_
 
-- traces to: `REQ-00001-1` `REQ-00002-1` `REQ-00003-1` `REQ-00004-1` `REQ-00005-1` `REQ-00006-1` `REQ-00007-1` `REQ-00008-1` `REQ-00009-1` `REQ-00010-2` `REQ-00011-2` `REQ-00012-2` `REQ-00013-2` `REQ-00014-1`
-- implemented in: `src/plantuml_lsp/actions.py` · `src/plantuml_lsp/completion.py` · `src/plantuml_lsp/definitions.py` · `src/plantuml_lsp/diagnostics.py` · `src/plantuml_lsp/hover.py` · `src/plantuml_lsp/index.py` · `src/plantuml_lsp/links.py` · `src/plantuml_lsp/lints.py` · `src/plantuml_lsp/parsing.py` · `src/plantuml_lsp/rename.py` · `src/plantuml_lsp/server.py` · `src/plantuml_lsp/symbols.py` · `src/plantuml_lsp/workspace.py`
-- verified by: `tests/test_actions.py` (3) · `tests/test_completion_context.py` (5) · `tests/test_definitions.py` (3) · `tests/test_diagnostics.py` (2) · `tests/test_features_v1.py` (13) · `tests/test_formatting.py` (1) · `tests/test_index.py` (5) · `tests/test_server.py` (1) · `tests/test_symbols.py` (2) · `tests/test_workspace.py` (8)
+- traces to: `REQ-00001-1` `REQ-00002-1` `REQ-00003-1` `REQ-00004-1` `REQ-00005-1` `REQ-00006-1` `REQ-00007-1` `REQ-00008-1` `REQ-00009-1` `REQ-00010-2` `REQ-00013-2` `REQ-00014-1` `REQ-00015-1` `REQ-00011-2` `REQ-00012-2` `REQ-00016-1` `REQ-00017-1` `REQ-00018-1` `REQ-00019-1` `REQ-00020-1` `REQ-00021-1`
+- implemented in: `src/plantuml_lsp/actions.py` · `src/plantuml_lsp/completion/context.py` · `src/plantuml_lsp/completion/vocabulary.py` · `src/plantuml_lsp/correlation/activities.py` · `src/plantuml_lsp/correlation/messages.py` · `src/plantuml_lsp/correlation/participants.py` · `src/plantuml_lsp/definitions.py` · `src/plantuml_lsp/diagnostics.py` · `src/plantuml_lsp/hover.py` · `src/plantuml_lsp/index/Entity.py` · `src/plantuml_lsp/index/Index.py` · `src/plantuml_lsp/index/cursor.py` · `src/plantuml_lsp/index/occurrences.py` · `src/plantuml_lsp/links.py` · `src/plantuml_lsp/lints.py` · `src/plantuml_lsp/parsing.py` · `src/plantuml_lsp/rename.py` · `src/plantuml_lsp/server/core.py` · `src/plantuml_lsp/server/lsp_code_actions.py` · `src/plantuml_lsp/server/lsp_completion.py` · `src/plantuml_lsp/server/lsp_definition.py` · `src/plantuml_lsp/server/lsp_diagnostics.py` · `src/plantuml_lsp/server/lsp_formatting.py` · `src/plantuml_lsp/server/lsp_hover.py` · `src/plantuml_lsp/server/lsp_links.py` · `src/plantuml_lsp/server/lsp_references.py` · `src/plantuml_lsp/server/lsp_symbols.py` · `src/plantuml_lsp/server/lsp_workspace_symbols.py` · `src/plantuml_lsp/symbols.py` · `src/plantuml_lsp/workspace/WorkspaceIndex.py`
+- verified by: `tests/integration/test_actions.py` (3) · `tests/integration/test_completion_context.py` (5) · `tests/integration/test_definitions.py` (3) · `tests/integration/test_diagnostics.py` (2) · `tests/integration/test_formatting.py` (1) · `tests/integration/test_it_features_v1.py` (13) · `tests/integration/test_it_index.py` (5) · `tests/integration/test_it_lsp.py` (14) · `tests/integration/test_it_server.py` (1) · `tests/integration/test_symbols.py` (2) · `tests/integration/test_workspace.py` (8)
 
 ![CL_PlantumlLsp](assets/CL_PlantumlLsp.svg)
 
 ### Class detail
 
 <details>
-<summary><code>CL_Parsing</code> · traces to <code>REQ-00001-1</code></summary>
+<summary><code>CL_Parsing</code> · traces to <code>REQ-00015-1</code></summary>
 <ul>
 <li>source: <code>design/lld/plantuml_lsp/CL_Parsing.puml</code></li>
 <li>implemented in: <code>src/plantuml_lsp/parsing.py</code></li>
-<li>verified by: <code>tests/test_diagnostics.py</code> (2)</li>
 </ul>
 <p><img alt="CL_Parsing" src="assets/CL_Parsing.svg"></p>
 </details>
 
 <details>
-<summary><code>CL_Diagnostics</code> · traces to <code>REQ-00001-1</code></summary>
-<ul>
-<li>source: <code>design/lld/plantuml_lsp/CL_Diagnostics.puml</code></li>
-<li>implemented in: <code>src/plantuml_lsp/diagnostics.py</code></li>
-<li>verified by: <code>tests/test_diagnostics.py</code> (2)</li>
-</ul>
-<p><img alt="CL_Diagnostics" src="assets/CL_Diagnostics.svg"></p>
-</details>
-
-<details>
-<summary><code>CL_Symbols</code> · traces to <code>REQ-00002-1</code></summary>
-<ul>
-<li>source: <code>design/lld/plantuml_lsp/CL_Symbols.puml</code></li>
-<li>implemented in: <code>src/plantuml_lsp/symbols.py</code></li>
-<li>verified by: <code>tests/test_symbols.py</code> (2)</li>
-</ul>
-<p><img alt="CL_Symbols" src="assets/CL_Symbols.svg"></p>
-</details>
-
-<details>
-<summary><code>CL_Definitions</code> · traces to <code>REQ-00003-1</code> <code>REQ-00011-2</code> <code>REQ-00012-2</code></summary>
-<ul>
-<li>source: <code>design/lld/plantuml_lsp/CL_Definitions.puml</code></li>
-<li>implemented in: <code>src/plantuml_lsp/definitions.py</code></li>
-<li>verified by: <code>tests/test_definitions.py</code> (3), <code>tests/test_features_v1.py</code> (4)</li>
-</ul>
-<p><img alt="CL_Definitions" src="assets/CL_Definitions.svg"></p>
-</details>
-
-<details>
 <summary><code>CL_Entity</code> · traces to <code>REQ-00005-1</code></summary>
 <ul>
-<li>source: <code>design/lld/plantuml_lsp/CL_Entity.puml</code></li>
-<li>implemented in: <code>src/plantuml_lsp/index.py</code></li>
-<li>verified by: <code>tests/test_index.py</code> (5)</li>
+<li>source: <code>design/lld/plantuml_lsp/index/CL_Entity.puml</code></li>
+<li>implemented in: <code>src/plantuml_lsp/index/Entity.py</code></li>
+<li>verified by: <code>tests/integration/test_it_index.py</code> (5)</li>
 </ul>
 <p><img alt="CL_Entity" src="assets/CL_Entity.svg"></p>
 </details>
 
-<details>
-<summary><code>CL_Index</code> · traces to <code>REQ-00005-1</code> <code>REQ-00011-2</code> <code>REQ-00012-2</code></summary>
-<ul>
-<li>source: <code>design/lld/plantuml_lsp/CL_Index.puml</code></li>
-<li>implemented in: <code>src/plantuml_lsp/index.py</code></li>
-<li>verified by: <code>tests/test_features_v1.py</code> (4), <code>tests/test_index.py</code> (5)</li>
-</ul>
-<p><img alt="CL_Index" src="assets/CL_Index.svg"></p>
-</details>
+### Module overview
 
-<details>
-<summary><code>CL_IndexModule</code> · traces to <code>REQ-00005-1</code></summary>
-<ul>
-<li>source: <code>design/lld/plantuml_lsp/CL_IndexModule.puml</code></li>
-<li>implemented in: <code>src/plantuml_lsp/index.py</code></li>
-<li>verified by: <code>tests/test_index.py</code> (5)</li>
-</ul>
-<p><img alt="CL_IndexModule" src="assets/CL_IndexModule.svg"></p>
-</details>
+#### CL_Rename
 
-<details>
-<summary><code>CL_Completion</code> · traces to <code>REQ-00006-1</code> <code>REQ-00013-2</code></summary>
-<ul>
-<li>source: <code>design/lld/plantuml_lsp/CL_Completion.puml</code></li>
-<li>implemented in: <code>src/plantuml_lsp/completion.py</code></li>
-<li>verified by: <code>tests/test_completion_context.py</code> (5), <code>tests/test_features_v1.py</code> (4), <code>tests/test_server.py</code> (1)</li>
-</ul>
-<p><img alt="CL_Completion" src="assets/CL_Completion.svg"></p>
-</details>
+_cl · `design/lld/plantuml_lsp/CL_Rename.puml`_
 
-<details>
-<summary><code>CL_Hover</code> · traces to <code>REQ-00006-1</code></summary>
-<ul>
-<li>source: <code>design/lld/plantuml_lsp/CL_Hover.puml</code></li>
-<li>implemented in: <code>src/plantuml_lsp/hover.py</code></li>
-<li>verified by: <code>tests/test_features_v1.py</code> (4), <code>tests/test_server.py</code> (1)</li>
-</ul>
-<p><img alt="CL_Hover" src="assets/CL_Hover.svg"></p>
-</details>
+- traces to: `REQ-00019-1`
+- implemented in: `src/plantuml_lsp/rename.py`
+- verified by: `tests/integration/test_it_features_v1.py` (1) · `tests/integration/test_it_lsp.py` (1)
 
-<details>
-<summary><code>CL_Rename</code> · traces to <code>REQ-00006-1</code></summary>
-<ul>
-<li>source: <code>design/lld/plantuml_lsp/CL_Rename.puml</code></li>
-<li>implemented in: <code>src/plantuml_lsp/rename.py</code></li>
-<li>verified by: <code>tests/test_features_v1.py</code> (4), <code>tests/test_server.py</code> (1)</li>
-</ul>
-<p><img alt="CL_Rename" src="assets/CL_Rename.svg"></p>
-</details>
+![CL_Rename](assets/CL_Rename.svg)
 
-<details>
-<summary><code>CL_Links</code> · traces to <code>REQ-00006-1</code></summary>
-<ul>
-<li>source: <code>design/lld/plantuml_lsp/CL_Links.puml</code></li>
-<li>implemented in: <code>src/plantuml_lsp/links.py</code></li>
-<li>verified by: <code>tests/test_features_v1.py</code> (4), <code>tests/test_server.py</code> (1)</li>
-</ul>
-<p><img alt="CL_Links" src="assets/CL_Links.svg"></p>
-</details>
+#### CL_Symbols
 
-<details>
-<summary><code>CL_Lints</code> · traces to <code>REQ-00007-1</code> <code>REQ-00011-2</code> <code>REQ-00012-2</code></summary>
-<ul>
-<li>source: <code>design/lld/plantuml_lsp/CL_Lints.puml</code></li>
-<li>implemented in: <code>src/plantuml_lsp/lints.py</code></li>
-<li>verified by: <code>tests/test_features_v1.py</code> (8)</li>
-</ul>
-<p><img alt="CL_Lints" src="assets/CL_Lints.svg"></p>
-</details>
+_cl · `design/lld/plantuml_lsp/CL_Symbols.puml`_
 
-<details>
-<summary><code>CL_Actions</code> · traces to <code>REQ-00014-1</code></summary>
-<ul>
-<li>source: <code>design/lld/plantuml_lsp/CL_Actions.puml</code></li>
-<li>implemented in: <code>src/plantuml_lsp/actions.py</code></li>
-<li>verified by: <code>tests/test_actions.py</code> (3)</li>
-</ul>
-<p><img alt="CL_Actions" src="assets/CL_Actions.svg"></p>
-</details>
+- traces to: `REQ-00002-1`
+- implemented in: `src/plantuml_lsp/symbols.py`
+- verified by: `tests/integration/test_it_lsp.py` (1) · `tests/integration/test_symbols.py` (2)
 
-<details>
-<summary><code>CL_Workspace</code> · traces to <code>REQ-00008-1</code> <code>REQ-00009-1</code> <code>REQ-00010-2</code> <code>REQ-00011-2</code></summary>
-<ul>
-<li>source: <code>design/lld/plantuml_lsp/CL_Workspace.puml</code></li>
-<li>implemented in: <code>src/plantuml_lsp/workspace.py</code></li>
-<li>verified by: <code>tests/test_features_v1.py</code> (3), <code>tests/test_workspace.py</code> (8)</li>
-</ul>
-<p><img alt="CL_Workspace" src="assets/CL_Workspace.svg"></p>
-</details>
+![CL_Symbols](assets/CL_Symbols.svg)
 
-<details>
-<summary><code>CL_Server</code> · traces to <code>REQ-00001-1</code> <code>REQ-00002-1</code> <code>REQ-00003-1</code> <code>REQ-00004-1</code></summary>
-<ul>
-<li>source: <code>design/lld/plantuml_lsp/CL_Server.puml</code></li>
-<li>implemented in: <code>src/plantuml_lsp/server.py</code></li>
-<li>verified by: <code>tests/test_definitions.py</code> (3), <code>tests/test_diagnostics.py</code> (2), <code>tests/test_formatting.py</code> (1), <code>tests/test_symbols.py</code> (2)</li>
-</ul>
-<p><img alt="CL_Server" src="assets/CL_Server.svg"></p>
-</details>
+#### CL_Vocabulary
+
+_cl · `design/lld/plantuml_lsp/completion/CL_Vocabulary.puml`_
+
+- traces to: `REQ-00017-1`
+- implemented in: `src/plantuml_lsp/completion/vocabulary.py`
+- verified by: `tests/integration/test_it_features_v1.py` (1)
+
+![CL_Vocabulary](assets/CL_Vocabulary.svg)
+
+#### CL_WorkspaceIndex
+
+_cl · `design/lld/plantuml_lsp/workspace/CL_WorkspaceIndex.puml`_
+
+- traces to: `REQ-00008-1`
+- implemented in: `src/plantuml_lsp/workspace/WorkspaceIndex.py`
+- verified by: `tests/integration/test_workspace.py` (3)
+
+![CL_WorkspaceIndex](assets/CL_WorkspaceIndex.svg)
 <!-- /folio -->
