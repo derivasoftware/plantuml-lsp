@@ -7,4 +7,4 @@ verification:
   method: test
   test_ids:
     - tests/integration/test_it_features_v1.py::test_completion_offers_entities_and_keywords
-  status: DRAFT
+  status: APPROVED

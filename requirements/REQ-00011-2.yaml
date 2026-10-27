@@ -11,7 +11,7 @@ requirement:
     receiver correlates with a class that does not declare the method
     (free-text labels and classless receivers stay silent). The index
     stores per-method declaration locations for this.
-  status: DRAFT
+  status: APPROVED
   asil: QM
   parent_ids:
     - REQ-00016-1

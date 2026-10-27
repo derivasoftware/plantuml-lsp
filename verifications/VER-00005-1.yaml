@@ -14,3 +14,4 @@ verification:
     - tests/integration/test_it_index.py::test_occurrences_span_the_closure
     - tests/integration/test_it_index.py::test_identifier_at_reads_the_token_under_the_cursor
     - tests/integration/test_it_index.py::test_plain_return_type_methods_reach_the_index
+  status: APPROVED

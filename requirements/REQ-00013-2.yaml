@@ -13,7 +13,7 @@ requirement:
     participant kind, workspace classes; at a statement head, keywords
     plus document entities; anywhere else, silence — noise is the
     enemy of completion.
-  status: DRAFT
+  status: APPROVED
   asil: QM
   parent_ids:
     - REQ-00017-1

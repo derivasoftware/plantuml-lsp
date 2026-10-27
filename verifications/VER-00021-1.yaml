@@ -8,4 +8,4 @@ verification:
   test_ids:
     - tests/integration/test_it_server.py::test_server_wires_all_features
     - tests/integration/test_it_lsp.py::test_the_core_keeps_one_workspace_index_per_root
-  status: DRAFT
+  status: APPROVED

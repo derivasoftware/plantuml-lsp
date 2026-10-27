@@ -8,3 +8,4 @@ verification:
   test_ids:
     - tests/integration/test_it_features_v1.py::test_call_resolution_matches_by_name_only
     - tests/integration/test_it_features_v1.py::test_call_drift_lint_flags_only_undeclared
+  status: APPROVED

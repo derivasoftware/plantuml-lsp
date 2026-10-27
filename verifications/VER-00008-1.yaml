@@ -9,3 +9,4 @@ verification:
     - tests/integration/test_workspace.py::test_scans_the_tree_and_skips_vendored_dirs
     - tests/integration/test_workspace.py::test_refresh_picks_up_edits_and_deletions
     - tests/integration/test_workspace.py::test_occurrences_span_the_workspace
+  status: APPROVED

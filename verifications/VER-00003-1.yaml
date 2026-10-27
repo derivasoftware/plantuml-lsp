@@ -11,3 +11,4 @@ verification:
     - tests/integration/test_definitions.py::test_unresolvable_targets_return_none
     - tests/integration/test_it_lsp.py::test_definition_lands_on_the_method_a_call_names
     - tests/integration/test_it_lsp.py::test_definition_lands_on_an_includesub_block
+  status: APPROVED

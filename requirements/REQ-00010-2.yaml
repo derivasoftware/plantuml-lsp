@@ -11,7 +11,7 @@ requirement:
     neither id nor display name correlates with any structural
     declaration in the workspace. Validated against the argos HSEQ
     corpus: zero noise on clean diagrams.
-  status: DRAFT
+  status: APPROVED
   asil: QM
   parent_ids:
     - REQ-00016-1
