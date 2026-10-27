@@ -54,6 +54,12 @@ class TestTierLint:
         assert tier_lint("unknown", None, "volar", (1, 2, 1, 7))[-1] == "information"
         assert tier_lint("declared", E, "preparar", (1, 2, 1, 7)) is None
 
+    def test_a_homonym_is_silent_like_every_classless_receiver(self) -> None:
+        class E:
+            id = "Molinillo"
+
+        assert tier_lint("homonym", E, "moler", (1, 2, 1, 7)) is None
+
 
 class TestLabelCallLints:
     def test_only_the_drifting_label_is_linted(self, tmp_path: Path) -> None:

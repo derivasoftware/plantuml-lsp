@@ -26,9 +26,14 @@ def hover(ls: LanguageServer, params: types.HoverParams):
             tier, entity, loc = resolve_call(
                 call[0], call[1], index, workspace_of(ls, doc)
             )
-            if tier == "declared" and loc is not None:
+            if tier in ("declared", "homonym") and loc is not None:
                 _r, _s, _e, member_text = loc
                 text = f"**{entity.kind}** `{entity.id}`\n\n```\n{member_text}\n```"
+                if tier == "homonym":
+                    text = (
+                        f"_`{call[0]}` correlates with no class: a method named "
+                        f"`{call[1]}` is declared in `{entity.id}`._\n\n" + text
+                    )
     if text is None:
         return None
     return types.Hover(

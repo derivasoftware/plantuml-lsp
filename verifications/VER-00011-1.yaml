@@ -4,8 +4,12 @@ verification:
   title: Call tests cover name-only resolution, drift candidates and quiet free text
   description: >
     Call tests cover name-only resolution, drift candidates and quiet free text
+    A classless receiver whose method name some class declares is a homonym:
+    gd and hover still jump to it and the hover says no class correlates,
+    never a declared correlation (DDEV-477).
   method: test
   test_ids:
     - tests/integration/test_it_features_v1.py::test_call_resolution_matches_by_name_only
     - tests/integration/test_it_features_v1.py::test_call_drift_lint_flags_only_undeclared
+    - "tests/integration/test_it_lsp.py::test_a_classless_receiver_jumps_to_a_homonym_and_says_so"
   status: APPROVED
