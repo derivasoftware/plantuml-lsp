@@ -38,7 +38,7 @@ def definition(ls: LanguageServer, params: types.DefinitionParams):
         tier, entity, loc = resolve_call(
             call[0], call[1], index, workspace_of(ls, doc2)
         )
-        if tier == "declared" and loc is not None:
+        if tier in ("declared", "homonym") and loc is not None:
             mrow, mscol, mecol, _text = loc
             return types.Location(
                 uri=f"file://{entity.path}",

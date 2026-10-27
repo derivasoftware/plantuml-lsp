@@ -73,13 +73,15 @@ def _receiver_candidates(receiver: str, index, workspace) -> list:
 
 
 def resolve_call(receiver: str, method: str, index, workspace):
-    """Three tiers, as ('declared'|'drift'|'unknown', entity|None,
+    """Four tiers, as ('declared'|'drift'|'homonym'|'unknown', entity|None,
     location|None):
 
-    - declared: the receiver's class (or, receiver classless, some
-      class in the workspace) declares the method — gd/hover target;
+    - declared: the receiver's class declares the method — gd/hover target;
     - drift: the receiver correlates with a class that does NOT
       declare it — behaviour drifting from structure (warning);
+    - homonym: the receiver correlates with no class, but some class in
+      the workspace declares a method of that name — a best-effort gd/hover
+      target, never a correlation (silent, like every classless receiver);
     - unknown: no receiver class and no class anywhere declares it
       (information)."""
     candidates = _receiver_candidates(receiver, index, workspace)
@@ -91,7 +93,7 @@ def resolve_call(receiver: str, method: str, index, workspace):
             return "drift", entity, None
     if workspace is not None:
         for entity in workspace.method_declarations(method):
-            return "declared", entity, entity.methods[method]
+            return "homonym", entity, entity.methods[method]
     return "unknown", None, None
 
 

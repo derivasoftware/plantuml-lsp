@@ -145,9 +145,10 @@ def test_call_resolution_matches_by_name_only(tmp_path):
     # undeclared method on a correlated class -> drift
     tier2, entity2, _ = resolve_call("Molinillo", "afilar", index, ws)
     assert tier2 == "drift" and entity2.kind == "class"
-    # classless receiver, method declared somewhere -> best-effort jump
+    # classless receiver, method declared somewhere -> a homonym: a
+    # best-effort jump, never claimed as a correlation (DDEV-477)
     tier3, entity3, loc3 = resolve_call("Actor", "moler", index, ws)
-    assert tier3 == "declared" and loc3 is not None
+    assert tier3 == "homonym" and entity3.id == "Molinillo" and loc3 is not None
     # classless receiver, declared nowhere -> unknown
     tier4, _e, _l = resolve_call("Actor", "inventado", index, ws)
     assert tier4 == "unknown"

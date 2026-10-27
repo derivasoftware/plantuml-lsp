@@ -127,6 +127,21 @@ def test_hover_shows_the_card_and_the_declared_method_of_a_call(tmp_path):
     assert "+preparar() : Taza" in call.contents.value
 
 
+def test_a_classless_receiver_jumps_to_a_homonym_and_says_so(tmp_path):
+    seq = "@startuml\nrepo -> repo : preparar()\n@enduml\n"
+    ls, uris = _setup(tmp_path, {"c.puml": CLASSES, "h.puml": seq})
+    pos = at(1, len("repo -> repo : pre"))
+    card = hover(
+        ls, types.HoverParams(text_document=doc_id(uris["h.puml"]), position=pos)
+    )
+    assert "correlates with no class" in card.contents.value
+    assert "+preparar() : Taza" in card.contents.value
+    loc = definition(
+        ls, types.DefinitionParams(text_document=doc_id(uris["h.puml"]), position=pos)
+    )
+    assert loc.uri == uris["c.puml"] and loc.range.start.line == 2
+
+
 def test_references_and_rename_span_the_workspace(tmp_path):
     ls, uris = _setup(tmp_path)
     refs = references(
