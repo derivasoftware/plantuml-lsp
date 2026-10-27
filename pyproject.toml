@@ -9,7 +9,7 @@ requires-python = ">=3.10"
 dependencies = [
     "pygls>=2,<3",
     "tree-sitter>=0.25",
-    "tree-sitter-plantuml @ git+https://github.com/derivasoftware/tree-sitter-plantuml.git@v0.9.7",
+    "tree-sitter-plantuml @ git+https://github.com/derivasoftware/tree-sitter-plantuml.git@v0.10.0",
     "plantuml-fmt @ git+https://github.com/derivasoftware/plantuml-fmt.git@v0.5.3",
 ]
 
