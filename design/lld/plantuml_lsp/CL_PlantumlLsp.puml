@@ -19,6 +19,7 @@
 ' requirement REQ-00018-1
 ' requirement REQ-00019-1
 ' requirement REQ-00020-1
+' requirement REQ-00021-1
 
 !startsub ParsingModule
 !includesub ./CL_Parsing.puml!ParsingModule
@@ -96,8 +97,48 @@
 !includesub ./workspace/CL_WorkspaceIndex.puml!WorkspaceIndex
 !endsub
 
-!startsub ServerModule
-!includesub ./CL_Server.puml!ServerModule
+!startsub Core
+!includesub ./server/CL_Core.puml!Core
+!endsub
+
+!startsub LspDiagnostics
+!includesub ./server/CL_LspDiagnostics.puml!LspDiagnostics
+!endsub
+
+!startsub LspSymbols
+!includesub ./server/CL_LspSymbols.puml!LspSymbols
+!endsub
+
+!startsub LspDefinition
+!includesub ./server/CL_LspDefinition.puml!LspDefinition
+!endsub
+
+!startsub LspFormatting
+!includesub ./server/CL_LspFormatting.puml!LspFormatting
+!endsub
+
+!startsub LspCompletion
+!includesub ./server/CL_LspCompletion.puml!LspCompletion
+!endsub
+
+!startsub LspHover
+!includesub ./server/CL_LspHover.puml!LspHover
+!endsub
+
+!startsub LspReferences
+!includesub ./server/CL_LspReferences.puml!LspReferences
+!endsub
+
+!startsub LspLinks
+!includesub ./server/CL_LspLinks.puml!LspLinks
+!endsub
+
+!startsub LspWorkspaceSymbols
+!includesub ./server/CL_LspWorkspaceSymbols.puml!LspWorkspaceSymbols
+!endsub
+
+!startsub LspCodeActions
+!includesub ./server/CL_LspCodeActions.puml!LspCodeActions
 !endsub
 
 @enduml

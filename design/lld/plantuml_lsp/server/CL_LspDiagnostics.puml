@@ -1,0 +1,24 @@
+@startuml CL_LspDiagnostics
+' requirement REQ-00001-1
+
+!startsub LspDiagnostics
+!includesub ./CL_Core.puml!Core
+!includesub ../CL_Diagnostics.puml!DiagnosticsModule
+!includesub ../CL_Lints.puml!LintsModule
+!includesub ../correlation/CL_Participants.puml!Participants
+
+namespace plantuml_lsp.server.lsp_diagnostics {
+  class publish <<function>> {
+    + publish(ls: LanguageServer, uri: str) : None
+  }
+  class did_open <<function>> {
+    + did_open(ls: LanguageServer, params: types.DidOpenTextDocumentParams) : None
+  }
+  class did_change <<function>> {
+    + did_change(ls: LanguageServer, params: types.DidChangeTextDocumentParams) : None
+  }
+}
+
+!endsub
+
+@enduml

@@ -1,0 +1,16 @@
+@startuml CL_LspCompletion
+' requirement REQ-00013-2
+
+!startsub LspCompletion
+!includesub ./CL_Core.puml!Core
+!includesub ../completion/CL_Context.puml!Context
+
+namespace plantuml_lsp.server.lsp_completion {
+  class completion <<function>> {
+    + completion(ls: LanguageServer, params: types.CompletionParams)
+  }
+}
+
+!endsub
+
+@enduml

@@ -7,4 +7,5 @@ verification:
   method: test
   test_ids:
     - tests/integration/test_it_features_v1.py::test_links_resolve_include_targets
+    - tests/integration/test_it_lsp.py::test_document_links_point_at_the_included_files
   status: DRAFT

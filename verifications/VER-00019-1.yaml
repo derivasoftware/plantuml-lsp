@@ -7,4 +7,5 @@ verification:
   method: test
   test_ids:
     - tests/integration/test_it_features_v1.py::test_references_and_rename_cover_declaration_and_uses
+    - tests/integration/test_it_lsp.py::test_references_and_rename_span_the_workspace
   status: DRAFT

@@ -7,4 +7,5 @@ verification:
   method: test
   test_ids:
     - tests/integration/test_it_features_v1.py::test_hover_summarizes_an_entity
+    - tests/integration/test_it_lsp.py::test_hover_shows_the_card_and_the_declared_method_of_a_call
   status: DRAFT

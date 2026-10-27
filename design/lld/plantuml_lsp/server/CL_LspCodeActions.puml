@@ -1,0 +1,16 @@
+@startuml CL_LspCodeActions
+' requirement REQ-00014-1
+
+!startsub LspCodeActions
+!includesub ./CL_Core.puml!Core
+!includesub ../CL_Actions.puml!ActionsModule
+
+namespace plantuml_lsp.server.lsp_code_actions {
+  class code_action <<function>> {
+    + code_action(ls: LanguageServer, params: types.CodeActionParams)
+  }
+}
+
+!endsub
+
+@enduml

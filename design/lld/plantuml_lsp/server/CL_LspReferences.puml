@@ -1,0 +1,26 @@
+@startuml CL_LspReferences
+' requirement REQ-00019-1
+
+!startsub LspReferences
+!includesub ./CL_Core.puml!Core
+!includesub ../CL_Rename.puml!RenameModule
+!includesub ../index/CL_Cursor.puml!Cursor
+
+namespace plantuml_lsp.server.lsp_references {
+  class _entity_reference_locations <<function>> {
+    - _entity_reference_locations(name: str, index, ws) : list
+  }
+  class _method_reference_locations <<function>> {
+    - _method_reference_locations(name: str, index, ws, results: list) : None
+  }
+  class references <<function>> {
+    + references(ls: LanguageServer, params: types.ReferenceParams)
+  }
+  class rename <<function>> {
+    + rename(ls: LanguageServer, params: types.RenameParams)
+  }
+}
+
+!endsub
+
+@enduml

@@ -9,3 +9,4 @@ verification:
     - tests/integration/test_actions.py::test_declare_entity_inserts_before_enduml
     - tests/integration/test_actions.py::test_fix_include_path_suggests_the_closest_file
     - tests/integration/test_actions.py::test_declare_method_inserts_the_skeleton_with_matching_indent
+    - tests/integration/test_it_lsp.py::test_code_actions_offer_a_fix_per_lint

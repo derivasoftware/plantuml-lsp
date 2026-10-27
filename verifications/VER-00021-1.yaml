@@ -1,0 +1,11 @@
+verification:
+  id: VER-00021-1
+  req_id: REQ-00021-1
+  title: Integration tests drive the core, every request wired and one workspace index per root
+  description: >
+    Integration tests drive the core: every request wired, one workspace index per root
+  method: test
+  test_ids:
+    - tests/integration/test_it_server.py::test_server_wires_all_features
+    - tests/integration/test_it_lsp.py::test_the_core_keeps_one_workspace_index_per_root
+  status: DRAFT

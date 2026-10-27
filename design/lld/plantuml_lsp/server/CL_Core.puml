@@ -1,0 +1,28 @@
+@startuml CL_Core
+' requirement REQ-00021-1
+
+!startsub Core
+!includesub ../index/CL_Index.puml!Index
+!includesub ../workspace/CL_WorkspaceIndex.puml!WorkspaceIndex
+
+namespace plantuml_lsp.server.core {
+  class range_of <<function>> {
+    + range_of(sr: int, sc: int, er: int, ec: int) : types.Range
+  }
+  class index_of <<function>> {
+    + index_of(ls: LanguageServer, uri: str)
+  }
+  class workspace_of <<function>> {
+    + workspace_of(ls: LanguageServer, doc) : WorkspaceIndex
+  }
+  class merged_occurrences <<function>> {
+    + merged_occurrences(name: str, index, ws: WorkspaceIndex)
+  }
+  class main <<function>> {
+    + main() : None
+  }
+}
+
+!endsub
+
+@enduml

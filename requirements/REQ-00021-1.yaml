@@ -1,0 +1,13 @@
+requirement:
+  id: REQ-00021-1
+  title: The server shall serve the PlantUML features over LSP from one pygls instance whose handlers delegate to the feature modules
+  description: >
+    One pygls LanguageServer instance registers a handler for every supported request; the handlers turn the request into a call on the feature modules and their result into the protocol's types, and share one workspace index per root.
+  rationale: >
+    Owner of plantuml_lsp.server.core (BOK-00321-2): the boundary to the editor is one instance and one set of shared helpers (the document's index, one workspace index per root, LSP ranges); each LSP request is a handler module owned by the feature it serves, so the protocol mapping of a feature lives beside it in the requirement tree.
+  status: DRAFT
+  asil: QM
+  parent_ids:
+    - SREQ-00001-1
+  tags:
+    - server

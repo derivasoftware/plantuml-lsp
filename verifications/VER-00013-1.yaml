@@ -11,3 +11,4 @@ verification:
     - tests/integration/test_completion_context.py::test_lane_methods_in_an_activity_action
     - tests/integration/test_completion_context.py::test_keywords_and_entities_at_statement_head
     - tests/integration/test_completion_context.py::test_silence_in_free_label_text
+    - tests/integration/test_it_lsp.py::test_completion_maps_methods_after_a_message_colon

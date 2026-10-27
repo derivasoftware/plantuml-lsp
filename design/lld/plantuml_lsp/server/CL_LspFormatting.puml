@@ -1,0 +1,15 @@
+@startuml CL_LspFormatting
+' requirement REQ-00004-1
+
+!startsub LspFormatting
+!includesub ./CL_Core.puml!Core
+
+namespace plantuml_lsp.server.lsp_formatting {
+  class formatting <<function>> {
+    + formatting(ls: LanguageServer, params: types.DocumentFormattingParams)
+  }
+}
+
+!endsub
+
+@enduml
