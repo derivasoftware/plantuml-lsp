@@ -11,3 +11,6 @@ __pycache__/
 *.egg-info/
 test-results/
 .coverage
+
+# setuptools' build tree: a tracked copy is installed in place of src/ (PUML-93)
+build/
