@@ -10,6 +10,7 @@ requirement:
     rename map occurrences across the closure (quoted occurrences keep
     their quotes); include directives become clickable document links.
   status: APPROVED
+  implementation_optional: true
   asil: QM
   parent_ids:
     - SREQ-00006-1
