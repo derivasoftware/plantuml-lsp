@@ -20,6 +20,7 @@ namespace plantuml_lsp.workspace.WorkspaceIndex {
     + declarations(name: str) : list[Entity]
     + symbols(query: str) : list[Entity]
     + occurrences(name: str) : list[tuple[str, int, int, int]]
+    + file_paths() : list[str]
     + file_bytes(path: str) : bytes | None
     + call_sites(method: str) : list[tuple[str, int, int, int]]
     + method_declarations(method: str) : list[Entity]

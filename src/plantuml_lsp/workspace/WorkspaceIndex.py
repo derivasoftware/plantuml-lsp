@@ -138,6 +138,10 @@ class WorkspaceIndex:
             scan_occurrences(parse(entry.src).root_node, entry.src, name, key, found)
         return found
 
+    def file_paths(self) -> list[str]:
+        """Every indexed diagram's path, for fixes that look for a file."""
+        return list(self._files)
+
     def file_bytes(self, path: str) -> bytes | None:
         entry = self._files.get(str(Path(path).resolve()))
         return entry.src if entry is not None else None
