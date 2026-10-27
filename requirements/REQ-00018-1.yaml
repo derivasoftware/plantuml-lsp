@@ -5,7 +5,7 @@ requirement:
     Hover renders the entity under the cursor as markdown: kind, display name, members, relation lines and declaration site.
   rationale: >
     Leaf of REQ-00006-1 and owner of plantuml_lsp.hover.
-  status: DRAFT
+  status: APPROVED
   asil: QM
   parent_ids:
     - REQ-00006-1

@@ -13,7 +13,7 @@ requirement:
     References on a method name aggregate its declarations and every
     call site across the workspace — sequence labels and activity
     actions alike — closing the class↔sequence↔activity triangle.
-  status: DRAFT
+  status: APPROVED
   asil: QM
   parent_ids:
     - REQ-00016-1

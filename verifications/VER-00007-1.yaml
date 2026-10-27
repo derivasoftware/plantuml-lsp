@@ -10,3 +10,4 @@ verification:
     - tests/integration/test_it_features_v1.py::test_lints_stay_quiet_for_sequence_implicit_participants
     - tests/integration/test_it_features_v1.py::test_lints_flag_broken_includes
     - tests/integration/test_it_features_v1.py::test_lints_flag_duplicate_declarations
+  status: APPROVED

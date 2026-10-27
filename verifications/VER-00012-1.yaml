@@ -8,3 +8,4 @@ verification:
   test_ids:
     - tests/integration/test_it_features_v1.py::test_activity_actions_correlate_with_methods
     - tests/integration/test_it_features_v1.py::test_activity_drift_lints_use_the_lane
+  status: APPROVED

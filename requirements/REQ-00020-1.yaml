@@ -5,7 +5,7 @@ requirement:
     Every !include and !includesub path becomes a clickable link to the file it resolves to, relative to the document.
   rationale: >
     Leaf of REQ-00006-1 and owner of plantuml_lsp.links.
-  status: DRAFT
+  status: APPROVED
   asil: QM
   parent_ids:
     - REQ-00006-1

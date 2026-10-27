@@ -5,7 +5,7 @@ requirement:
     A declared sequence participant names a class of the workspace, and a call-shaped message label or activity action names a method of the class its receiver (the message's target, the action's swimlane) correlates with; the server navigates to that method, shows it on hover and lints the call when the class does not declare it, and the participant when no class explains it.
   rationale: >
     Intermediate (BOK-00321-2): a sequence diagram's call-shaped labels and an activity diagram's actions are the same use case on two notations, behaviour checked against structure. The two run over the same units (W-REQS-SHARE-SEQUENCE on 0.7.9), so they owe this parent. It cites no chapter; its children (REQ-00010-2, REQ-00011-2, REQ-00012-2) link to the correlation units and verify it.
-  status: DRAFT
+  status: APPROVED
   asil: QM
   parent_ids:
     - SREQ-00007-1

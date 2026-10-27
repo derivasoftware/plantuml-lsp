@@ -12,4 +12,4 @@ verification:
     feature tests moved to the children and the server wiring test to the
     server's owner.
   method: review
-  status: DRAFT
+  status: APPROVED
