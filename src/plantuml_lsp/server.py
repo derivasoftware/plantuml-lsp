@@ -9,7 +9,12 @@ import re as _re
 from plantuml_lsp.actions import declare_entity, declare_method, fix_include_path
 from plantuml_lsp.completion import contextual_completions
 from plantuml_lsp.diagnostics import collect_diagnostics
-from plantuml_lsp.correlation import action_at, call_at, resolve_call
+from plantuml_lsp.correlation import (
+    action_at,
+    call_at,
+    resolve_call,
+    unmatched_participants,
+)
 from plantuml_lsp.definitions import entity_definitions, resolve_definition
 from plantuml_lsp.hover import hover_for
 from plantuml_lsp.index import build_index, identifier_at, resolve_entity
@@ -119,7 +124,7 @@ def _publish(ls: LanguageServer, uri: str) -> None:
             severity=types.DiagnosticSeverity.Information,
             source="plantuml-lsp",
         )
-        for e in ws.unmatched_participants(doc.path)
+        for e in unmatched_participants(ws, doc.path)
     )
     ls.text_document_publish_diagnostics(
         types.PublishDiagnosticsParams(uri=uri, diagnostics=diags)

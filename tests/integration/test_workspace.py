@@ -3,6 +3,7 @@ workspace — the class that a sequence participant choreographs, and back."""
 
 from pathlib import Path
 
+from plantuml_lsp.correlation import unmatched_participants
 from plantuml_lsp.workspace import WorkspaceIndex
 
 __covers__ = (WorkspaceIndex,)
@@ -84,14 +85,14 @@ def test_class_card_for_a_participant(tmp_path):
 def test_unmatched_participants_reports_only_plain_participants(tmp_path):
     ws = WorkspaceIndex(str(make_workspace(tmp_path)))
     seq = str(tmp_path / "design" / "SEQ_Flow.puml")
-    unmatched = {e.id for e in ws.unmatched_participants(seq)}
+    unmatched = {e.id for e in unmatched_participants(ws, seq)}
     assert unmatched == set()  # Ghost is implicit (no declaration), not declared
     # declare a participant with no class anywhere
     (tmp_path / "design" / "SEQ_Flow.puml").write_text(
         SEQ.replace("actor User", "actor User\nparticipant Orphan\nparticipant daemon")
     )
     ws.refresh()
-    unmatched = {e.id for e in ws.unmatched_participants(seq)}
+    unmatched = {e.id for e in unmatched_participants(ws, seq)}
     # actor User and lowercase conceptual participants stay exempt
     assert unmatched == {"Orphan"}
 

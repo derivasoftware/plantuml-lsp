@@ -8,7 +8,7 @@
 ' requirement REQ-00007-1
 ' requirement REQ-00008-1
 ' requirement REQ-00009-1
-' requirement REQ-00010-1
+' requirement REQ-00010-2
 ' requirement REQ-00013-2
 ' requirement REQ-00014-1
 ' requirement REQ-00015-1
@@ -70,6 +70,10 @@
 
 !startsub LinksModule
 !includesub ./CL_Links.puml!LinksModule
+!endsub
+
+!startsub Participants
+!includesub ./correlation/CL_Participants.puml!Participants
 !endsub
 
 !startsub Messages

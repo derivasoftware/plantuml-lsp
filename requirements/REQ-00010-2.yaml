@@ -1,5 +1,5 @@
 requirement:
-  id: REQ-00010-1
+  id: REQ-00010-2
   title: The server shall report declared class-cased participants no workspace class explains
   description: >
     The server shall report declared class-cased participants no workspace class explains
@@ -11,10 +11,10 @@ requirement:
     neither id nor display name correlates with any structural
     declaration in the workspace. Validated against the argos HSEQ
     corpus: zero noise on clean diagrams.
-  status: APPROVED
+  status: DRAFT
   asil: QM
   parent_ids:
-    - SREQ-00007-1
+    - REQ-00016-1
   tags:
     - workspace
     - lints

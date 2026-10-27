@@ -168,23 +168,10 @@ class WorkspaceIndex:
                 return entity
         return None
 
-    def unmatched_participants(self, doc_path: str) -> list[Entity]:
-        """Declared plain participants of one document with no structural
-        declaration anywhere in the workspace. Actors and the other
-        participant kinds are legitimately abstract and stay exempt."""
+    def entities_of(self, doc_path: str) -> list[Entity]:
+        """The entities one indexed document declares, or none."""
         entry = self._files.get(str(Path(doc_path).resolve()))
-        if entry is None:
-            return []
-        return [
-            e
-            for e in entry.entities
-            if e.kind == "participant"
-            # class-cased names only: lowercase participants (cli,
-            # daemon…) are conceptual actors, not missing classes
-            and e.name[:1].isupper()
-            and self.class_card(e.id) is None
-            and self.class_card(e.name) is None
-        ]
+        return list(entry.entities) if entry is not None else []
 
 
 def _collect_names(node, src: bytes, names: set[str]) -> None:
