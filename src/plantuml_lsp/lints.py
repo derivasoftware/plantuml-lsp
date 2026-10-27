@@ -13,6 +13,7 @@ from pathlib import Path
 
 from tree_sitter import Node
 
+from plantuml_lsp.correlation import action_call_lints, label_call_lints
 from plantuml_lsp.index import Index
 from plantuml_lsp.parsing import node_text, parse
 
@@ -24,71 +25,11 @@ _STARTSUB = re.compile(r"^\s*!startsub\s+(\w+)\s*$")
 LintTuple = tuple[int, int, int, int, str, str]
 
 
-def _tier_lint(tier: str, entity, method: str, span: tuple) -> tuple | None:
-    """One lint tuple for a resolved call tier, or None when declared."""
-    if tier == "drift":
-        return (*span, f"'{entity.id}' does not declare '{method}()'", "warning")
-    if tier == "unknown":
-        return (
-            *span,
-            f"no class in the workspace declares '{method}()'",
-            "information",
-        )
-    return None
-
-
-def _label_call_lints(src: bytes, index: Index, workspace) -> list:
-    """Drift lints over call-shaped relation labels."""
-    from plantuml_lsp.definitions import (
-        _CALL_SHAPE,
-        _relation_receiver,
-        resolve_call,
-    )
-
-    found = []
-
-    def walk(node: Node) -> None:
-        label = node.child_by_field_name("label") if node.type == "relation" else None
-        m = _CALL_SHAPE.match(node_text(src, label)) if label is not None else None
-        receiver = _relation_receiver(src, node) if m is not None else None
-        if receiver is not None:
-            tier, entity, _loc = resolve_call(receiver, m.group(1), index, workspace)
-            span = (
-                label.start_point[0],
-                label.start_point[1],
-                label.end_point[0],
-                label.end_point[1],
-            )
-            lint = _tier_lint(tier, entity, m.group(1), span)
-            if lint is not None:
-                found.append(lint)
-        for child in node.children:
-            walk(child)
-
-    walk(parse(src).root_node)
-    return found
-
-
-def _action_call_lints(index: Index, workspace) -> list:
-    """Drift lints over activity actions: the lane names the receiver."""
-    from plantuml_lsp.definitions import resolve_call
-
-    found = []
-    for name, lane, row, scol, ecol in index.actions:
-        tier, entity, _loc = resolve_call(lane or "", name, index, workspace)
-        lint = _tier_lint(tier, entity, name, (row, scol, row, ecol))
-        if lint is not None:
-            found.append(lint)
-    return found
-
-
 def collect_call_lints(src: bytes, index: Index, workspace) -> list[LintTuple]:
     """Call-shaped message labels whose receiver correlates with a
     class that does not declare the method — behaviour drifting from
     structure. Free-text labels and classless receivers stay silent."""
-    return _label_call_lints(src, index, workspace) + _action_call_lints(
-        index, workspace
-    )
+    return label_call_lints(src, index, workspace) + action_call_lints(index, workspace)
 
 
 def collect_lints(doc_path: str, src: bytes, index: Index) -> list[LintTuple]:

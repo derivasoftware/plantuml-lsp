@@ -1,0 +1,20 @@
+requirement:
+  id: REQ-00010-2
+  title: The server shall report declared class-cased participants no workspace class explains
+  description: >
+    The server shall report declared class-cased participants no workspace class explains
+  rationale: >
+    The drift lint stays deliberately quiet: Information severity,
+    plain participants only (actors and the other kinds are
+    legitimately abstract), class-cased names only (lowercase
+    participants — cli, daemon — are conceptual actors), and only when
+    neither id nor display name correlates with any structural
+    declaration in the workspace. Validated against the argos HSEQ
+    corpus: zero noise on clean diagrams.
+  status: DRAFT
+  asil: QM
+  parent_ids:
+    - REQ-00016-1
+  tags:
+    - workspace
+    - lints

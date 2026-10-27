@@ -2,6 +2,9 @@
 ' requirement REQ-00014-1
 
 !startsub ActionsModule
+!includesub ./CL_Parsing.puml!ParsingModule
+!includesub ./index/CL_Entity.puml!Entity
+!includesub ./workspace/CL_WorkspaceIndex.puml!WorkspaceIndex
 
 namespace plantuml_lsp.actions {
   class declare_entity <<function>> {
@@ -18,6 +21,10 @@ namespace plantuml_lsp.actions {
   }
 }
 
+_body_of_declaration_at ..> node_text
+declare_method ..> parse
+declare_method ..> WorkspaceIndex
+fix_include_path ..> WorkspaceIndex
 !endsub
 
 @enduml

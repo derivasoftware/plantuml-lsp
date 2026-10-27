@@ -1,0 +1,17 @@
+@startuml CL_Participants
+' requirement REQ-00010-2
+
+!startsub Participants
+!includesub ../index/CL_Entity.puml!Entity
+!includesub ../workspace/CL_WorkspaceIndex.puml!WorkspaceIndex
+
+namespace plantuml_lsp.correlation.participants {
+  class unmatched_participants <<function>> {
+    + unmatched_participants(workspace: WorkspaceIndex, doc_path: str) : list[Entity]
+  }
+}
+
+unmatched_participants ..> WorkspaceIndex
+!endsub
+
+@enduml

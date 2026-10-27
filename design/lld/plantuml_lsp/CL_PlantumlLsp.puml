@@ -8,11 +8,18 @@
 ' requirement REQ-00007-1
 ' requirement REQ-00008-1
 ' requirement REQ-00009-1
-' requirement REQ-00010-1
-' requirement REQ-00011-1
-' requirement REQ-00012-1
-' requirement REQ-00013-1
+' requirement REQ-00010-2
+' requirement REQ-00013-2
 ' requirement REQ-00014-1
+' requirement REQ-00015-1
+' requirement REQ-00011-2
+' requirement REQ-00012-2
+' requirement REQ-00016-1
+' requirement REQ-00017-1
+' requirement REQ-00018-1
+' requirement REQ-00019-1
+' requirement REQ-00020-1
+' requirement REQ-00021-1
 
 !startsub ParsingModule
 !includesub ./CL_Parsing.puml!ParsingModule
@@ -31,19 +38,27 @@
 !endsub
 
 !startsub Entity
-!includesub ./CL_Entity.puml!Entity
+!includesub ./index/CL_Entity.puml!Entity
 !endsub
 
 !startsub Index
-!includesub ./CL_Index.puml!Index
+!includesub ./index/CL_Index.puml!Index
 !endsub
 
-!startsub IndexModule
-!includesub ./CL_IndexModule.puml!IndexModule
+!startsub Cursor
+!includesub ./index/CL_Cursor.puml!Cursor
 !endsub
 
-!startsub CompletionModule
-!includesub ./CL_Completion.puml!CompletionModule
+!startsub Occurrences
+!includesub ./index/CL_Occurrences.puml!Occurrences
+!endsub
+
+!startsub Vocabulary
+!includesub ./completion/CL_Vocabulary.puml!Vocabulary
+!endsub
+
+!startsub Context
+!includesub ./completion/CL_Context.puml!Context
 !endsub
 
 !startsub HoverModule
@@ -58,6 +73,18 @@
 !includesub ./CL_Links.puml!LinksModule
 !endsub
 
+!startsub Participants
+!includesub ./correlation/CL_Participants.puml!Participants
+!endsub
+
+!startsub Messages
+!includesub ./correlation/CL_Messages.puml!Messages
+!endsub
+
+!startsub Activities
+!includesub ./correlation/CL_Activities.puml!Activities
+!endsub
+
 !startsub LintsModule
 !includesub ./CL_Lints.puml!LintsModule
 !endsub
@@ -67,11 +94,51 @@
 !endsub
 
 !startsub WorkspaceIndex
-!includesub ./CL_Workspace.puml!WorkspaceIndex
+!includesub ./workspace/CL_WorkspaceIndex.puml!WorkspaceIndex
 !endsub
 
-!startsub ServerModule
-!includesub ./CL_Server.puml!ServerModule
+!startsub Core
+!includesub ./server/CL_Core.puml!Core
+!endsub
+
+!startsub LspDiagnostics
+!includesub ./server/CL_LspDiagnostics.puml!LspDiagnostics
+!endsub
+
+!startsub LspSymbols
+!includesub ./server/CL_LspSymbols.puml!LspSymbols
+!endsub
+
+!startsub LspDefinition
+!includesub ./server/CL_LspDefinition.puml!LspDefinition
+!endsub
+
+!startsub LspFormatting
+!includesub ./server/CL_LspFormatting.puml!LspFormatting
+!endsub
+
+!startsub LspCompletion
+!includesub ./server/CL_LspCompletion.puml!LspCompletion
+!endsub
+
+!startsub LspHover
+!includesub ./server/CL_LspHover.puml!LspHover
+!endsub
+
+!startsub LspReferences
+!includesub ./server/CL_LspReferences.puml!LspReferences
+!endsub
+
+!startsub LspLinks
+!includesub ./server/CL_LspLinks.puml!LspLinks
+!endsub
+
+!startsub LspWorkspaceSymbols
+!includesub ./server/CL_LspWorkspaceSymbols.puml!LspWorkspaceSymbols
+!endsub
+
+!startsub LspCodeActions
+!includesub ./server/CL_LspCodeActions.puml!LspCodeActions
 !endsub
 
 @enduml

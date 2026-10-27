@@ -1,0 +1,18 @@
+@startuml CL_LspLinks
+' requirement REQ-00020-1
+
+!startsub LspLinks
+!includesub ./CL_Core.puml!Core
+!includesub ../CL_Links.puml!LinksModule
+
+namespace plantuml_lsp.server.lsp_links {
+  class document_link <<function>> {
+    + document_link(ls: LanguageServer, params: types.DocumentLinkParams)
+  }
+}
+
+document_link ..> collect_links
+document_link ..> range_of
+!endsub
+
+@enduml

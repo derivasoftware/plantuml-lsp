@@ -8,3 +8,4 @@ verification:
   test_ids:
     - tests/integration/test_diagnostics.py::test_clean_source_has_no_diagnostics
     - tests/integration/test_diagnostics.py::test_broken_source_reports_positions
+    - tests/integration/test_it_lsp.py::test_publishes_parse_errors_lints_drift_and_participants

@@ -8,3 +8,4 @@ verification:
   test_ids:
     - tests/integration/test_symbols.py::test_symbols_inventory
     - tests/integration/test_symbols.py::test_symbol_positions_are_line_accurate
+    - tests/integration/test_it_lsp.py::test_document_symbols_reach_the_editor

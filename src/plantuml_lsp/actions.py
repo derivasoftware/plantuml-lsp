@@ -52,7 +52,7 @@ def fix_include_path(
     if m is None:
         return None
     broken = m.group(2)
-    by_name = {Path(p).name: p for p in workspace._files}
+    by_name = {Path(p).name: p for p in workspace.file_paths()}
     close = difflib.get_close_matches(Path(broken).name, by_name, 1, 0.6)
     if not close:
         return None

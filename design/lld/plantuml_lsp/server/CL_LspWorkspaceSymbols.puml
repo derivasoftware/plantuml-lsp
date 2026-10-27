@@ -1,0 +1,18 @@
+@startuml CL_LspWorkspaceSymbols
+' requirement REQ-00009-1
+
+!startsub LspWorkspaceSymbols
+!includesub ./CL_Core.puml!Core
+!includesub ../workspace/CL_WorkspaceIndex.puml!WorkspaceIndex
+
+namespace plantuml_lsp.server.lsp_workspace_symbols {
+  class workspace_symbol <<function>> {
+    + workspace_symbol(ls: LanguageServer, params: types.WorkspaceSymbolParams)
+  }
+}
+
+workspace_symbol ..> range_of
+workspace_symbol ..> WorkspaceIndex
+!endsub
+
+@enduml

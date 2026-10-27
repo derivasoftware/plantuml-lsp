@@ -1,0 +1,26 @@
+@startuml CL_LspHover
+' requirement REQ-00018-1
+
+!startsub LspHover
+!includesub ./CL_Core.puml!Core
+!includesub ../CL_Hover.puml!HoverModule
+!includesub ../correlation/CL_Messages.puml!Messages
+!includesub ../correlation/CL_Activities.puml!Activities
+!includesub ../index/CL_Cursor.puml!Cursor
+
+namespace plantuml_lsp.server.lsp_hover {
+  class hover <<function>> {
+    + hover(ls: LanguageServer, params: types.HoverParams)
+  }
+}
+
+hover ..> hover_for
+hover ..> action_at
+hover ..> call_at
+hover ..> resolve_call
+hover ..> identifier_at
+hover ..> index_of
+hover ..> workspace_of
+!endsub
+
+@enduml

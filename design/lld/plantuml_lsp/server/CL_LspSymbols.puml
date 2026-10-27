@@ -1,0 +1,17 @@
+@startuml CL_LspSymbols
+' requirement REQ-00002-1
+
+!startsub LspSymbols
+!includesub ./CL_Core.puml!Core
+!includesub ../CL_Symbols.puml!SymbolsModule
+
+namespace plantuml_lsp.server.lsp_symbols {
+  class document_symbol <<function>> {
+    + document_symbol(ls: LanguageServer, params: types.DocumentSymbolParams)
+  }
+}
+
+document_symbol ..> collect_symbols
+!endsub
+
+@enduml

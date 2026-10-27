@@ -1,0 +1,15 @@
+verification:
+  id: VER-00006-2
+  req_id: REQ-00006-1
+  title: Review confirms the editor features are verified by their four children
+  description: >
+    An intermediate requirement (BOK-00321-2): it links to no unit of its
+    own. Its truth is its children's: completion (REQ-00017-1, VER-00017-1),
+    hover (REQ-00018-1, VER-00018-1), references and rename (REQ-00019-1,
+    VER-00019-1) and document links (REQ-00020-1, VER-00020-1), each
+    verified by the feature test that drives its unit. The review checks
+    that the four together cover the description. Revision 2: the four
+    feature tests moved to the children and the server wiring test to the
+    server's owner.
+  method: review
+  status: DRAFT

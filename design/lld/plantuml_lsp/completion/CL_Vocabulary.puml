@@ -1,0 +1,15 @@
+@startuml CL_Vocabulary
+' requirement REQ-00017-1
+
+!startsub Vocabulary
+!includesub ../index/CL_Index.puml!Index
+
+namespace plantuml_lsp.completion.vocabulary {
+  class collect_completions <<function>> {
+    + collect_completions(index: Index) : list[CompletionTuple]
+  }
+}
+
+!endsub
+
+@enduml

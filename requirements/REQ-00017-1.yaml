@@ -1,0 +1,13 @@
+requirement:
+  id: REQ-00017-1
+  title: The server shall complete with every indexed id and the statement keywords
+  description: >
+    Completion offers every entity id the index holds, with its kind, plus the PlantUML statement keywords.
+  rationale: >
+    Leaf of REQ-00006-1 (BOK-00321-2) and owner of plantuml_lsp.completion: the editor filters, so completion offers the whole vocabulary. Completing by cursor context (REQ-00013-2) is its child.
+  status: DRAFT
+  asil: QM
+  parent_ids:
+    - REQ-00006-1
+  tags:
+    - completion

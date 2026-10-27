@@ -1,0 +1,8 @@
+verification:
+  id: VER-00016-1
+  req_id: REQ-00016-1
+  title: Review confirms the correlation is verified by its two children
+  description: >
+    An intermediate requirement: it links to no unit. Its truth is its children's: REQ-00010-2 (participants, VER-00010-1), REQ-00011-2 (message labels, VER-00011-1) and REQ-00012-2 (activity actions, VER-00012-1) are verified by integration tests that drive plantuml_lsp.correlation. The review checks that the two children together cover the description: the participant lint, and navigation, hover and the drift lint for both notations.
+  method: review
+  status: DRAFT

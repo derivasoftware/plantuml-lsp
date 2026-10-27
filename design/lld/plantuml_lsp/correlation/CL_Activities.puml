@@ -1,0 +1,21 @@
+@startuml CL_Activities
+' requirement REQ-00012-2
+
+!startsub Activities
+!includesub ./CL_Messages.puml!Messages
+!includesub ../index/CL_Index.puml!Index
+
+namespace plantuml_lsp.correlation.activities {
+  class action_at <<function>> {
+    + action_at(index, row: int)
+  }
+  class action_call_lints <<function>> {
+    + action_call_lints(index: Index, workspace) : list
+  }
+}
+
+action_call_lints ..> resolve_call
+action_call_lints ..> tier_lint
+!endsub
+
+@enduml

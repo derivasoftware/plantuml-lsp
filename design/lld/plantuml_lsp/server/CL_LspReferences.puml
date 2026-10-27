@@ -1,0 +1,43 @@
+@startuml CL_LspReferences
+' requirement REQ-00019-1
+
+!startsub LspReferences
+!includesub ../workspace/CL_WorkspaceIndex.puml!WorkspaceIndex
+!includesub ./CL_Core.puml!Core
+!includesub ../CL_Rename.puml!RenameModule
+!includesub ../index/CL_Cursor.puml!Cursor
+
+namespace plantuml_lsp.server.lsp_references {
+  class _entity_reference_locations <<function>> {
+    - _entity_reference_locations(name: str, index, ws) : list
+  }
+  class _method_reference_locations <<function>> {
+    - _method_reference_locations(name: str, index, ws, results: list) : None
+  }
+  class references <<function>> {
+    + references(ls: LanguageServer, params: types.ReferenceParams)
+  }
+  class rename <<function>> {
+    + rename(ls: LanguageServer, params: types.RenameParams)
+  }
+}
+
+_entity_reference_locations ..> merged_occurrences
+_entity_reference_locations ..> range_of
+_entity_reference_locations ..> WorkspaceIndex
+_method_reference_locations ..> WorkspaceIndex
+references ..> identifier_at
+references ..> resolve_entity
+references ..> index_of
+references ..> workspace_of
+rename ..> edits_from
+rename ..> identifier_at
+rename ..> resolve_entity
+rename ..> index_of
+rename ..> merged_occurrences
+rename ..> range_of
+rename ..> workspace_of
+rename ..> WorkspaceIndex
+!endsub
+
+@enduml

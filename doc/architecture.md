@@ -24,7 +24,7 @@ _hld · `design/hld/HLD_PlantumlLsp.puml`_
 
 _cl · `design/lld/plantuml_lsp/CL_PlantumlLsp.puml`_
 
-- traces to: `REQ-00001-1` `REQ-00002-1` `REQ-00003-1` `REQ-00004-1` `REQ-00005-1` `REQ-00006-1` `REQ-00007-1` `REQ-00008-1` `REQ-00009-1` `REQ-00010-1` `REQ-00011-1` `REQ-00012-1` `REQ-00013-1` `REQ-00014-1`
+- traces to: `REQ-00001-1` `REQ-00002-1` `REQ-00003-1` `REQ-00004-1` `REQ-00005-1` `REQ-00006-1` `REQ-00007-1` `REQ-00008-1` `REQ-00009-1` `REQ-00010-2` `REQ-00011-2` `REQ-00012-2` `REQ-00013-2` `REQ-00014-1`
 - implemented in: `src/plantuml_lsp/actions.py` · `src/plantuml_lsp/completion.py` · `src/plantuml_lsp/definitions.py` · `src/plantuml_lsp/diagnostics.py` · `src/plantuml_lsp/hover.py` · `src/plantuml_lsp/index.py` · `src/plantuml_lsp/links.py` · `src/plantuml_lsp/lints.py` · `src/plantuml_lsp/parsing.py` · `src/plantuml_lsp/rename.py` · `src/plantuml_lsp/server.py` · `src/plantuml_lsp/symbols.py` · `src/plantuml_lsp/workspace.py`
 - verified by: `tests/test_actions.py` (3) · `tests/test_completion_context.py` (5) · `tests/test_definitions.py` (3) · `tests/test_diagnostics.py` (2) · `tests/test_features_v1.py` (13) · `tests/test_formatting.py` (1) · `tests/test_index.py` (5) · `tests/test_server.py` (1) · `tests/test_symbols.py` (2) · `tests/test_workspace.py` (8)
 
@@ -63,7 +63,7 @@ _cl · `design/lld/plantuml_lsp/CL_PlantumlLsp.puml`_
 </details>
 
 <details>
-<summary><code>CL_Definitions</code> · traces to <code>REQ-00003-1</code> <code>REQ-00011-1</code> <code>REQ-00012-1</code></summary>
+<summary><code>CL_Definitions</code> · traces to <code>REQ-00003-1</code> <code>REQ-00011-2</code> <code>REQ-00012-2</code></summary>
 <ul>
 <li>source: <code>design/lld/plantuml_lsp/CL_Definitions.puml</code></li>
 <li>implemented in: <code>src/plantuml_lsp/definitions.py</code></li>
@@ -83,7 +83,7 @@ _cl · `design/lld/plantuml_lsp/CL_PlantumlLsp.puml`_
 </details>
 
 <details>
-<summary><code>CL_Index</code> · traces to <code>REQ-00005-1</code> <code>REQ-00011-1</code> <code>REQ-00012-1</code></summary>
+<summary><code>CL_Index</code> · traces to <code>REQ-00005-1</code> <code>REQ-00011-2</code> <code>REQ-00012-2</code></summary>
 <ul>
 <li>source: <code>design/lld/plantuml_lsp/CL_Index.puml</code></li>
 <li>implemented in: <code>src/plantuml_lsp/index.py</code></li>
@@ -103,7 +103,7 @@ _cl · `design/lld/plantuml_lsp/CL_PlantumlLsp.puml`_
 </details>
 
 <details>
-<summary><code>CL_Completion</code> · traces to <code>REQ-00006-1</code> <code>REQ-00013-1</code></summary>
+<summary><code>CL_Completion</code> · traces to <code>REQ-00006-1</code> <code>REQ-00013-2</code></summary>
 <ul>
 <li>source: <code>design/lld/plantuml_lsp/CL_Completion.puml</code></li>
 <li>implemented in: <code>src/plantuml_lsp/completion.py</code></li>
@@ -143,7 +143,7 @@ _cl · `design/lld/plantuml_lsp/CL_PlantumlLsp.puml`_
 </details>
 
 <details>
-<summary><code>CL_Lints</code> · traces to <code>REQ-00007-1</code> <code>REQ-00011-1</code> <code>REQ-00012-1</code></summary>
+<summary><code>CL_Lints</code> · traces to <code>REQ-00007-1</code> <code>REQ-00011-2</code> <code>REQ-00012-2</code></summary>
 <ul>
 <li>source: <code>design/lld/plantuml_lsp/CL_Lints.puml</code></li>
 <li>implemented in: <code>src/plantuml_lsp/lints.py</code></li>
@@ -163,7 +163,7 @@ _cl · `design/lld/plantuml_lsp/CL_PlantumlLsp.puml`_
 </details>
 
 <details>
-<summary><code>CL_Workspace</code> · traces to <code>REQ-00008-1</code> <code>REQ-00009-1</code> <code>REQ-00010-1</code> <code>REQ-00011-1</code></summary>
+<summary><code>CL_Workspace</code> · traces to <code>REQ-00008-1</code> <code>REQ-00009-1</code> <code>REQ-00010-2</code> <code>REQ-00011-2</code></summary>
 <ul>
 <li>source: <code>design/lld/plantuml_lsp/CL_Workspace.puml</code></li>
 <li>implemented in: <code>src/plantuml_lsp/workspace.py</code></li>

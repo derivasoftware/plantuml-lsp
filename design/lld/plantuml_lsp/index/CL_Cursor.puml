@@ -1,0 +1,22 @@
+@startuml CL_Cursor
+' requirement REQ-00005-1
+
+!startsub Cursor
+!includesub ../CL_Parsing.puml!ParsingModule
+
+namespace plantuml_lsp.index.cursor {
+  class identifier_at <<function>> {
+    + identifier_at(src: bytes, row: int, col: int) : str | None
+  }
+  class word_at <<function>> {
+    + word_at(src: bytes, row: int, col: int) : str | None
+  }
+  class resolve_entity <<function>> {
+    + resolve_entity(name: str, entities: dict[str, Entity]) : str | None
+  }
+}
+identifier_at ..> node_text
+identifier_at ..> parse
+!endsub
+
+@enduml

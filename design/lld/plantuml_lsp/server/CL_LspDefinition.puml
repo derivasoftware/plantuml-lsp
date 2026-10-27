@@ -1,0 +1,28 @@
+@startuml CL_LspDefinition
+' requirement REQ-00003-1
+
+!startsub LspDefinition
+!includesub ./CL_Core.puml!Core
+!includesub ../CL_Definitions.puml!DefinitionsModule
+!includesub ../correlation/CL_Messages.puml!Messages
+!includesub ../correlation/CL_Activities.puml!Activities
+!includesub ../index/CL_Cursor.puml!Cursor
+
+namespace plantuml_lsp.server.lsp_definition {
+  class definition <<function>> {
+    + definition(ls: LanguageServer, params: types.DefinitionParams)
+  }
+}
+
+definition ..> entity_definitions
+definition ..> resolve_definition
+definition ..> action_at
+definition ..> call_at
+definition ..> resolve_call
+definition ..> identifier_at
+definition ..> index_of
+definition ..> range_of
+definition ..> workspace_of
+!endsub
+
+@enduml

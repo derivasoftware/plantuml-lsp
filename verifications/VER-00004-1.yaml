@@ -7,3 +7,4 @@ verification:
   method: test
   test_ids:
     - tests/integration/test_formatting.py::test_formatter_dependency_normalizes_indentation
+    - tests/integration/test_it_lsp.py::test_formatting_answers_one_full_document_edit

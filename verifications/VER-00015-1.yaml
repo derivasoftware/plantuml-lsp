@@ -1,0 +1,8 @@
+verification:
+  id: VER-00015-1
+  req_id: REQ-00015-1
+  title: Review confirms the grammar is loaded and the parser built in one place
+  description: >
+    A static requirement: containment, not behaviour. The rule: no module of plantuml-lsp other than plantuml_lsp.parsing imports tree_sitter_plantuml or builds a tree_sitter Parser or Language. Measured on 0.7.9: tree_sitter_plantuml, Parser( and Language( appear in parsing.py only; actions, definitions, diagnostics, symbols and workspace read their trees through parse() and node text through node_text(). What parsing itself does is pinned by its unit tests (tests/unit/plantuml_lsp/test_parsing.py). Instrument: a grep over src/ and the import graph; a deterministic import-ownership check would replace this review.
+  method: review
+  status: DRAFT

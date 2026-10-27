@@ -1,0 +1,21 @@
+requirement:
+  id: REQ-00013-2
+  title: The server shall complete by cursor context with the receiver's methods first
+  description: >
+    The server shall complete by cursor context with the receiver's methods first
+  rationale: >
+    Completion fires on half-written lines where the CST is broken, so
+    the context is lexical over the line up to the cursor and the
+    candidates come from the index: after a message colon, the
+    receiver's declared methods with their signatures as detail; after
+    an arrow, participants and workspace classes with no keywords;
+    inside an activity action, the active lane's methods; after a
+    participant kind, workspace classes; at a statement head, keywords
+    plus document entities; anywhere else, silence — noise is the
+    enemy of completion.
+  status: DRAFT
+  asil: QM
+  parent_ids:
+    - REQ-00017-1
+  tags:
+    - completion

@@ -1,6 +1,6 @@
 verification:
   id: VER-00011-1
-  req_id: REQ-00011-1
+  req_id: REQ-00011-2
   title: Call tests cover name-only resolution, drift candidates and quiet free text
   description: >
     Call tests cover name-only resolution, drift candidates and quiet free text

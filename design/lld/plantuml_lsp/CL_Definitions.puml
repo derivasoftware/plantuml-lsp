@@ -1,40 +1,24 @@
 @startuml CL_Definitions
 ' requirement REQ-00003-1
-' requirement REQ-00011-1
-' requirement REQ-00012-1
 
 !startsub DefinitionsModule
+!includesub ./index/CL_Cursor.puml!Cursor
+!includesub ./workspace/CL_WorkspaceIndex.puml!WorkspaceIndex
 
 namespace plantuml_lsp.definitions {
-  class resolve_definition <<function>> {
-    + resolve_definition(doc_path: str, line_text: str) : DefinitionTuple | None
-  }
   class entity_definitions <<function>> {
     + entity_definitions(name, index, workspace) : list[EntityLocation]
   }
-  class call_at <<function>> {
-    + call_at(src: bytes, row: int, col: int)
-  }
-  class action_at <<function>> {
-    + action_at(index, row: int)
-  }
-  class resolve_call <<function>> {
-    + resolve_call(receiver: str, method: str, index, workspace)
+  class resolve_definition <<function>> {
+    + resolve_definition(doc_path: str, line_text: str) : DefinitionTuple | None
   }
   class _find_startsub <<function>> {
     - _find_startsub(target: Path, sub_name: str) : DefinitionTuple | None
   }
-  class _label_under_cursor <<function>> {
-    - _label_under_cursor(src: bytes, row: int, col: int)
-  }
-  class _receiver_candidates <<function>> {
-    - _receiver_candidates(receiver: str, index, workspace) : list
-  }
-  class _relation_receiver <<function>> {
-    - _relation_receiver(src: bytes, relation)
-  }
 }
 
+entity_definitions ..> resolve_entity
+entity_definitions ..> WorkspaceIndex
 !endsub
 
 @enduml

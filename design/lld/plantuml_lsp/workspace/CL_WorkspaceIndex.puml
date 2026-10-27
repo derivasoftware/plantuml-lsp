@@ -1,0 +1,42 @@
+@startuml CL_WorkspaceIndex
+' requirement REQ-00008-1
+
+!startsub WorkspaceIndex
+!includesub ../CL_Parsing.puml!ParsingModule
+!includesub ./CL_FileEntry.puml!_FileEntry
+!includesub ../index/CL_Index.puml!Index
+!includesub ../index/CL_Occurrences.puml!Occurrences
+
+namespace plantuml_lsp.workspace.WorkspaceIndex {
+  class WorkspaceIndex {
+    + root : Path
+    - _files : dict[str, _FileEntry]
+    - _last_refresh : float
+    - _iter_files() : Iterator[Path]
+    + refresh() : None
+    + refresh_if_stale() : None
+    - _scan(key: str, src: bytes, signature: tuple[int, int]) : _FileEntry
+    + entities() : list[Entity]
+    + declarations(name: str) : list[Entity]
+    + symbols(query: str) : list[Entity]
+    + occurrences(name: str) : list[tuple[str, int, int, int]]
+    + file_paths() : list[str]
+    + file_bytes(path: str) : bytes | None
+    + call_sites(method: str) : list[tuple[str, int, int, int]]
+    + method_declarations(method: str) : list[Entity]
+    + class_card(name: str) : Entity | None
+    + entities_of(doc_path: str) : list[Entity]
+  }
+  WorkspaceIndex *-- _FileEntry
+  WorkspaceIndex ..> plantuml_lsp.index.Entity.Entity
+  WorkspaceIndex ..> plantuml_lsp.parsing.ParsingModule
+}
+
+WorkspaceIndex ..> node_text
+WorkspaceIndex ..> parse
+WorkspaceIndex ..> walk_tree
+WorkspaceIndex ..> scan_occurrences
+WorkspaceIndex ..> _FileEntry
+!endsub
+
+@enduml

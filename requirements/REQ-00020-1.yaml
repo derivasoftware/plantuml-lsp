@@ -1,0 +1,13 @@
+requirement:
+  id: REQ-00020-1
+  title: The server shall turn include directives into document links
+  description: >
+    Every !include and !includesub path becomes a clickable link to the file it resolves to, relative to the document.
+  rationale: >
+    Leaf of REQ-00006-1 and owner of plantuml_lsp.links.
+  status: DRAFT
+  asil: QM
+  parent_ids:
+    - REQ-00006-1
+  tags:
+    - links

@@ -1,0 +1,24 @@
+@startuml CL_EditorFeatures
+' requirement REQ-00006-1
+
+!startsub Vocabulary
+!includesub ./completion/CL_Vocabulary.puml!Vocabulary
+!endsub
+
+!startsub Context
+!includesub ./completion/CL_Context.puml!Context
+!endsub
+
+!startsub HoverModule
+!includesub ./CL_Hover.puml!HoverModule
+!endsub
+
+!startsub RenameModule
+!includesub ./CL_Rename.puml!RenameModule
+!endsub
+
+!startsub LinksModule
+!includesub ./CL_Links.puml!LinksModule
+!endsub
+
+@enduml

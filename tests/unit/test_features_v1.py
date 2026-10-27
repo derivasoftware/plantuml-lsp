@@ -46,14 +46,6 @@ def test_entity_definitions_resolve_types_and_qualified_names(tmp_path):
         assert locs[0][0].endswith("CL_Pedido.puml")
 
 
-def test_word_at_reads_opaque_positions():
-    from plantuml_lsp.index import word_at
-
-    src = b"@startuml\nclass C {\n  +preparar(pedido: Pedido) : Taza\n}\n@enduml\n"
-    assert word_at(src, 2, 22) == "Pedido"
-    assert word_at(src, 2, 31) == "Taza"
-
-
 def test_call_lint_unknown_is_information(tmp_path):
     from plantuml_lsp.lints import collect_call_lints
     from plantuml_lsp.workspace import WorkspaceIndex

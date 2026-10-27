@@ -9,7 +9,6 @@ document, matching PlantUML's own preprocessor semantics.
 import re
 from pathlib import Path
 
-from plantuml_lsp.parsing import node_text, parse
 
 _INCLUDESUB = re.compile(r"^\s*!includesub\s+([^\s!]+)!(\w+)\s*$")
 _INCLUDE = re.compile(r"^\s*!include\s+(\S+)\s*$")
@@ -20,101 +19,6 @@ DefinitionTuple = tuple[str, int]
 
 # (path, row, start_col, end_col)
 EntityLocation = tuple[str, int, int, int]
-
-
-_CALL_SHAPE = re.compile(r"^\s*(\w+)\s*\(")
-
-
-def _label_under_cursor(src: bytes, row: int, col: int):
-    """The relation label node at the cursor, or None."""
-    node = parse(src).root_node.descendant_for_point_range((row, col), (row, col))
-    while node is not None and node.type != "relation":
-        if node.type == "label":
-            break
-        node = node.parent
-    if node is None or node.type != "label":
-        return None
-    relation = node.parent
-    if relation is None or relation.type != "relation":
-        return None
-    return node
-
-
-def _relation_receiver(src: bytes, relation):
-    """The endpoint a message points at, honoring arrow direction."""
-    operator = relation.child_by_field_name("operator")
-    reversed_ = operator is not None and node_text(src, operator).startswith("<")
-    receiver = relation.child_by_field_name("left" if reversed_ else "right")
-    if receiver is None:
-        return None
-    return node_text(src, receiver).strip('"')
-
-
-def call_at(src: bytes, row: int, col: int):
-    """(receiver_name, method_name) when the cursor sits on the label
-    of a message whose text is call-shaped; arguments are free text and
-    never matter. None anywhere else."""
-    label = _label_under_cursor(src, row, col)
-    if label is None:
-        return None
-    m = _CALL_SHAPE.match(node_text(src, label))
-    if m is None:
-        return None
-    receiver = _relation_receiver(src, label.parent)
-    if receiver is None:
-        return None
-    return receiver, m.group(1)
-
-
-def action_at(index, row: int):
-    """(lane, method) when the row holds a call-shaped activity action."""
-    for name, lane, arow, _scol, _ecol in index.actions:
-        if arow == row:
-            return lane, name
-    return None
-
-
-def _receiver_candidates(receiver: str, index, workspace) -> list:
-    """The entities a receiver name may denote: document first, then the
-    workspace card (qualified tails included)."""
-    from plantuml_lsp.index import resolve_entity
-
-    candidates = []
-    resolved = resolve_entity(receiver, index.entities)
-    if resolved is not None:
-        candidates.append(index.entities[resolved])
-    if workspace is not None:
-        card = workspace.class_card(receiver)
-        if card is None and "." in receiver:
-            card = workspace.class_card(receiver.rsplit(".", 1)[-1])
-        if card is not None:
-            candidates.append(card)
-    return candidates
-
-
-def resolve_call(receiver: str, method: str, index, workspace):
-    """Three tiers, as ('declared'|'drift'|'unknown', entity|None,
-    location|None):
-
-    - declared: the receiver's class (or, receiver classless, some
-      class in the workspace) declares the method — gd/hover target;
-    - drift: the receiver correlates with a class that does NOT
-      declare it — behaviour drifting from structure (warning);
-    - unknown: no receiver class and no class anywhere declares it
-      (information)."""
-    from plantuml_lsp.workspace import CLASS_KINDS
-
-    candidates = _receiver_candidates(receiver, index, workspace)
-    for entity in candidates:
-        if method in entity.methods:
-            return "declared", entity, entity.methods[method]
-    for entity in candidates:
-        if entity.kind in CLASS_KINDS:
-            return "drift", entity, None
-    if workspace is not None:
-        for entity in workspace.method_declarations(method):
-            return "declared", entity, entity.methods[method]
-    return "unknown", None, None
 
 
 def entity_definitions(name, index, workspace) -> list[EntityLocation]:

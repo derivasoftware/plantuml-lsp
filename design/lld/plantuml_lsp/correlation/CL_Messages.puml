@@ -1,0 +1,44 @@
+@startuml CL_Messages
+' requirement REQ-00011-2
+
+!startsub Messages
+!includesub ../CL_Parsing.puml!ParsingModule
+!includesub ../index/CL_Index.puml!Index
+!includesub ../index/CL_Cursor.puml!Cursor
+!includesub ../workspace/CL_WorkspaceIndex.puml!WorkspaceIndex
+
+namespace plantuml_lsp.correlation.messages {
+  class _label_under_cursor <<function>> {
+    - _label_under_cursor(src: bytes, row: int, col: int)
+  }
+  class _relation_receiver <<function>> {
+    - _relation_receiver(src: bytes, relation)
+  }
+  class call_at <<function>> {
+    + call_at(src: bytes, row: int, col: int)
+  }
+  class _receiver_candidates <<function>> {
+    - _receiver_candidates(receiver: str, index, workspace) : list
+  }
+  class resolve_call <<function>> {
+    + resolve_call(receiver: str, method: str, index, workspace)
+  }
+  class tier_lint <<function>> {
+    + tier_lint(tier: str, entity, method: str, span: tuple) : tuple | None
+  }
+  class label_call_lints <<function>> {
+    + label_call_lints(src: bytes, index: Index, workspace) : list
+  }
+}
+
+_label_under_cursor ..> parse
+_receiver_candidates ..> resolve_entity
+_receiver_candidates ..> WorkspaceIndex
+_relation_receiver ..> node_text
+call_at ..> node_text
+label_call_lints ..> node_text
+label_call_lints ..> parse
+resolve_call ..> WorkspaceIndex
+!endsub
+
+@enduml
