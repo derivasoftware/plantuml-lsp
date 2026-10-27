@@ -5,6 +5,7 @@
 ' requirement REQ-00011-1
 
 !startsub WorkspaceIndex
+!includesub ./CL_Parsing.puml!ParsingModule
 !includesub ./CL_FileEntry.puml!_FileEntry
 
 namespace plantuml_lsp.workspace {

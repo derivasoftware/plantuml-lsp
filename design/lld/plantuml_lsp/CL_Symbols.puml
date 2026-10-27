@@ -2,6 +2,7 @@
 ' requirement REQ-00002-1
 
 !startsub SymbolsModule
+!includesub ./CL_Parsing.puml!ParsingModule
 
 namespace plantuml_lsp.symbols {
   class collect_symbols <<function>> {

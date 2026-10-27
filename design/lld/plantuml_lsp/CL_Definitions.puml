@@ -4,6 +4,7 @@
 ' requirement REQ-00012-1
 
 !startsub DefinitionsModule
+!includesub ./CL_Parsing.puml!ParsingModule
 
 namespace plantuml_lsp.definitions {
   class resolve_definition <<function>> {

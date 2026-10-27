@@ -2,6 +2,7 @@
 ' requirement REQ-00014-1
 
 !startsub ActionsModule
+!includesub ./CL_Parsing.puml!ParsingModule
 
 namespace plantuml_lsp.actions {
   class declare_entity <<function>> {

@@ -1,0 +1,13 @@
+requirement:
+  id: REQ-00015-1
+  title: The server shall read every document through one grammar instance
+  description: >
+    Containment: no module of plantuml-lsp other than plantuml_lsp.parsing loads the tree-sitter-plantuml language or builds a tree-sitter Parser; every tree a feature reads comes from parse(), and the text of a node from node_text().
+  rationale: >
+    Owner of plantuml_lsp.parsing (BOK-00321-2): every feature reads the concrete syntax tree, and the grammar is loaded and the parser built in one place, once per process, so no feature carries its own copy of the language or decodes node text its own way.
+  status: DRAFT
+  asil: QM
+  parent_ids:
+    - SREQ-00001-1
+  tags:
+    - parsing

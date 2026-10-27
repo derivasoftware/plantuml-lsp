@@ -2,6 +2,7 @@
 ' requirement REQ-00001-1
 
 !startsub DiagnosticsModule
+!includesub ./CL_Parsing.puml!ParsingModule
 
 namespace plantuml_lsp.diagnostics {
   class collect_diagnostics <<function>> {
