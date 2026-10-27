@@ -1,0 +1,10 @@
+verification:
+  id: VER-00017-1
+  req_id: REQ-00017-1
+  title: Feature tests cover completion of ids and keywords
+  description: >
+    Feature tests cover completion of ids and keywords
+  method: test
+  test_ids:
+    - tests/integration/test_it_features_v1.py::test_completion_offers_entities_and_keywords
+  status: DRAFT

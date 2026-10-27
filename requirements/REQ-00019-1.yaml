@@ -1,0 +1,13 @@
+requirement:
+  id: REQ-00019-1
+  title: The server shall answer references and rename over every occurrence in the closure
+  description: >
+    References and rename map an entity's occurrences across the document and its include closure; a quoted occurrence keeps its quotes.
+  rationale: >
+    Leaf of REQ-00006-1 and owner of plantuml_lsp.rename: references and rename are one use case over the occurrences the index scans.
+  status: DRAFT
+  asil: QM
+  parent_ids:
+    - REQ-00006-1
+  tags:
+    - rename

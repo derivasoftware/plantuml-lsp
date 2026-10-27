@@ -1,78 +1,20 @@
-"""Completion: contextual first, generic as the statement-head base.
+"""Completion by cursor context.
 
-Completion fires on half-written lines, where the CST is broken — so
-the context is decided lexically over the line up to the cursor, and
-the candidates come from the index: the receiver's methods after a
-message colon, participants after an arrow, the lane's methods inside
-an activity action, keywords only at statement heads, silence in free
-label text.
+Completion fires on half-written lines, where the CST is broken, so the
+context is decided lexically over the line up to the cursor and the
+candidates come from the index: the receiver's methods after a message
+colon, participants after an arrow, the lane's methods inside an activity
+action, keywords only at statement heads, silence in free label text.
 """
 
 import re
 
+from plantuml_lsp.completion.vocabulary import KEYWORDS
 from plantuml_lsp.index import Index, resolve_entity
 from plantuml_lsp.workspace import CLASS_KINDS, WorkspaceIndex
 
-KEYWORDS = (
-    "class",
-    "abstract class",
-    "interface",
-    "enum",
-    "annotation",
-    "exception",
-    "metaclass",
-    "protocol",
-    "struct",
-    "record",
-    "dataclass",
-    "participant",
-    "actor",
-    "boundary",
-    "control",
-    "entity",
-    "database",
-    "collections",
-    "queue",
-    "package",
-    "namespace",
-    "together",
-    "note",
-    "hide",
-    "show",
-    "remove",
-    "restore",
-    "alt",
-    "opt",
-    "loop",
-    "par",
-    "break",
-    "critical",
-    "group",
-    "else",
-    "end",
-    "activate",
-    "deactivate",
-    "return",
-    "create",
-    "destroy",
-    "autonumber",
-    "title",
-    "skinparam",
-)
-
-# (label, kind) — kind is an entity kind or "keyword"
-CompletionTuple = tuple[str, str]
-
-# (label, kind, detail) — detail carries the declared signature
+# (label, kind, detail): detail carries the declared signature
 ContextualTuple = tuple[str, str, str]
-
-
-def collect_completions(index: Index) -> list[CompletionTuple]:
-    items: list[CompletionTuple] = [
-        (entity.id, entity.kind) for entity in index.entities.values()
-    ]
-    items.extend((keyword, "keyword") for keyword in KEYWORDS)
-    return items
 
 
 _HEAD = re.compile(r"^\s*\w*$")

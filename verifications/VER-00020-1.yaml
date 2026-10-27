@@ -1,0 +1,10 @@
+verification:
+  id: VER-00020-1
+  req_id: REQ-00020-1
+  title: Feature tests cover document links
+  description: >
+    Feature tests cover document links
+  method: test
+  test_ids:
+    - tests/integration/test_it_features_v1.py::test_links_resolve_include_targets
+  status: DRAFT

@@ -1,0 +1,13 @@
+requirement:
+  id: REQ-00018-1
+  title: The server shall answer hover with the entity's card
+  description: >
+    Hover renders the entity under the cursor as markdown: kind, display name, members, relation lines and declaration site.
+  rationale: >
+    Leaf of REQ-00006-1 and owner of plantuml_lsp.hover.
+  status: DRAFT
+  asil: QM
+  parent_ids:
+    - REQ-00006-1
+  tags:
+    - hover

@@ -9,11 +9,16 @@
 ' requirement REQ-00008-1
 ' requirement REQ-00009-1
 ' requirement REQ-00010-1
-' requirement REQ-00013-1
+' requirement REQ-00013-2
 ' requirement REQ-00014-1
 ' requirement REQ-00015-1
 ' requirement REQ-00011-2
 ' requirement REQ-00012-2
+' requirement REQ-00016-1
+' requirement REQ-00017-1
+' requirement REQ-00018-1
+' requirement REQ-00019-1
+' requirement REQ-00020-1
 
 !startsub ParsingModule
 !includesub ./CL_Parsing.puml!ParsingModule
@@ -47,8 +52,12 @@
 !includesub ./index/CL_Occurrences.puml!Occurrences
 !endsub
 
-!startsub CompletionModule
-!includesub ./CL_Completion.puml!CompletionModule
+!startsub Vocabulary
+!includesub ./completion/CL_Vocabulary.puml!Vocabulary
+!endsub
+
+!startsub Context
+!includesub ./completion/CL_Context.puml!Context
 !endsub
 
 !startsub HoverModule

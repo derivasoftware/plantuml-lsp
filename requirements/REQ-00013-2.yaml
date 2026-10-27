@@ -1,5 +1,5 @@
 requirement:
-  id: REQ-00013-1
+  id: REQ-00013-2
   title: The server shall complete by cursor context with the receiver's methods first
   description: >
     The server shall complete by cursor context with the receiver's methods first
@@ -13,9 +13,9 @@ requirement:
     participant kind, workspace classes; at a statement head, keywords
     plus document entities; anywhere else, silence — noise is the
     enemy of completion.
-  status: APPROVED
+  status: DRAFT
   asil: QM
   parent_ids:
-    - SREQ-00007-1
+    - REQ-00017-1
   tags:
     - completion
