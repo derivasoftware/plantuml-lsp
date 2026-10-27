@@ -15,7 +15,7 @@ repos:
       - id: ruff-format
 
   - repo: https://github.com/derivasoftware/plantuml-fmt
-    rev: v0.3.2
+    rev: v0.5.0
     hooks:
       - id: plantuml-fmt
 
