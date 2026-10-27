@@ -1,0 +1,61 @@
+@startuml CL_Index
+' requirement REQ-00005-1
+
+!startsub Index
+!includesub ./CL_Entity.puml!Entity
+!includesub ./CL_Occurrences.puml!Occurrences
+!includesub ../CL_Parsing.puml!ParsingModule
+
+namespace plantuml_lsp.index.Index {
+  class Index {
+    + doc_path : str
+    + entities : dict[str, Entity]
+    + files : dict[str, bytes]
+    + duplicates : list[Entity]
+    + relations : dict[str, list[str]]
+    + calls : dict[str, list[tuple[str, int, int, int]]]
+    + actions : list[tuple[str, str | None, int, int, int]]
+    + occurrences(entity_id: str) : list[tuple[str, int, int, int]]
+  }
+  class build_index <<function>> {
+    + build_index(doc_path: str, src: bytes) : Index
+  }
+  class _index_file <<function>> {
+    - _index_file(path: str, src: bytes, index: Index, seen: set[str]) : None
+  }
+  class _register_call <<function>> {
+    - _register_call(index: Index, path: str, node: Node, name: str, offset: int) : None
+  }
+  class _visit_relation <<function>> {
+    - _visit_relation(node: Node, src: bytes, path: str, index: Index) : None
+  }
+  class _visit_swimlane <<function>> {
+    - _visit_swimlane(node: Node, src: bytes, lane: list) : None
+  }
+  class _visit_action <<function>> {
+    - _visit_action(node: Node, src: bytes, path: str, index: Index, lane: list) : None
+  }
+  class walk_tree <<function>> {
+    + walk_tree(node: Node, src: bytes, path: str, index: Index, lane: list) : None
+  }
+  class _declared_kind <<function>> {
+    - _declared_kind(node: Node, src: bytes) : str | None
+  }
+  class _record_relation <<function>> {
+    - _record_relation(node: Node, src: bytes, index: Index) : None
+  }
+  class _add <<function>> {
+    - _add(index: Index, node: Node, src: bytes, path: str, kind: str) : None
+  }
+  class _methods <<function>> {
+    - _methods(node: Node, src: bytes) : dict[str, tuple[int, int, int, str]]
+  }
+  class _members <<function>> {
+    - _members(node: Node, src: bytes) : list[str]
+  }
+}
+
+Index *-- Entity
+!endsub
+
+@enduml

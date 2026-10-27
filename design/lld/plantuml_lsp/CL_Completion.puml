@@ -3,6 +3,8 @@
 ' requirement REQ-00013-1
 
 !startsub CompletionModule
+!includesub ./index/CL_Index.puml!Index
+!includesub ./index/CL_Cursor.puml!Cursor
 
 namespace plantuml_lsp.completion {
   class collect_completions <<function>> {

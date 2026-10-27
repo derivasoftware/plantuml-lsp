@@ -4,6 +4,7 @@
 ' requirement REQ-00012-1
 
 !startsub LintsModule
+!includesub ./index/CL_Index.puml!Index
 
 namespace plantuml_lsp.lints {
   class collect_lints <<function>> {

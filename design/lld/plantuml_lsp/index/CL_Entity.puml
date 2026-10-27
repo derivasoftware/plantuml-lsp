@@ -3,7 +3,7 @@
 
 !startsub Entity
 
-namespace plantuml_lsp.index {
+namespace plantuml_lsp.index.Entity {
   class Entity {
     + id : str
     + name : str
@@ -16,7 +16,6 @@ namespace plantuml_lsp.index {
     + methods : dict[str, tuple[int, int, int, str]]
   }
 }
-
 !endsub
 
 @enduml

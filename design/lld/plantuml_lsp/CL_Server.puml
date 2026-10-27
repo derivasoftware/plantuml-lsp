@@ -5,6 +5,8 @@
 ' requirement REQ-00004-1
 
 !startsub ServerModule
+!includesub ./index/CL_Index.puml!Index
+!includesub ./index/CL_Cursor.puml!Cursor
 
 namespace plantuml_lsp.server {
   class did_open <<function>> {

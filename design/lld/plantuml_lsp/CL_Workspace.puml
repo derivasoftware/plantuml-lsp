@@ -7,6 +7,8 @@
 !startsub WorkspaceIndex
 !includesub ./CL_Parsing.puml!ParsingModule
 !includesub ./CL_FileEntry.puml!_FileEntry
+!includesub ./index/CL_Index.puml!Index
+!includesub ./index/CL_Occurrences.puml!Occurrences
 
 namespace plantuml_lsp.workspace {
   class WorkspaceIndex {
@@ -28,7 +30,7 @@ namespace plantuml_lsp.workspace {
     + unmatched_participants(doc_path: str) : list[Entity]
   }
   WorkspaceIndex *-- _FileEntry
-  WorkspaceIndex ..> plantuml_lsp.index.Entity
+  WorkspaceIndex ..> plantuml_lsp.index.Entity.Entity
   WorkspaceIndex ..> plantuml_lsp.parsing.ParsingModule
 }
 

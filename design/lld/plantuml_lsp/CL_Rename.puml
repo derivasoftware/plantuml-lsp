@@ -2,6 +2,7 @@
 ' requirement REQ-00006-1
 
 !startsub RenameModule
+!includesub ./index/CL_Index.puml!Index
 
 namespace plantuml_lsp.rename {
   class rename_edits <<function>> {

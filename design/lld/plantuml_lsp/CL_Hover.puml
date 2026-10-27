@@ -2,6 +2,9 @@
 ' requirement REQ-00006-1
 
 !startsub HoverModule
+!includesub ./index/CL_Entity.puml!Entity
+!includesub ./index/CL_Index.puml!Index
+!includesub ./index/CL_Cursor.puml!Cursor
 
 namespace plantuml_lsp.hover {
   class hover_for <<function>> {

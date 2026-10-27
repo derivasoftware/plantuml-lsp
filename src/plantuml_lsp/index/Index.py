@@ -16,6 +16,8 @@ from pathlib import Path
 
 from tree_sitter import Node
 
+from plantuml_lsp.index.Entity import Entity
+from plantuml_lsp.index.occurrences import scan_occurrences
 from plantuml_lsp.parsing import node_text, parse
 
 _INCLUDE_ANY = re.compile(r"^\s*!include(?:sub)?\s+([^\s!]+)")
@@ -31,20 +33,6 @@ _REFERENCE_FIELDS = ("left", "right", "target")
 _LABEL_CALL = re.compile(r"^\s*(\w+)\s*\(")
 _ACTION_CALL = re.compile(r"^:\s*(\w+)\s*\(")
 _LANE_NAME = re.compile(r"^\|(?:#[^|]*\|)?([^|]+)\|")
-
-
-@dataclass
-class Entity:
-    id: str
-    name: str
-    kind: str
-    path: str
-    row: int
-    scol: int
-    ecol: int
-    members: list[str] = field(default_factory=list)
-    # method name -> (row, scol, ecol, member line text)
-    methods: dict[str, tuple[int, int, int, str]] = field(default_factory=dict)
 
 
 @dataclass
@@ -67,7 +55,7 @@ class Index:
         or quoted-string token spelling the id, declaration included."""
         found: list[tuple[str, int, int, int]] = []
         for path, src in self.files.items():
-            _scan_occurrences(parse(src).root_node, src, entity_id, path, found)
+            scan_occurrences(parse(src).root_node, src, entity_id, path, found)
         return found
 
 
@@ -77,37 +65,13 @@ def build_index(doc_path: str, src: bytes) -> Index:
     return index
 
 
-def identifier_at(src: bytes, row: int, col: int) -> str | None:
-    """The identifier (or quoted name) token under the cursor, falling
-    back to the identifier-shaped word at the cursor when the CST node
-    is opaque (parameter payloads, member types, labels)."""
-    node = parse(src).root_node.descendant_for_point_range((row, col), (row, col))
-    if node is not None and node.type in ("identifier", "string"):
-        return node_text(src, node).strip('"')
-    return word_at(src, row, col)
-
-
-_WORD = re.compile(r"[A-Za-z_][\w]*(?:[.-][A-Za-z_]\w*)*")
-
-
-def word_at(src: bytes, row: int, col: int) -> str | None:
-    """The identifier-shaped word covering the cursor column."""
-    lines = src.decode(errors="replace").splitlines()
-    if row >= len(lines):
-        return None
-    for match in _WORD.finditer(lines[row]):
-        if match.start() <= col < match.end():
-            return match.group(0)
-    return None
-
-
 def _index_file(path: str, src: bytes, index: Index, seen: set[str]) -> None:
     resolved = str(Path(path).resolve())
     if resolved in seen:
         return
     seen.add(resolved)
     index.files[resolved] = src
-    _walk(parse(src).root_node, src, resolved, index)
+    walk_tree(parse(src).root_node, src, resolved, index)
     for line in src.decode(errors="replace").splitlines():
         m = _INCLUDE_ANY.match(line)
         if m:
@@ -161,7 +125,9 @@ def _visit_action(node: Node, src: bytes, path: str, index: Index, lane: list) -
     _register_call(index, path, text_node, m.group(1), m.start(1))
 
 
-def _walk(node: Node, src: bytes, path: str, index: Index, lane: list = None) -> None:
+def walk_tree(
+    node: Node, src: bytes, path: str, index: Index, lane: list = None
+) -> None:
     if lane is None:
         lane = [None]
     kind = _declared_kind(node, src)
@@ -174,7 +140,7 @@ def _walk(node: Node, src: bytes, path: str, index: Index, lane: list = None) ->
     elif node.type == "activity_action":
         _visit_action(node, src, path, index, lane)
     for child in node.children:
-        _walk(child, src, path, index, lane)
+        walk_tree(child, src, path, index, lane)
 
 
 def _declared_kind(node: Node, src: bytes) -> str | None:
@@ -253,45 +219,3 @@ def _members(node: Node, src: bytes) -> list[str]:
         for member in body.named_children
         if member.type == "member"
     ]
-
-
-def resolve_entity(name: str, entities: dict[str, "Entity"]) -> str | None:
-    """The id a cursor token resolves to: exact, or the tail of a
-    qualified name (maquina.Cafetera -> Cafetera)."""
-    if name in entities:
-        return name
-    if "." in name:
-        tail = name.rsplit(".", 1)[-1]
-        if tail in entities:
-            return tail
-    return None
-
-
-def _scan_occurrences(
-    node: Node,
-    src: bytes,
-    entity_id: str,
-    path: str,
-    found: list[tuple[str, int, int, int]],
-) -> None:
-    if node.type in ("identifier", "string"):
-        text = node_text(src, node).strip('"')
-        if text == entity_id:
-            found.append(
-                (path, node.start_point[0], node.start_point[1], node.end_point[1])
-            )
-        elif text.endswith("." + entity_id):
-            # qualified use: report the span of the tail segment only,
-            # so references highlight and renames rewrite just the name
-            offset = (node.end_point[1] - node.start_point[1]) - len(entity_id)
-            found.append(
-                (
-                    path,
-                    node.start_point[0],
-                    node.start_point[1] + offset,
-                    node.end_point[1],
-                )
-            )
-        return
-    for child in node.children:
-        _scan_occurrences(child, src, entity_id, path, found)

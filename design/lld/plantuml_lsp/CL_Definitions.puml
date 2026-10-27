@@ -5,6 +5,7 @@
 
 !startsub DefinitionsModule
 !includesub ./CL_Parsing.puml!ParsingModule
+!includesub ./index/CL_Cursor.puml!Cursor
 
 namespace plantuml_lsp.definitions {
   class resolve_definition <<function>> {

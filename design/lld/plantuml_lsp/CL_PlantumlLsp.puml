@@ -32,15 +32,19 @@
 !endsub
 
 !startsub Entity
-!includesub ./CL_Entity.puml!Entity
+!includesub ./index/CL_Entity.puml!Entity
 !endsub
 
 !startsub Index
-!includesub ./CL_Index.puml!Index
+!includesub ./index/CL_Index.puml!Index
 !endsub
 
-!startsub IndexModule
-!includesub ./CL_IndexModule.puml!IndexModule
+!startsub Cursor
+!includesub ./index/CL_Cursor.puml!Cursor
+!endsub
+
+!startsub Occurrences
+!includesub ./index/CL_Occurrences.puml!Occurrences
 !endsub
 
 !startsub CompletionModule

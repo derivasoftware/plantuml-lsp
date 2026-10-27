@@ -2,7 +2,7 @@
 ' requirement REQ-00008-1
 
 !startsub _FileEntry
-!includesub ./CL_Entity.puml!Entity
+!includesub ./index/CL_Entity.puml!Entity
 
 namespace plantuml_lsp.workspace {
   class _FileEntry {

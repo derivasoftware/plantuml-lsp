@@ -19,7 +19,7 @@ import time
 from collections.abc import Iterator
 from pathlib import Path
 
-from plantuml_lsp.index import Entity, Index, _scan_occurrences, _walk
+from plantuml_lsp.index import Entity, Index, scan_occurrences, walk_tree
 from plantuml_lsp.parsing import node_text, parse
 
 _EXTENSIONS = {".puml", ".plantuml", ".iuml", ".wsd"}
@@ -104,7 +104,7 @@ class WorkspaceIndex:
     def _scan(self, key: str, src: bytes, signature: tuple[int, int]) -> _FileEntry:
         scratch = Index(doc_path=key)
         root = parse(src).root_node
-        _walk(root, src, key, scratch)
+        walk_tree(root, src, key, scratch)
         entities = list(scratch.entities.values()) + scratch.duplicates
         names: set[str] = set()
         _collect_names(root, src, names)
@@ -135,7 +135,7 @@ class WorkspaceIndex:
                 n.endswith(suffix) for n in entry.names
             ):
                 continue
-            _scan_occurrences(parse(entry.src).root_node, entry.src, name, key, found)
+            scan_occurrences(parse(entry.src).root_node, entry.src, name, key, found)
         return found
 
     def file_bytes(self, path: str) -> bytes | None:
