@@ -31,6 +31,14 @@ namespace plantuml_lsp.correlation.messages {
   }
 }
 
+_label_under_cursor ..> parse
+_receiver_candidates ..> resolve_entity
+_receiver_candidates ..> WorkspaceIndex
+_relation_receiver ..> node_text
+call_at ..> node_text
+label_call_lints ..> node_text
+label_call_lints ..> parse
+resolve_call ..> WorkspaceIndex
 !endsub
 
 @enduml

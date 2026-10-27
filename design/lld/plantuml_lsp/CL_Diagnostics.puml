@@ -16,6 +16,7 @@ namespace plantuml_lsp.diagnostics {
   }
 }
 
+collect_diagnostics ..> parse
 !endsub
 
 @enduml

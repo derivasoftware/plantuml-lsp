@@ -11,6 +11,8 @@ namespace plantuml_lsp.server.lsp_workspace_symbols {
   }
 }
 
+workspace_symbol ..> range_of
+workspace_symbol ..> WorkspaceIndex
 !endsub
 
 @enduml

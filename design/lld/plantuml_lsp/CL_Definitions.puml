@@ -17,6 +17,8 @@ namespace plantuml_lsp.definitions {
   }
 }
 
+entity_definitions ..> resolve_entity
+entity_definitions ..> WorkspaceIndex
 !endsub
 
 @enduml

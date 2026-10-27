@@ -2,6 +2,7 @@
 ' requirement REQ-00019-1
 
 !startsub RenameModule
+!includesub ./server/CL_LspReferences.puml!LspReferences
 !includesub ./index/CL_Index.puml!Index
 
 namespace plantuml_lsp.rename {
@@ -13,6 +14,8 @@ namespace plantuml_lsp.rename {
   }
 }
 
+edits_from ..> rename
+rename_edits ..> Index
 !endsub
 
 @enduml

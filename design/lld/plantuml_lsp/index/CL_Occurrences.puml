@@ -2,12 +2,14 @@
 ' requirement REQ-00005-1
 
 !startsub Occurrences
+!includesub ../CL_Parsing.puml!ParsingModule
 
 namespace plantuml_lsp.index.occurrences {
   class scan_occurrences <<function>> {
     + scan_occurrences(node: Node, src: bytes, entity_id: str, path: str, found: list[tuple[str, int, int, int]]) : None
   }
 }
+scan_occurrences ..> node_text
 !endsub
 
 @enduml

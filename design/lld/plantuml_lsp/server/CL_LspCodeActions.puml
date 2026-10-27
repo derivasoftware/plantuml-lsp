@@ -11,6 +11,10 @@ namespace plantuml_lsp.server.lsp_code_actions {
   }
 }
 
+code_action ..> declare_entity
+code_action ..> index_of
+code_action ..> range_of
+code_action ..> workspace_of
 !endsub
 
 @enduml

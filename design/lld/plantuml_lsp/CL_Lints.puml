@@ -31,6 +31,10 @@ namespace plantuml_lsp.lints {
   }
 }
 
+_lint_unknown_endpoints ..> node_text
+collect_call_lints ..> action_call_lints
+collect_call_lints ..> label_call_lints
+collect_lints ..> parse
 !endsub
 
 @enduml

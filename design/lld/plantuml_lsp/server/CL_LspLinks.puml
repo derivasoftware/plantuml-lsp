@@ -11,6 +11,8 @@ namespace plantuml_lsp.server.lsp_links {
   }
 }
 
+document_link ..> collect_links
+document_link ..> range_of
 !endsub
 
 @enduml

@@ -23,6 +23,10 @@ namespace plantuml_lsp.server.core {
   }
 }
 
+index_of ..> build_index
+merged_occurrences ..> Index
+merged_occurrences ..> WorkspaceIndex
+workspace_of ..> WorkspaceIndex
 !endsub
 
 @enduml

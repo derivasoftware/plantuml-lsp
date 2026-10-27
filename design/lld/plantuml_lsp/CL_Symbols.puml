@@ -19,6 +19,9 @@ namespace plantuml_lsp.symbols {
   }
 }
 
+_name_of ..> node_text
+_walk ..> node_text
+collect_symbols ..> parse
 !endsub
 
 @enduml

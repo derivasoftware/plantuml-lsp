@@ -15,6 +15,8 @@ namespace plantuml_lsp.index.cursor {
     + resolve_entity(name: str, entities: dict[str, Entity]) : str | None
   }
 }
+identifier_at ..> node_text
+identifier_at ..> parse
 !endsub
 
 @enduml

@@ -14,6 +14,15 @@ namespace plantuml_lsp.server.lsp_definition {
   }
 }
 
+definition ..> entity_definitions
+definition ..> resolve_definition
+definition ..> action_at
+definition ..> call_at
+definition ..> resolve_call
+definition ..> identifier_at
+definition ..> index_of
+definition ..> range_of
+definition ..> workspace_of
 !endsub
 
 @enduml

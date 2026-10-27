@@ -32,6 +32,11 @@ namespace plantuml_lsp.workspace.WorkspaceIndex {
   WorkspaceIndex ..> plantuml_lsp.parsing.ParsingModule
 }
 
+WorkspaceIndex ..> node_text
+WorkspaceIndex ..> parse
+WorkspaceIndex ..> walk_tree
+WorkspaceIndex ..> scan_occurrences
+WorkspaceIndex ..> _FileEntry
 !endsub
 
 @enduml

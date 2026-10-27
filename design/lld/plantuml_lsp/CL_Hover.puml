@@ -25,6 +25,9 @@ namespace plantuml_lsp.hover {
   }
 }
 
+_participant_enrichment ..> WorkspaceIndex
+_workspace_card ..> WorkspaceIndex
+hover_for ..> resolve_entity
 !endsub
 
 @enduml

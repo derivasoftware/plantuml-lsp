@@ -2,6 +2,7 @@
 ' requirement REQ-00001-1
 
 !startsub LspDiagnostics
+!includesub ../index/CL_Index.puml!Index
 !includesub ./CL_Core.puml!Core
 !includesub ../CL_Diagnostics.puml!DiagnosticsModule
 !includesub ../CL_Lints.puml!LintsModule
@@ -19,6 +20,13 @@ namespace plantuml_lsp.server.lsp_diagnostics {
   }
 }
 
+publish ..> collect_diagnostics
+publish ..> collect_call_lints
+publish ..> collect_lints
+publish ..> unmatched_participants
+publish ..> build_index
+publish ..> range_of
+publish ..> workspace_of
 !endsub
 
 @enduml

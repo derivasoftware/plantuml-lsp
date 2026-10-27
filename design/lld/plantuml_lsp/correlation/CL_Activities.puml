@@ -14,6 +14,8 @@ namespace plantuml_lsp.correlation.activities {
   }
 }
 
+action_call_lints ..> resolve_call
+action_call_lints ..> tier_lint
 !endsub
 
 @enduml

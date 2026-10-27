@@ -14,6 +14,13 @@ namespace plantuml_lsp.server.lsp_hover {
   }
 }
 
+hover ..> hover_for
+hover ..> action_at
+hover ..> call_at
+hover ..> resolve_call
+hover ..> identifier_at
+hover ..> index_of
+hover ..> workspace_of
 !endsub
 
 @enduml

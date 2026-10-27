@@ -11,6 +11,7 @@ namespace plantuml_lsp.server.lsp_symbols {
   }
 }
 
+document_symbol ..> collect_symbols
 !endsub
 
 @enduml

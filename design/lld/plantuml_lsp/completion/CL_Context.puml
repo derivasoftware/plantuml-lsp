@@ -40,6 +40,9 @@ namespace plantuml_lsp.completion.context {
   }
 }
 
+_endpoint_completions ..> WorkspaceIndex
+_receiver_methods ..> resolve_entity
+_receiver_methods ..> WorkspaceIndex
 !endsub
 
 @enduml

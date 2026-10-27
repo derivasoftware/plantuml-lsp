@@ -56,6 +56,17 @@ namespace plantuml_lsp.index.Index {
 }
 
 Index *-- Entity
+Index ..> parse
+Index ..> scan_occurrences
+_add ..> node_text
+_declared_kind ..> node_text
+_index_file ..> parse
+_members ..> node_text
+_methods ..> node_text
+_record_relation ..> node_text
+_visit_action ..> node_text
+_visit_relation ..> node_text
+_visit_swimlane ..> node_text
 !endsub
 
 @enduml

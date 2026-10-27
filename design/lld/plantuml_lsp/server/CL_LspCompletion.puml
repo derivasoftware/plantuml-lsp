@@ -11,6 +11,9 @@ namespace plantuml_lsp.server.lsp_completion {
   }
 }
 
+completion ..> contextual_completions
+completion ..> index_of
+completion ..> workspace_of
 !endsub
 
 @enduml
