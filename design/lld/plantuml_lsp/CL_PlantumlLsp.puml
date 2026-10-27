@@ -9,11 +9,11 @@
 ' requirement REQ-00008-1
 ' requirement REQ-00009-1
 ' requirement REQ-00010-1
-' requirement REQ-00011-1
-' requirement REQ-00012-1
 ' requirement REQ-00013-1
 ' requirement REQ-00014-1
 ' requirement REQ-00015-1
+' requirement REQ-00011-2
+' requirement REQ-00012-2
 
 !startsub ParsingModule
 !includesub ./CL_Parsing.puml!ParsingModule
@@ -61,6 +61,14 @@
 
 !startsub LinksModule
 !includesub ./CL_Links.puml!LinksModule
+!endsub
+
+!startsub Messages
+!includesub ./correlation/CL_Messages.puml!Messages
+!endsub
+
+!startsub Activities
+!includesub ./correlation/CL_Activities.puml!Activities
 !endsub
 
 !startsub LintsModule

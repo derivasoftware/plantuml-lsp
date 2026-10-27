@@ -1,29 +1,24 @@
 @startuml CL_Lints
 ' requirement REQ-00007-1
-' requirement REQ-00011-1
-' requirement REQ-00012-1
 
 !startsub LintsModule
+!includesub ./CL_Parsing.puml!ParsingModule
 !includesub ./index/CL_Index.puml!Index
+!includesub ./correlation/CL_Messages.puml!Messages
+!includesub ./correlation/CL_Activities.puml!Activities
 
 namespace plantuml_lsp.lints {
-  class collect_lints <<function>> {
-    + collect_lints(doc_path: str, src: bytes, index: Index) : list[LintTuple]
-  }
   class collect_call_lints <<function>> {
     + collect_call_lints(src: bytes, index: Index, workspace) : list[LintTuple]
   }
-  class _action_call_lints <<function>> {
-    - _action_call_lints(index: Index, workspace) : list
-  }
-  class _has_startsub <<function>> {
-    - _has_startsub(target: Path, sub_name: str) : bool
+  class collect_lints <<function>> {
+    + collect_lints(doc_path: str, src: bytes, index: Index) : list[LintTuple]
   }
   class _is_class_diagram <<function>> {
     - _is_class_diagram(root: Node) : bool
   }
-  class _label_call_lints <<function>> {
-    - _label_call_lints(src: bytes, index: Index, workspace) : list
+  class _lint_unknown_endpoints <<function>> {
+    - _lint_unknown_endpoints(node: Node, src: bytes, index: Index, lints: list[LintTuple]) : None
   }
   class _lint_duplicates <<function>> {
     - _lint_duplicates(doc_path: str, index: Index, lints: list[LintTuple]) : None
@@ -31,11 +26,8 @@ namespace plantuml_lsp.lints {
   class _lint_includes <<function>> {
     - _lint_includes(doc_path: str, src: bytes, lints: list[LintTuple]) : None
   }
-  class _lint_unknown_endpoints <<function>> {
-    - _lint_unknown_endpoints(node: Node, src: bytes, index: Index, lints: list[LintTuple]) : None
-  }
-  class _tier_lint <<function>> {
-    - _tier_lint(tier: str, entity, method: str, span: tuple) : tuple | None
+  class _has_startsub <<function>> {
+    - _has_startsub(target: Path, sub_name: str) : bool
   }
 }
 

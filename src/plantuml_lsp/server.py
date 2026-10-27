@@ -9,12 +9,8 @@ import re as _re
 from plantuml_lsp.actions import declare_entity, declare_method, fix_include_path
 from plantuml_lsp.completion import contextual_completions
 from plantuml_lsp.diagnostics import collect_diagnostics
-from plantuml_lsp.definitions import (
-    action_at,
-    call_at,
-    entity_definitions,
-    resolve_definition,
-)
+from plantuml_lsp.correlation import action_at, call_at, resolve_call
+from plantuml_lsp.definitions import entity_definitions, resolve_definition
 from plantuml_lsp.hover import hover_for
 from plantuml_lsp.index import build_index, identifier_at, resolve_entity
 from plantuml_lsp.links import collect_links
@@ -183,8 +179,6 @@ def definition(ls: LanguageServer, params: types.DefinitionParams):
         index, params.position.line
     )
     if call is not None:
-        from plantuml_lsp.definitions import resolve_call
-
         tier, entity, loc = resolve_call(
             call[0], call[1], index, _workspace_of(ls, doc2)
         )
@@ -267,8 +261,6 @@ def hover(ls: LanguageServer, params: types.HoverParams):
             doc.source.encode(), params.position.line, params.position.character
         ) or action_at(index, params.position.line)
         if call is not None:
-            from plantuml_lsp.definitions import resolve_call
-
             tier, entity, loc = resolve_call(
                 call[0], call[1], index, _workspace_of(ls, doc)
             )

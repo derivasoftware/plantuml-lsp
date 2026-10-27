@@ -1,6 +1,6 @@
 verification:
   id: VER-00012-1
-  req_id: REQ-00012-1
+  req_id: REQ-00012-2
   title: Activity tests cover lane receivers, drift tiers and cross-diagram call sites
   description: >
     Activity tests cover lane receivers, drift tiers and cross-diagram call sites

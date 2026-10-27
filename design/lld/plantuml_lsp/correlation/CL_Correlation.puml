@@ -1,0 +1,12 @@
+@startuml CL_Correlation
+' requirement REQ-00016-1
+
+!startsub Messages
+!includesub ./CL_Messages.puml!Messages
+!endsub
+
+!startsub Activities
+!includesub ./CL_Activities.puml!Activities
+!endsub
+
+@enduml

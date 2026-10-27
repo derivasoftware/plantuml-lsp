@@ -1,5 +1,5 @@
 requirement:
-  id: REQ-00012-1
+  id: REQ-00012-2
   title: The server shall correlate activity actions and swimlanes with methods and classes
   description: >
     The server shall correlate activity actions and swimlanes with methods and classes
@@ -13,10 +13,10 @@ requirement:
     References on a method name aggregate its declarations and every
     call site across the workspace — sequence labels and activity
     actions alike — closing the class↔sequence↔activity triangle.
-  status: APPROVED
+  status: DRAFT
   asil: QM
   parent_ids:
-    - SREQ-00007-1
+    - REQ-00016-1
   tags:
     - activity
     - calls

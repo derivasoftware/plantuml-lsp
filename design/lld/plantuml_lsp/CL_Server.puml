@@ -8,6 +8,8 @@
 !includesub ./index/CL_Index.puml!Index
 !includesub ./index/CL_Cursor.puml!Cursor
 !includesub ./workspace/CL_WorkspaceIndex.puml!WorkspaceIndex
+!includesub ./correlation/CL_Messages.puml!Messages
+!includesub ./correlation/CL_Activities.puml!Activities
 
 namespace plantuml_lsp.server {
   class did_open <<function>> {

@@ -121,7 +121,7 @@ def test_hover_enriches_participants_with_their_class_card(tmp_path):
 
 
 def test_call_resolution_matches_by_name_only(tmp_path):
-    from plantuml_lsp.definitions import call_at, resolve_call
+    from plantuml_lsp.correlation import call_at, resolve_call
     from plantuml_lsp.workspace import WorkspaceIndex
 
     (tmp_path / "CL_M.puml").write_text(
@@ -178,7 +178,7 @@ def test_call_drift_lint_flags_only_undeclared(tmp_path):
 
 
 def test_activity_actions_correlate_with_methods(tmp_path):
-    from plantuml_lsp.definitions import action_at, resolve_call
+    from plantuml_lsp.correlation import action_at, resolve_call
     from plantuml_lsp.workspace import WorkspaceIndex
 
     (tmp_path / "CL_C.puml").write_text(

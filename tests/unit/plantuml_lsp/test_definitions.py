@@ -1,18 +1,12 @@
-"""Go to definition: includes and their sub-blocks, entities, calls and actions."""
+"""Go to definition: includes and their sub-blocks, and entities across the workspace."""
 
 from pathlib import Path
 
-from plantuml_lsp.definitions import (
-    action_at,
-    call_at,
-    entity_definitions,
-    resolve_call,
-    resolve_definition,
-)
+from plantuml_lsp.definitions import entity_definitions, resolve_definition
 from plantuml_lsp.index import build_index
 from plantuml_lsp.workspace import WorkspaceIndex
 
-__covers__ = (call_at, action_at, resolve_call, entity_definitions, resolve_definition)
+__covers__ = (entity_definitions, resolve_definition)
 
 CLASSES = "@startuml\nclass Cafetera {\n  +preparar() : Taza\n}\n@enduml\n"
 SEQ = "@startuml\nparticipant Cafetera\nCafetera -> Cafetera : preparar(leche)\nCafetera -> Cafetera : moler()\n@enduml\n"
@@ -25,37 +19,6 @@ def _setup(tmp_path: Path):
     ws = WorkspaceIndex(str(tmp_path))
     ws.refresh()
     return build_index(str(doc), SEQ.encode()), ws
-
-
-class TestCallAt:
-    def test_reads_receiver_and_method_on_a_call_shaped_label(self) -> None:
-        assert call_at(SEQ.encode(), 2, len("Cafetera -> Cafetera : pre")) == (
-            "Cafetera",
-            "preparar",
-        )
-
-    def test_is_none_off_a_label(self) -> None:
-        assert call_at(SEQ.encode(), 1, 3) is None
-
-
-class TestActionAt:
-    def test_reads_lane_and_method_on_the_row_of_an_action(
-        self, tmp_path: Path
-    ) -> None:
-        src = "@startuml\n|Cafetera|\n:preparar(pedido);\n@enduml\n"
-        doc = tmp_path / "a.puml"
-        doc.write_text(src)
-        index = build_index(str(doc), src.encode())
-        assert action_at(index, 2) == ("Cafetera", "preparar")
-        assert action_at(index, 1) is None
-
-
-class TestResolveCall:
-    def test_declared_drift_and_unknown(self, tmp_path: Path) -> None:
-        index, ws = _setup(tmp_path)
-        assert resolve_call("Cafetera", "preparar", index, ws)[0] == "declared"
-        assert resolve_call("Cafetera", "moler", index, ws)[0] == "drift"
-        assert resolve_call("Nadie", "volar", index, ws)[0] == "unknown"
 
 
 class TestEntityDefinitions:
