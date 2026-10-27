@@ -1,16 +1,13 @@
-@startuml CL_Workspace
+@startuml CL_WorkspaceIndex
 ' requirement REQ-00008-1
-' requirement REQ-00009-1
-' requirement REQ-00010-1
-' requirement REQ-00011-1
 
 !startsub WorkspaceIndex
-!includesub ./CL_Parsing.puml!ParsingModule
+!includesub ../CL_Parsing.puml!ParsingModule
 !includesub ./CL_FileEntry.puml!_FileEntry
-!includesub ./index/CL_Index.puml!Index
-!includesub ./index/CL_Occurrences.puml!Occurrences
+!includesub ../index/CL_Index.puml!Index
+!includesub ../index/CL_Occurrences.puml!Occurrences
 
-namespace plantuml_lsp.workspace {
+namespace plantuml_lsp.workspace.WorkspaceIndex {
   class WorkspaceIndex {
     + root : Path
     - _files : dict[str, _FileEntry]

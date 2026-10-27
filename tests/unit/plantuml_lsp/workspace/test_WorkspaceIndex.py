@@ -3,7 +3,9 @@ language server and no other file involved."""
 
 from pathlib import Path
 
-from plantuml_lsp.workspace import WorkspaceIndex
+from plantuml_lsp.workspace.WorkspaceIndex import WorkspaceIndex
+
+__covers__ = (WorkspaceIndex,)
 
 __covers__ = (WorkspaceIndex,)
 

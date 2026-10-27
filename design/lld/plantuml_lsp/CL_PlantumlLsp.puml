@@ -72,7 +72,7 @@
 !endsub
 
 !startsub WorkspaceIndex
-!includesub ./CL_Workspace.puml!WorkspaceIndex
+!includesub ./workspace/CL_WorkspaceIndex.puml!WorkspaceIndex
 !endsub
 
 !startsub ServerModule

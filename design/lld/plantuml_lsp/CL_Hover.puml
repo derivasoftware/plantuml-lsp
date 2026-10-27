@@ -5,6 +5,7 @@
 !includesub ./index/CL_Entity.puml!Entity
 !includesub ./index/CL_Index.puml!Index
 !includesub ./index/CL_Cursor.puml!Cursor
+!includesub ./workspace/CL_WorkspaceIndex.puml!WorkspaceIndex
 
 namespace plantuml_lsp.hover {
   class hover_for <<function>> {

@@ -4,6 +4,7 @@
 !startsub ActionsModule
 !includesub ./CL_Parsing.puml!ParsingModule
 !includesub ./index/CL_Entity.puml!Entity
+!includesub ./workspace/CL_WorkspaceIndex.puml!WorkspaceIndex
 
 namespace plantuml_lsp.actions {
   class declare_entity <<function>> {

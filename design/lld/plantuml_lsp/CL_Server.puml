@@ -7,6 +7,7 @@
 !startsub ServerModule
 !includesub ./index/CL_Index.puml!Index
 !includesub ./index/CL_Cursor.puml!Cursor
+!includesub ./workspace/CL_WorkspaceIndex.puml!WorkspaceIndex
 
 namespace plantuml_lsp.server {
   class did_open <<function>> {
