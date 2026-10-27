@@ -4,7 +4,7 @@ The server speaks LSP over **stdio**; install it where the editor can
 spawn it:
 
 ```bash
-pip install git+https://github.com/derivasoftware/plantuml-lsp.git@v0.7.3
+pip install git+https://github.com/derivasoftware/plantuml-lsp.git@v0.8.6
 ```
 
 ## VS Code
@@ -42,20 +42,20 @@ file-types = ["puml", "plantuml", "iuml", "wsd"]
 language-servers = ["plantuml-lsp"]
 ```
 
-## Capabilities (v1)
+## Capabilities
 
 | Capability | Behaviour |
 |---|---|
-| diagnostics | parse errors + semantic lints (unknown endpoints in class mode, duplicates, broken includes, class-cased participants no workspace class explains) |
+| diagnostics | parse errors + semantic lints (unknown endpoints in class mode, duplicates, broken includes, class-cased participants no workspace class or HLD box explains, method calls a correlated class does not declare) |
 | completion | contextual: receiver methods after a message colon (signatures as detail), participants after arrows, lane methods in actions, keywords only at statement heads |
-| hover | kind, display name, members, relation lines, declaration site; participants add the card of the class they play |
+| hover | kind, display name, members, relation lines, declaration site; participants add the card of the class or HLD box they play; a call to a receiver no class correlates with shows the homonymous method, marked as such |
 | references | CST-backed occurrences across the closure and the whole workspace |
 | rename | closure- and workspace-wide (editor previews every edit), never touches labels/comments/note bodies; quoted names keep quotes |
 | workspace/symbol | jump to any entity of any diagram under the root |
 | documentLink | clickable `!include`/`!includesub` paths |
 | codeAction | quick fixes: declare the missing entity, fix the include path to the closest file, declare the drifting method in the receiver's class |
 | documentSymbol | classes/interfaces/enums (namespace-qualified), packages/namespaces, sequence participants |
-| definition | `!includesub file!NAME` → the `!startsub NAME` line; `!include file` → the file |
+| definition | `!includesub file!NAME` → the `!startsub NAME` line; `!include file` → the file; an entity, participant or HLD box name → its declaration across the workspace; a call label or activity action → the declared method (best effort for a classless receiver) |
 | formatting | delegates to plantuml-fmt (one style, everywhere) |
 
 Semantic tokens are deliberately absent: VS Code highlights via the
