@@ -1,12 +1,14 @@
 verification:
-  id: VER-00011-1
+  id: VER-00011-2
   req_id: REQ-00011-2
   title: Call tests cover name-only resolution, drift candidates and quiet free text
   description: >
-    Call tests cover name-only resolution, drift candidates and quiet free text
+    Call tests cover name-only resolution, drift candidates and quiet free text.
     A classless receiver whose method name some class declares is a homonym:
     gd and hover still jump to it and the hover says no class correlates,
     never a declared correlation (DDEV-477).
+    Revision 2 signs the case of a classless receiver and a homonym, added
+    in place under revision 1 (DDEV-477, PUML-119).
   method: test
   test_ids:
     - tests/integration/test_it_features_v1.py::test_call_resolution_matches_by_name_only
