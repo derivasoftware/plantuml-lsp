@@ -13,4 +13,4 @@ verification:
   test_ids:
     - tests/integration/test_workspace.py::test_unmatched_participants_reports_only_plain_participants
     - "tests/integration/test_it_lsp.py::test_a_participant_naming_a_box_of_the_hld_resolves_and_is_not_an_orphan"
-  status: DRAFT
+  status: APPROVED
